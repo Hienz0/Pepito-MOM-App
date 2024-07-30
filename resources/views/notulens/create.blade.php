@@ -31,6 +31,17 @@
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             id="meeting_title" name="meeting_title" placeholder="Enter meeting title" required>
                     </div>
+                    <div class="mb-4">
+                        <label for="department" class="block text-gray-700 text-sm font-bold mb-2">Department</label>
+                        <select name="department" id="department"
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                            <option value="" disabled selected>Select department</option>
+                            <option value="HR">HR</option>
+                            <option value="IT">IT</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Marketing">Marketing</option>
+                        </select>
+                    </div>
                     <div class="flex mb-4">
                         <div class="w-1/2 pr-2">
                             <label for="meeting_date" class="block text-gray-700 text-sm font-bold mb-2">Date</label>
@@ -44,6 +55,17 @@
                                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                 id="meeting_time" name="meeting_time" required>
                         </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="meeting_location" class="block text-gray-700 text-sm font-bold mb-2">Location</label>
+                        <select name="meeting_location" id="meeting_location"
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                            <option value="" disabled selected>Select Location</option>
+                            <option value="Location 1">Location 1</option>
+                            <option value="Location 2">Location 2</option>
+                            <option value="Location 3">Location 3</option>
+                        </select>
                     </div>
                     <div class="mb-4">
                         <label for="participants"

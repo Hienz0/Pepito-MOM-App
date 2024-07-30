@@ -24,8 +24,10 @@
                 <h2 class="text-2xl">{{ $notulen->meeting_title }}</h2>
             </div>
             <div class="p-4">
+                <p><strong>Department</strong> {{  $notulen->department }}</p>
                 <p><strong>Date:</strong> {{ $notulen->meeting_date }}</p>
                 <p><strong>Time:</strong> {{ $notulen->meeting_time }}</p>
+                <p><strong>Location:</strong> {{ $notulen->meeting_location }}</p>
                
                 @if ($notulen->participants->isNotEmpty())
                 <h3 class="text-xl font-semibold mt-6">Participants</h3>

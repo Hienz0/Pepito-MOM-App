@@ -11,8 +11,10 @@ class Notulen extends Model
 
     protected $fillable = [
         'meeting_title',
+        'department',
         'meeting_date',
         'meeting_time',
+        'meeting_location',
         'agenda',
         'discussion',
         'decisions',
