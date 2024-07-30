@@ -30,7 +30,8 @@ class NotulenController extends Controller
     public function create()
     {
         $users = User::all();
-        return view('notulens.create', compact('users'));
+        $scripter = Auth::user();
+        return view('notulens.create', compact('users', 'scripter'));
     }
 
     public function store(Request $request)
@@ -53,6 +54,9 @@ class NotulenController extends Controller
         ]);
 
         try {
+
+            $user = Auth::user();
+
             $notulen = Notulen::create([
                 'meeting_title' => $request->meeting_title,
                 'meeting_date' => $request->meeting_date,
@@ -63,6 +67,7 @@ class NotulenController extends Controller
                 'discussion' => $request->discussion,
                 'decisions' => $request->decisions,
                 'action_items' => $request->action_items,
+                'scripter_id' => $user->id,
             ]);
 
             $participants = json_decode($request->participants[0], true);
@@ -157,6 +162,8 @@ class NotulenController extends Controller
     
         return view('notulens.show', compact('notulen', 'userTasks'));
     }
+
+    
     
 
 

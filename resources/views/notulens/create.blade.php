@@ -67,6 +67,14 @@
                             <option value="Location 3">Location 3</option>
                         </select>
                     </div>
+
+                    <div class="mb-4">
+                        <label for="scripter" class="block text-gray-700 text-sm font-bold mb-2">Scripter</label>
+                        <input type="text"
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shad-outline"
+                            id="scripter" name="scripter" value="{{ $scripter->name }}" readonly>
+                    </div>
+
                     <div class="mb-4">
                         <label for="participants"
                             class="block text-gray-700 text-sm font-bold mb-2">Participants</label>

@@ -19,6 +19,7 @@ class Notulen extends Model
         'discussion',
         'decisions',
         'action_items',
+        'scripter_id'
     ];
 
     public function participants()
@@ -34,5 +35,10 @@ class Notulen extends Model
     public function guests()
     {
         return $this->hasMany(Guest::class);
+    }
+
+    public function scripter()
+    {
+        return $this->belongsTo(User::class, 'scripter_id');
     }
 }
