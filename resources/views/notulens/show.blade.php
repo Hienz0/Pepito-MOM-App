@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notulen Details</title>
+    <title>MOM Details</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -18,7 +18,7 @@
 
 <body>
     <div class="container mt-10">
-        <h1 class="mb-8 text-center text-3xl font-bold">Notulen Details</h1>
+        <h1 class="mb-8 text-center text-3xl font-bold">Minutes of Meeting Details</h1>
         <div class="bg-white shadow-md rounded-lg overflow-hidden mb-8">
             <div class="bg-gray-800 text-white p-4">
                 <h2 class="text-2xl">{{ $notulen->meeting_title }}</h2>
@@ -76,7 +76,6 @@
                 <p><strong>Agenda:</strong> {{ $notulen->agenda }}</p>
                 <p><strong>Discussion:</strong> {{ $notulen->discussion }}</p>
                 <p><strong>Decisions:</strong> {{ $notulen->decisions }}</p>
-                <p><strong>Action Items:</strong> {{ $notulen->action_items }}</p>
 
                 <h3 class="text-xl font-semibold mt-6">All Tasks</h3>
                 <table class="w-full mt-4 border-collapse border border-gray-300">

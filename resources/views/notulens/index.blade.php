@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meeting Notulen App</title>
+    <title>Pepito MOM App</title>
     <!-- Include Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
@@ -43,7 +43,6 @@
                             <th class="p-4">Agenda</th>
                             <th class="p-4">Discussion</th>
                             <th class="p-4">Decisions</th>
-                            <th class="p-4">Action Items</th>
                         </tr>
                     </thead>
                     <tbody id="notulenTable" class="divide-y divide-gray-200">
@@ -60,7 +59,6 @@
                                 <td class="p-4">{{ $notulen->agenda }}</td>
                                 <td class="p-4">{{ $notulen->discussion }}</td>
                                 <td class="p-4">{{ $notulen->decisions }}</td>
-                                <td class="p-4">{{ $notulen->action_items }}</td>
                             </tr>
                         @endforeach
                     </tbody>

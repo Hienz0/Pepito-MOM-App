@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meeting Notulen App</title>
+    <title>Add New MOM</title>
     <!-- Include Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -16,7 +16,6 @@
         <a href="{{ route('notulens.index') }}" class="bg-blue-500 text-white px-4 py-2 rounded">Back to Notulens</a>
 
         <h1 class="mb-6 text-3xl font-bold text-center">Add New Notulen</h1>
-
         <div class="bg-white shadow-md rounded-lg mb-6">
             <div class="bg-gray-800 text-white p-4 rounded-t-lg">
                 <h2 class="text-xl font-semibold mb-0">Add New Notulen</h2>
@@ -24,67 +23,80 @@
             <div class="p-6">
                 <form id="notulenForm" method="POST" action="{{ route('notulens.store') }}">
                     @csrf
-                    <div class="mb-4">
-                        <label for="meeting_title" class="block text-gray-700 text-sm font-bold mb-2">Meeting
-                            Title</label>
-                        <input type="text"
-                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="meeting_title" name="meeting_title" placeholder="Enter meeting title" required>
-                    </div>
-                    <div class="mb-4">
-                        <label for="department" class="block text-gray-700 text-sm font-bold mb-2">Department</label>
-                        <select name="department" id="department"
-                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
-                            <option value="" disabled selected>Select department</option>
-                            <option value="HR">HR</option>
-                            <option value="IT">IT</option>
-                            <option value="Finance">Finance</option>
-                            <option value="Marketing">Marketing</option>
-                        </select>
-                    </div>
-                    <div class="flex mb-4">
-                        <div class="w-1/2 pr-2">
-                            <label for="meeting_date" class="block text-gray-700 text-sm font-bold mb-2">Date</label>
-                            <input type="date"
-                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                id="meeting_date" name="meeting_date" required>
+
+                    <div class="flex flex-wrap mb-4">
+                        <div class="w-full md:w-1/2 md:pr-2">
+                            <div class="mb-4">
+                                <label for="meeting_title" class="block text-gray-700 text-sm font-bold mb-2">Meeting
+                                    Title</label>
+                                <input type="text"
+                                    class="shadow appearance-none border rounded w-full md:w-3/5 lg:w-3/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    id="meeting_title" name="meeting_title" placeholder="Enter meeting title" required>
+                            </div>
+                            <div class="mb-4">
+                                <label for="department" class="block text-gray-700 text-sm font-bold mb-2">Department</label>
+                                <select name="department" id="department"
+                                    class="shadow appearance-none border rounded w-full md:w-3/5 lg:w-3/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                                    <option value="" disabled selected>Select department</option>
+                                    <option value="HR">HR</option>
+                                    <option value="IT">IT</option>
+                                    <option value="Finance">Finance</option>
+                                    <option value="Marketing">Marketing</option>
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label for="participants"
+                                    class="block text-gray-700 text-sm font-bold mb-2">Participants</label>
+                                <button type="button"
+                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 focus:outline-none focus:shadow-outline"
+                                    id="openParticipantModalBtn">Select Participants</button>
+            
+                                <input type="hidden" name="participants[]" id="participantsInput" required>
+            
+                            </div>
                         </div>
-                        <div class="w-1/2 pl-2">
-                            <label for="meeting_time" class="block text-gray-700 text-sm font-bold mb-2">Time</label>
-                            <input type="time"
-                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                id="meeting_time" name="meeting_time" required>
+                        <div class="w-full md:w-1/2 md:pl-2">
+                            <div class="flex mb-4 md:w-3/5 lg:w-3/5" >
+                                <div class="w-1/2 pr-2">
+                                    <label for="meeting_date" class="block text-gray-700 text-sm font-bold mb-2">Date</label>
+                                    <input type="date"
+                                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                        id="meeting_date" name="meeting_date" required>
+                                </div>
+                                <div class="w-1/2 pl-2">
+                                    <label for="meeting_time" class="block text-gray-700 text-sm font-bold mb-2">Time</label>
+                                    <input type="time"
+                                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                        id="meeting_time" name="meeting_time" required>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label for="meeting_location" class="block text-gray-700 text-sm font-bold mb-2">Location</label>
+                                <select name="meeting_location" id="meeting_location"
+                                    class="shadow appearance-none border rounded w-full md:w-3/5 lg:w-3/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                                    <option value="" disabled selected>Select Location</option>
+                                    <option value="Location 1">Location 1</option>
+                                    <option value="Location 2">Location 2</option>
+                                    <option value="Location 3">Location 3</option>
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label for="scripter" class="block text-gray-700 text-sm font-bold mb-2">Scripter</label>
+                                <input type="text"
+                                    class="shadow appearance-none border rounded w-full md:w-3/5 lg:w-3/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shad-outline"
+                                    id="scripter" name="scripter" value="{{ $scripter->name }}" readonly>
+                            </div>
+                        
                         </div>
                     </div>
+                   
 
-                    <div class="mb-4">
-                        <label for="meeting_location" class="block text-gray-700 text-sm font-bold mb-2">Location</label>
-                        <select name="meeting_location" id="meeting_location"
-                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
-                            <option value="" disabled selected>Select Location</option>
-                            <option value="Location 1">Location 1</option>
-                            <option value="Location 2">Location 2</option>
-                            <option value="Location 3">Location 3</option>
-                        </select>
-                    </div>
 
-                    <div class="mb-4">
-                        <label for="scripter" class="block text-gray-700 text-sm font-bold mb-2">Scripter</label>
-                        <input type="text"
-                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shad-outline"
-                            id="scripter" name="scripter" value="{{ $scripter->name }}" readonly>
-                    </div>
+                    
 
-                    <div class="mb-4">
-                        <label for="participants"
-                            class="block text-gray-700 text-sm font-bold mb-2">Participants</label>
-                        <button type="button"
-                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 focus:outline-none focus:shadow-outline"
-                            id="openParticipantModalBtn">Select Participants</button>
+                    
 
-                        <input type="hidden" name="participants[]" id="participantsInput" required>
 
-                    </div>
 
 
                     <div class="p-4">
@@ -153,15 +165,11 @@
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             id="decisions" name="decisions" rows="3" placeholder="Enter decisions" required></textarea>
                     </div>
-                    <div class="mb-4">
-                        <label for="action_items" class="block text-gray-700 text-sm font-bold mb-2">Action
-                            Items</label>
-                        <textarea
-                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="action_items" name="action_items" rows="3" placeholder="Enter action items" required></textarea>
-                    </div>
+                    
 
                     <!-- Tasks Section -->
+                <h3 class="text-xl font-semibold mt-6 py-6">Task Section</h3>
+
                     <div class="mb-4">
                         <label for="task_topic" class="block text-gray-700 text-sm font-bold mb-2">Task Topic</label>
                         <input type="text"

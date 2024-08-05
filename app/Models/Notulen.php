@@ -18,7 +18,6 @@ class Notulen extends Model
         'agenda',
         'discussion',
         'decisions',
-        'action_items',
         'scripter_id'
     ];
 

@@ -15,7 +15,6 @@
     <p><strong>Agenda:</strong> {{ $notulen->agenda }}</p>
     <p><strong>Discussion:</strong> {{ $notulen->discussion }}</p>
     <p><strong>Decisions:</strong> {{ $notulen->decisions }}</p>
-    <p><strong>Action Items:</strong> {{ $notulen->action_items }}</p>
 
     <h3>Participants:</h3>
     <ul>

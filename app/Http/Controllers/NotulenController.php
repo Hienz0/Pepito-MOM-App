@@ -48,7 +48,6 @@ class NotulenController extends Controller
             'agenda' => 'required|string',
             'discussion' => 'required|string',
             'decisions' => 'required|string',
-            'action_items' => 'required|string',
             'tasks' => 'required|string',
             'guests' => 'nullable|string', // Validate guests as a JSON string
         ]);
@@ -66,7 +65,6 @@ class NotulenController extends Controller
                 'agenda' => $request->agenda,
                 'discussion' => $request->discussion,
                 'decisions' => $request->decisions,
-                'action_items' => $request->action_items,
                 'scripter_id' => $user->id,
             ]);
 

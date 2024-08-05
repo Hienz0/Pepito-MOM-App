@@ -22,7 +22,6 @@
     <p><strong>Agenda:</strong> {{ $notulen->agenda }}</p>
     <p><strong>Discussion:</strong> {{ $notulen->discussion }}</p>
     <p><strong>Decisions:</strong> {{ $notulen->decisions }}</p>
-    <p><strong>Action Items:</strong> {{ $notulen->action_items }}</p>
     
     <p>Thank you for your participation.</p>
 </body>

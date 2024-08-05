@@ -21,7 +21,6 @@ class CreateNotulensTable extends Migration
             $table->text('agenda');
             $table->text('discussion');
             $table->text('decisions');
-            $table->text('action_items');
             $table->foreignId('scripter_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
