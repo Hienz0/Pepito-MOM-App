@@ -8,6 +8,72 @@ use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 
+
+
+// dummy inject code
+use App\Models\Notulen;
+use App\Models\NotulenTask;
+use App\Models\User;
+use Illuminate\Support\Str;
+use Carbon\Carbon;
+
+
+Route::get('/inject-dummy-notulens', function () {
+    $scripter = User::find(1); // Find the user with id 1
+
+    if (!$scripter) {
+        return "User with id 1 not found.";
+    }
+
+    $users = User::all();
+    $totalUsers = $users->count();
+
+    for ($i = 0; $i < 20; $i++) {
+        // Create a dummy notulen
+        $notulen = Notulen::create([
+            'meeting_title' => 'Dummy Meeting ' . ($i + 1),
+            'meeting_date' => Carbon::now()->addDays($i)->format('Y-m-d'),
+            'department' => 'Dummy Department',
+            'meeting_time' => Carbon::now()->addHours($i)->format('H:i'),
+            'meeting_location' => 'Dummy Location',
+            'agenda' => 'Dummy Agenda ' . ($i + 1),
+            'discussion' => 'Dummy Discussion ' . ($i + 1),
+            'decisions' => 'Dummy Decisions ' . ($i + 1),
+            'scripter_id' => $scripter->id,
+            'status' => 'Open',
+        ]);
+
+        // Attach random participants
+        $participantCount = rand(1, min(5, $totalUsers));
+        $participantIds = $users->random($participantCount)->pluck('id')->toArray();
+        $notulen->participants()->attach($participantIds);
+
+        // Create tasks for the notulen (randomly deciding to add tasks or not)
+        if (rand(0, 1)) {
+            $taskCount = rand(1, 5);
+            for ($j = 0; $j < $taskCount; $j++) {
+                $taskPicCount = rand(1, min(3, $totalUsers));
+                $taskPics = $users->random($taskPicCount)->pluck('id')->toArray();
+
+                NotulenTask::create([
+                    'notulen_id' => $notulen->id,
+                    'task_topic' => 'Dummy Task Topic ' . ($j + 1),
+                    'task_pic' => json_encode($taskPics),
+                    'task_due_date' => Carbon::now()->addDays($j)->format('Y-m-d'),
+                    'status' => 'Pending',
+                    'description' => 'Dummy Description ' . ($j + 1),
+                    'attachment' => null,
+                ]);
+            }
+        }
+    }
+
+    return "20 Dummy Notulen records have been created successfully!";
+});
+
+
+// dummy inject code
+
 // Routes requiring authentication
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [NotulenController::class, 'index'])->name('notulens.index');
@@ -15,6 +81,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/store', [NotulenController::class, 'store'])->name('notulens.store');
     Route::get('/notulens/{id}', [NotulenController::class, 'show'])->name('notulens.show');
     Route::put('/notulens/tasks/{id}', [NotulenController::class, 'updateTask'])->name('notulens.updateTask');
+
+    // edit notulen
+    Route::get('/notulens/{id}/edit', [NotulenController::class, 'edit'])->name('notulens.edit');
+    Route::put('/notulens/{id}', [NotulenController::class, 'update'])->name('notulens.update');
+
+
     Route::get('/home', function () {
         return view('home');
     })->name('home');

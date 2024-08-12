@@ -18,7 +18,8 @@ class Notulen extends Model
         'agenda',
         'discussion',
         'decisions',
-        'scripter_id'
+        'scripter_id',
+        'status'
     ];
 
     public function participants()

@@ -48,7 +48,7 @@ class NotulenController extends Controller
             'agenda' => 'required|string',
             'discussion' => 'required|string',
             'decisions' => 'required|string',
-            'tasks' => 'required|string',
+            'tasks' => 'nullable|string',
             'guests' => 'nullable|string', // Validate guests as a JSON string
         ]);
 
@@ -66,6 +66,7 @@ class NotulenController extends Controller
                 'discussion' => $request->discussion,
                 'decisions' => $request->decisions,
                 'scripter_id' => $user->id,
+                'status' => $request['status'] ?? 'Open',
             ]);
 
             $participants = json_decode($request->participants[0], true);
@@ -73,42 +74,38 @@ class NotulenController extends Controller
 
             Log::info('Notulen created, attaching tasks', ['notulen_id' => $notulen->id]);
 
-            $tasks = json_decode($request->tasks, true);
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                throw new \Exception('Invalid JSON in tasks field');
-            }
-            
-            foreach ($tasks as $task) {
-                $taskPics = array_map(function($taskPic) {
-                    return $taskPic['id'];
-                }, $task['task_pics']);
-            
-                // Create the task with task_pic as an array
-                $createdTask = $notulen->tasks()->create([
-                    'task_topic' => $task['task_topic'],
-                    'task_pic' => json_encode($taskPics),
-                    'task_due_date' => $task['task_due_date'],
-                    'status' => $task['status'] ?? 'Pending',
-                    'description' => $task['description'] ?? null,
-                    'attachment' => $task['attachment'] ?? null,
-                ]);
-            
-                // Send email to each PIC in the task
-                foreach ($task['task_pics'] as $taskPic) {
-                    $pic = User::find($taskPic['id']);
-                    if ($pic) {
-                        Mail::to($pic->email)->send(new TaskNotification($notulen, $createdTask));
+            if ($request->filled('tasks')) {
+                $tasks = json_decode($request->tasks, true);
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    throw new \Exception('Invalid JSON in tasks field');
+                }
+    
+                foreach ($tasks as $task) {
+                    $taskPics = array_map(function($taskPic) {
+                        return $taskPic['id'];
+                    }, $task['task_pics']);
+    
+                    // Create the task with task_pic as an array
+                    $createdTask = $notulen->tasks()->create([
+                        'task_topic' => $task['task_topic'],
+                        'task_pic' => json_encode($taskPics),
+                        'task_due_date' => $task['task_due_date'],
+                        'status' => $task['status'] ?? 'Pending',
+                        'description' => $task['description'] ?? null,
+                        'attachment' => $task['attachment'] ?? null,
+                    ]);
+    
+                    // Send email to each PIC in the task
+                    foreach ($task['task_pics'] as $taskPic) {
+                        $pic = User::find($taskPic['id']);
+                        if ($pic) {
+                            Mail::to($pic->email)->send(new TaskNotification($notulen, $createdTask));
+                        }
                     }
                 }
             }
-            
-            
-
-            
-            
-
-
-            Log::info('Tasks attached successfully', ['tasks' => $tasks]);
+    
+            Log::info('Tasks attached successfully', ['tasks' => $tasks ?? 'No tasks']);
 
             // Log if guests field is present or not
         if ($request->filled('guests')) {
@@ -161,6 +158,49 @@ class NotulenController extends Controller
         return view('notulens.show', compact('notulen', 'userTasks'));
     }
 
+
+    // edit and update notulen
+
+public function edit($id)
+{
+    $notulen = Notulen::findOrFail($id);
+    
+    // Ensure the authenticated user is the scripter
+    if (Auth::user()->id != $notulen->scripter_id) {
+        return redirect()->route('notulens.index')->with('error', 'You do not have permission to edit this notulen.');
+    }
+
+    return view('notulens.edit', compact('notulen'));
+}
+
+public function update(Request $request, $id)
+{
+    $notulen = Notulen::findOrFail($id);
+
+    // Ensure the authenticated user is the scripter
+    if (Auth::user()->id != $notulen->scripter_id) {
+        return redirect()->route('notulens.index')->with('error', 'You do not have permission to update this notulen.');
+    }
+
+    // Validate the request data
+    $validatedData = $request->validate([
+        'meeting_title' => 'required|string|max:255',
+        'meeting_date' => 'required|date',
+        'meeting_time' => 'required',
+        'agenda' => 'required|string',
+        'discussion' => 'nullable|string',
+        'decisions' => 'nullable|string',
+        'action_items' => 'nullable|string',
+        // Add validation rules for any other fields you have
+    ]);
+
+    // Update the notulen
+    $notulen->update($validatedData);
+
+    return redirect()->route('notulens.index')->with('success', 'Notulen updated successfully.');
+}
+
+
     
     
 
@@ -174,16 +214,20 @@ class NotulenController extends Controller
             // Check if 'complete' checkbox is checked
             if ($request->has('complete')) {
                 $task->status = 'Complete';
+                log::info('Task marked as complete', ['id' => $id]);
             } else {
                 $task->status = 'In Progress'; // Default status if not complete
+                log::info('Task marked as in progress', ['id' => $id]);
             }
 
             if ($request->hasFile('attachment')) {
                 $attachmentPath = $request->file('attachment')->store('attachments', 'public');
                 $task->attachment = $attachmentPath;
+                Log::info('Attachment uploded', ['id' => $id, 'attachment path' => $attachmentPath]);
             }
 
             $task->save();
+            Log::info('Task updated successfully', ['id' => $id]);
 
             // Return a redirect response after saving the task
             return redirect()->back()->with('success', 'Task updated successfully.');
