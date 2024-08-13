@@ -12,18 +12,74 @@
 </head>
 
 <body class="bg-gray-100">
-    <div class="container mx-auto mt-10">
+    <!-- Navbar -->
+    <nav style="background-color: #F9F9F9;" class="fixed w-full shadow-md h-20 top-0 left-0">
+        <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+            <div class="flex items-center justify-between h-full">
+                <!-- Navbar image -->
+                <div class="flex-shrink-0 mr-auto h-12">
+                    <a href="/">
+                        <img src="{{ asset('images/pepito-logo.png') }}" alt="Navbar Logo" class="h-12 w-auto ml-2"
+                            src="/">
+                    </a>
+                </div>
+                <!-- Icons Section -->
+                <div class="flex items-center space-x-4">
+                    <!-- Notification Icon -->
+                    <div class="relative flex items-center justify-center h-full">
+                        <button type="button" class="text-gray-700 hover:text-gray-900 focus:outline-none">
+                            <i class="fa-regular fa-bell text-4xl"></i>
+                        </button>
+                        <!-- Dropdown for notifications could go here -->
+                    </div>
+                    <!-- User Icon -->
+                    <div class="relative">
+                        <button type="button" id="userMenuButton"
+                            class="flex items-center text-gray-700 hover:text-gray-900 focus:outline-none">
+                            <i class="fa-regular fa-user text-4xl"></i>
+                        </button>
+                        <!-- Dropdown Menu -->
+                        <div id="userDropdown"
+                            class="hidden absolute right-0 mt-2 w-64 bg-white rounded-md shadow-lg z-[9999]">
+                            <div class="flex items-center px-4 py-3">
+                                <div class="rounded-full h-full bg-gray-300 p-2">
+                                    <i class="fa-regular fa-user text-gray-700 text-2xl"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <span class="block text-gray-700 font-semibold">{{ Auth::user()->name }}</span>
+                                    <span class="block text-gray-600 text-sm">{{ Auth::user()->email }}</span>
+                                </div>
+                            </div>
+                            <div class="border-t border-gray-200"></div>
+                            <div
+                                class="px-4 py-2 px-4 py-2 hover:bg-gray-100 transition-colors duration-300 rounded-md">
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit"
+                                        class="w-full text-left text-gray-700 hover:text-gray-900">Logout</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    {{-- Main Content --}}
+    <div class="container mx-auto mt-28">
         <a href="{{ route('notulens.index') }}" class="bg-blue-500 text-white px-4 py-2 rounded">Back to Notulens</a>
 
-        <h1 class="mb-6 text-3xl font-bold text-center">Add New Notulen</h1>
+        <h1 class="mb-6 text-3xl font-bold text-center">Add a new Minutes Of Meeting</h1>
         <div class="bg-white shadow-md rounded-lg mb-6">
-            <div class="bg-gray-800 text-white p-4 rounded-t-lg">
-                <h2 class="text-xl font-semibold mb-0">Add New Notulen</h2>
-            </div>
-            <div class="p-6">
-                <form id="notulenForm" method="POST" action="{{ route('notulens.store') }}">
-                    @csrf
 
+            <form id="notulenForm" method="POST" action="{{ route('notulens.store') }}">
+                @csrf
+
+                <div class="bg-gray-800 text-white p-4 rounded-t-lg">
+                    <h2 class="text-xl font-semibold mb-0">Add a new Minutes Of Meeting</h2>
+                </div>
+                <div class="p-6">
                     <div class="flex flex-wrap mb-4">
                         <div class="w-full md:w-1/2 md:pr-2">
                             <div class="mb-4">
@@ -34,9 +90,11 @@
                                     id="meeting_title" name="meeting_title" placeholder="Enter meeting title" required>
                             </div>
                             <div class="mb-4">
-                                <label for="department" class="block text-gray-700 text-sm font-bold mb-2">Department</label>
+                                <label for="department"
+                                    class="block text-gray-700 text-sm font-bold mb-2">Department</label>
                                 <select name="department" id="department"
-                                    class="shadow appearance-none border rounded w-full md:w-3/5 lg:w-3/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                                    class="shadow appearance-none border rounded w-full md:w-3/5 lg:w-3/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    required>
                                     <option value="" disabled selected>Select department</option>
                                     <option value="HR">HR</option>
                                     <option value="IT">IT</option>
@@ -50,30 +108,34 @@
                                 <button type="button"
                                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 focus:outline-none focus:shadow-outline"
                                     id="openParticipantModalBtn">Select Participants</button>
-            
+
                                 <input type="hidden" name="participants[]" id="participantsInput" required>
-            
+
                             </div>
                         </div>
                         <div class="w-full md:w-1/2 md:pl-2">
-                            <div class="flex mb-4 md:w-3/5 lg:w-3/5" >
+                            <div class="flex mb-4 md:w-3/5 lg:w-3/5">
                                 <div class="w-1/2 pr-2">
-                                    <label for="meeting_date" class="block text-gray-700 text-sm font-bold mb-2">Date</label>
+                                    <label for="meeting_date"
+                                        class="block text-gray-700 text-sm font-bold mb-2">Date</label>
                                     <input type="date"
                                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                         id="meeting_date" name="meeting_date" required>
                                 </div>
                                 <div class="w-1/2 pl-2">
-                                    <label for="meeting_time" class="block text-gray-700 text-sm font-bold mb-2">Time</label>
+                                    <label for="meeting_time"
+                                        class="block text-gray-700 text-sm font-bold mb-2">Time</label>
                                     <input type="time"
                                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                         id="meeting_time" name="meeting_time" required>
                                 </div>
                             </div>
                             <div class="mb-4">
-                                <label for="meeting_location" class="block text-gray-700 text-sm font-bold mb-2">Location</label>
+                                <label for="meeting_location"
+                                    class="block text-gray-700 text-sm font-bold mb-2">Location</label>
                                 <select name="meeting_location" id="meeting_location"
-                                    class="shadow appearance-none border rounded w-full md:w-3/5 lg:w-3/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                                    class="shadow appearance-none border rounded w-full md:w-3/5 lg:w-3/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    required>
                                     <option value="" disabled selected>Select Location</option>
                                     <option value="Location 1">Location 1</option>
                                     <option value="Location 2">Location 2</option>
@@ -81,25 +143,26 @@
                                 </select>
                             </div>
                             <div class="mb-4">
-                                <label for="scripter" class="block text-gray-700 text-sm font-bold mb-2">Scripter</label>
+                                <label for="scripter"
+                                    class="block text-gray-700 text-sm font-bold mb-2">Scripter</label>
                                 <input type="text"
                                     class="shadow appearance-none border rounded w-full md:w-3/5 lg:w-3/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shad-outline"
                                     id="scripter" name="scripter" value="{{ $scripter->name }}" readonly>
                             </div>
-                        
+
                         </div>
                     </div>
-                   
-
-
-                    
-
-                    
 
 
 
 
-                    <div class="p-4">
+
+
+
+
+
+
+                    <div class="p-4 participant-section">
                         <h3 class="text-lg leading-6 font-medium text-gray-700">Participant List</h3>
                         <table id="participantsTable"
                             class="min-w-full divide-y divide-gray-200 border border-gray-200">
@@ -124,7 +187,7 @@
 
 
 
-                    <div class="p-4">
+                    <div class="p-4 guest-section">
                         <h3 class="text-lg leading-6 font-medium text-gray-700">Guest List</h3>
                         <table class="min-w-full divide-y divide-gray-200 border border-gray-200">
                             <thead class="bg-gray-50">
@@ -165,10 +228,16 @@
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             id="decisions" name="decisions" rows="3" placeholder="Enter decisions" required></textarea>
                     </div>
-                    
 
+
+                </div>
+
+                <div class="bg-gray-800 text-white p-4 rounded-t-lg">
+                    <h2 class="text-xl font-semibold mb-0">Task Section</h2>
+                </div>
+                <div class="p-6">
                     <!-- Tasks Section -->
-                <h3 class="text-xl font-semibold mt-6 py-6">Task Section</h3>
+                    <h3 class="text-xl font-semibold mt-6 py-6">Task Section</h3>
 
                     <div class="mb-4">
                         <label for="task_topic" class="block text-gray-700 text-sm font-bold mb-2">Task Topic</label>
@@ -196,6 +265,17 @@
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             id="task_due_date">
                     </div>
+                        <!-- Task Status -->
+                    <div class="mb-4">
+                        <label for="task_status" class="block text-gray-700 text-sm font-bold mb-2">Status</label>
+                        <select
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            id="task_status" name="task_status">
+                            <option value="Pending" selected>Pending</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Complete">Complete</option>
+                        </select>
+                    </div>
                     <button type="button"
                         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 focus:outline-none focus:shadow-outline"
                         id="addTaskBtn">Add Task</button>
@@ -207,6 +287,7 @@
                                     <th class="px-4 py-2">Topic</th>
                                     <th class="px-4 py-2">PIC</th>
                                     <th class="px-4 py-2">Due Date</th>
+                                    <th class="px-4 py-2">Status</th>
                                     <th class="px-4 py-2">Action</th>
                                 </tr>
                             </thead>
@@ -220,11 +301,19 @@
                     <input type="hidden" name="tasks" id="tasksInput" required>
                     <input type="hidden" id="guestsInput" name="guests">
 
-                    <button type="submit" id="submitBtn"
-                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full focus:outline-none focus:shadow-outline">Add
-                        Notulen</button>
-                </form>
-            </div>
+                </div>
+
+
+
+
+
+                <button type="submit" id="submitBtn"
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full focus:outline-none focus:shadow-outline">Add
+                    Notulen</button>
+            </form>
+
+
+
         </div>
     </div>
 
@@ -491,6 +580,7 @@
                     return;
                 }
 
+                showAlert('success', 'Guest Added', 'Guest added successfully.');
                 addGuestToList(guestName, guestEmail);
                 resetGuestInputs();
                 hideGuestModal();
@@ -516,10 +606,12 @@
                 guestRow.querySelector('.remove-guest-btn').addEventListener('click', () => {
                     guestList.removeChild(guestRow);
                     updateGuestsInput(); // Update hidden input when a guest is removed
+                    updateGuestsVisibility();
                 });
 
                 guestList.appendChild(guestRow);
                 updateGuestsInput(); // Update hidden input after adding a guest
+                updateGuestsVisibility();
             }
 
             function resetGuestInputs() {
@@ -587,7 +679,9 @@
                         participantItem.querySelector('.remove-participant-btn').addEventListener(
                             'click', () => {
                                 participantsList.removeChild(participantItem);
+                                checkbox.checked = false;
                                 updateParticipantsInput();
+                                updateParticipantsVisibility();
                                 updateTaskPicOptions();
                             });
 
@@ -597,6 +691,7 @@
 
                 });
                 updateParticipantsInput();
+                updateParticipantsVisibility();
                 updateTaskPicOptions();
                 participantModal.classList.add('hidden');
             });
@@ -609,6 +704,28 @@
                 });
                 participantsInput.value = JSON.stringify(participants);
             }
+
+            function updateParticipantsVisibility() {
+                if (participantsList.children.length === 0) {
+                    document.querySelector('.participant-section').classList.add('hidden');
+                } else {
+                    document.querySelector('.participant-section').classList.remove('hidden');
+                }
+            }
+
+
+            updateParticipantsVisibility();
+
+            function updateGuestsVisibility() {
+                if (guestList.children.length === 0) {
+                    document.querySelector('.guest-section').classList.add('hidden');
+                } else {
+                    document.querySelector('.guest-section').classList.remove('hidden');
+                }
+
+            }
+            updateGuestsVisibility();
+
 
 
             function updateTaskPicOptions() {
@@ -637,6 +754,7 @@
                 const taskTopic = taskTopicInput.value;
                 const selectedPicOptions = Array.from(taskPicSelect.selectedOptions);
                 const taskDueDate = taskDueDateInput.value;
+                const taskStatus = document.getElementById('task_status').value;
 
                 if (!taskTopic || selectedPicOptions.length === 0 || !taskDueDate) {
                     Swal.fire({
@@ -655,7 +773,8 @@
                 const task = {
                     task_topic: taskTopic,
                     task_pics: taskPics,
-                    task_due_date: taskDueDate
+                    task_due_date: taskDueDate,
+                    task_status: taskStatus
                 };
                 tasks.push(task);
 
@@ -664,6 +783,7 @@
                     <td class="border px-2 py-1">${taskTopic}</td>
                     <td class="border px-2 py-1">${taskPics.map(pic => pic.name).join(', ')}</td>
                     <td class="border px-2 py-1">${taskDueDate}</td>
+                    <td class="border px-2 py-1">${taskStatus}</td>
                     <td class="border px-2 py-1">
                         <button type="button" class="bg-red-500 text-white font-bold py-1 px-2 rounded remove-task-btn">Remove</button>
                     </td>
@@ -681,6 +801,7 @@
                 taskTopicInput.value = '';
                 taskPicSelect.value = '';
                 taskDueDateInput.value = '';
+                document.getElementById('task_status').value = 'Pending';
             });
 
             function updateTasksInput() {

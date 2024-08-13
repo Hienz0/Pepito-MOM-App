@@ -90,7 +90,7 @@ class NotulenController extends Controller
                         'task_topic' => $task['task_topic'],
                         'task_pic' => json_encode($taskPics),
                         'task_due_date' => $task['task_due_date'],
-                        'status' => $task['status'] ?? 'Pending',
+                        'status' => $task['task_status'] ?? 'Pending',
                         'description' => $task['description'] ?? null,
                         'attachment' => $task['attachment'] ?? null,
                     ]);
@@ -161,44 +161,147 @@ class NotulenController extends Controller
 
     // edit and update notulen
 
-public function edit($id)
-{
-    $notulen = Notulen::findOrFail($id);
+    public function edit($id)
+    {
+        Log::info('Edit method called for Notulen', ['id' => $id, 'user_id' => Auth::id()]);
+
+        $notulen = Notulen::with('participants', 'tasks', 'guests')->findOrFail($id);
+
+        // Ensure the authenticated user is the scripter
+        if (Auth::user()->id != $notulen->scripter_id) {
+            Log::warning('Unauthorized access attempt', ['notulen_id' => $id, 'user_id' => Auth::id()]);
+            return redirect()->route('notulens.index')->with('error', 'You do not have permission to edit this notulen.');
+        }
+
+        $users = User::all(); // To populate participant and task PIC select options
+
+        Log::info('Notulen data loaded for editing', ['notulen_id' => $id, 'participants' => $notulen->participants->pluck('id'), 'tasks' => $notulen->tasks->pluck('id'), 'guests' => $notulen->guests->pluck('id')]);
+
+        return view('notulens.edit', compact('notulen', 'users'));
+    }
+
+    public function update(Request $request, $id)
+    {
+
+        // Fix the meeting_time format if needed
+        // Get the current meeting_time from the request
+        $meeting_time = $request->input('meeting_time');
+
+        // Check if meeting_time does not have seconds part
+        if (strpos($meeting_time, ':') !== false && substr_count($meeting_time, ':') == 1) {
+            $meeting_time .= ':00';
+        }
+
+        // Merge the modified meeting_time back into the request
+        $request->merge(['meeting_time' => $meeting_time]);
+        
     
-    // Ensure the authenticated user is the scripter
-    if (Auth::user()->id != $notulen->scripter_id) {
-        return redirect()->route('notulens.index')->with('error', 'You do not have permission to edit this notulen.');
+        Log::info('Update method called for Notulen', ['id' => $id, 'user_id' => Auth::id(), 'request_data' => $request->all()]);
+        Log::info('Tasks data received', ['tasks' => $request->input('tasks')]);
+
+        Log::info('Meeting time value', ['meeting_time' => $request->input('meeting_time')]);
+        
+
+    
+        $notulen = Notulen::findOrFail($id);
+    
+        // Ensure the authenticated user is the scripter
+        if (Auth::user()->id != $notulen->scripter_id) {
+            Log::warning('Unauthorized update attempt', ['notulen_id' => $id, 'user_id' => Auth::id()]);
+            return redirect()->route('notulens.index')->with('error', 'You do not have permission to update this notulen.');
+        }
+    
+        try {
+            // Validate the request data
+            $validatedData = $request->validate([
+                'meeting_title' => 'required|string|max:255',
+                'department' => 'required|string',
+                'meeting_date' => 'required|date',
+                'meeting_time' => 'required|date_format:H:i:s',
+                'meeting_location' => 'required|string',
+                'agenda' => 'required|string',
+                'discussion' => 'nullable|string',
+                'decisions' => 'nullable|string',
+                'tasks' => 'nullable|array',
+                'tasks.*.task_topic' => 'required_with:tasks|string',
+                'tasks.*.task_due_date' => 'required_with:tasks|date',
+                'tasks.*.task_pic' => 'nullable|array',
+                'tasks.*.task_pic.*' => 'nullable|integer',
+                'tasks.*.description' => 'nullable|string',
+                'tasks.*.attachment' => 'nullable|file|mimes:jpeg,png,jpg,pdf,doc,docx|max:2048', // Adjust as needed
+                'guests' => 'nullable|array',
+                'guests.*.name' => 'required|string',
+                'guests.*.email' => 'required|email',
+                'status' => 'nullable|string',
+            ]);
+    
+            Log::info('Validated data for update', ['validated_data' => $validatedData]);
+    
+            // Update the notulen
+            $notulen->update($validatedData);
+    
+            // Update participants
+            if ($request->has('participants')) {
+                $participants = $request->input('participants');
+                Log::info('Updating participants', ['participants' => $participants]);
+                $notulen->participants()->sync($participants);
+            }
+    
+            // Update tasks
+            if ($request->has('tasks')) {
+                $tasks = $validatedData['tasks']; // Use validated data for tasks
+                Log::info('Updating tasks', ['tasks' => $tasks]);
+    
+                // Clear existing tasks
+                $notulen->tasks()->delete();
+    
+                foreach ($tasks as $task) {
+                    $taskPics = $task['task_pic']; // task_pic is already an array of IDs, no need to map
+                    $attachmentPath = null;
+                    if (isset($task['attachment']) && $task['attachment'] instanceof \Illuminate\Http\UploadedFile) {
+                        // Generate a unique file name and store the file
+                        $attachmentPath = $task['attachment']->store('attachments', 'public');
+                    }
+                    
+                    $notulen->tasks()->create([
+                        'task_topic' => $task['task_topic'],
+                        'task_pic' => json_encode($taskPics),
+                        'task_due_date' => $task['task_due_date'],
+                        'status' => $task['task_status'] ?? 'Pending',
+                        'description' => $task['description'] ?? null,
+                        'attachment' => $attachmentPath,
+                    ]);
+                }
+                
+            }
+    
+            // Update guests
+            if ($request->has('guests')) {
+                $guests = $validatedData['guests']; // Use validated data for guests
+                Log::info('Updating guests', ['guests' => $guests]);
+    
+                // Clear existing guests
+                $notulen->guests()->delete();
+    
+                foreach ($guests as $guest) {
+                    Guest::create([
+                        'notulen_id' => $notulen->id,
+                        'name' => $guest['name'],
+                        'email' => $guest['email'],
+                    ]);
+                }
+            }
+    
+            Log::info('Notulen updated successfully', ['notulen_id' => $id]);
+    
+            return redirect()->route('notulens.index')->with('success', 'Notulen updated successfully.');
+        } catch (\Exception $e) {
+            Log::error('Error updating notulen', ['exception' => $e->getMessage()]);
+            return redirect()->route('notulens.edit', $id)->with('error', 'Failed to update notulen.');
+        }
     }
-
-    return view('notulens.edit', compact('notulen'));
-}
-
-public function update(Request $request, $id)
-{
-    $notulen = Notulen::findOrFail($id);
-
-    // Ensure the authenticated user is the scripter
-    if (Auth::user()->id != $notulen->scripter_id) {
-        return redirect()->route('notulens.index')->with('error', 'You do not have permission to update this notulen.');
-    }
-
-    // Validate the request data
-    $validatedData = $request->validate([
-        'meeting_title' => 'required|string|max:255',
-        'meeting_date' => 'required|date',
-        'meeting_time' => 'required',
-        'agenda' => 'required|string',
-        'discussion' => 'nullable|string',
-        'decisions' => 'nullable|string',
-        'action_items' => 'nullable|string',
-        // Add validation rules for any other fields you have
-    ]);
-
-    // Update the notulen
-    $notulen->update($validatedData);
-
-    return redirect()->route('notulens.index')->with('success', 'Notulen updated successfully.');
-}
+    
+    
 
 
     

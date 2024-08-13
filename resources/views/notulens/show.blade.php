@@ -17,8 +17,63 @@
 </head>
 
 <body>
-    <div class="container mt-10">
+
+        <!-- Navbar -->
+        <nav style="background-color: #F9F9F9;" class="fixed w-full shadow-md h-20 top-0 left-0">
+            <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+                <div class="flex items-center justify-between h-full">
+                    <!-- Navbar image -->
+                    <div class="flex-shrink-0 mr-auto h-12">
+                        <a href="/">
+                        <img src="{{ asset('images/pepito-logo.png') }}" alt="Navbar Logo" class="h-12 w-auto ml-2" src="/">
+                        </a>
+                    </div>
+                    <!-- Icons Section -->
+                    <div class="flex items-center space-x-4">
+                        <!-- Notification Icon -->
+                        <div class="relative flex items-center justify-center h-full">
+                            <button type="button" class="text-gray-700 hover:text-gray-900 focus:outline-none">
+                                <i class="fa-regular fa-bell text-4xl"></i>
+                            </button>
+                            <!-- Dropdown for notifications could go here -->
+                        </div>
+                        <!-- User Icon -->
+                        <div class="relative">
+                            <button type="button" id="userMenuButton"
+                                class="flex items-center text-gray-700 hover:text-gray-900 focus:outline-none">
+                                <i class="fa-regular fa-user text-4xl"></i>
+                            </button>
+                            <!-- Dropdown Menu -->
+                            <div id="userDropdown"
+                                class="hidden absolute right-0 mt-2 w-64 bg-white rounded-md shadow-lg z-[9999]">
+                                <div class="flex items-center px-4 py-3">
+                                    <div class="rounded-full h-full bg-gray-300 p-2">
+                                        <i class="fa-regular fa-user text-gray-700 text-2xl"></i>
+                                    </div>
+                                    <div class="ml-4">
+                                        <span class="block text-gray-700 font-semibold">{{ Auth::user()->name }}</span>
+                                        <span class="block text-gray-600 text-sm">{{ Auth::user()->email }}</span>
+                                    </div>
+                                </div>
+                                <div class="border-t border-gray-200"></div>
+                                <div class="px-4 py-2 px-4 py-2 hover:bg-gray-100 transition-colors duration-300 rounded-md">
+                                    <form action="{{ route('logout') }}" method="POST">
+                                        @csrf
+                                        <button type="submit"
+                                            class="w-full text-left text-gray-700 hover:text-gray-900">Logout</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        
+    <div class="container mx-auto mt-24">
         <h1 class="mb-8 text-center text-3xl font-bold">Minutes of Meeting Details</h1>
+
         <div class="bg-white shadow-md rounded-lg overflow-hidden mb-8">
             <div class="bg-gray-800 text-white p-4">
                 <h2 class="text-2xl">{{ $notulen->meeting_title }}</h2>
@@ -299,6 +354,22 @@
                     }
                 });
             });
+
+            document.addEventListener('click', function(event) {
+            var userMenuButton = document.getElementById('userMenuButton');
+            var userDropdown = document.getElementById('userDropdown');
+
+            // If the clicked element is not the dropdown or the button, hide the dropdown
+            if (!userMenuButton.contains(event.target) && !userDropdown.contains(event.target)) {
+                userDropdown.classList.add('hidden');
+            }
+        });
+
+        document.getElementById('userMenuButton').addEventListener('click', function(event) {
+            var userDropdown = document.getElementById('userDropdown');
+            userDropdown.classList.toggle('hidden');
+            event.stopPropagation(); // Prevent the document click event from immediately hiding the dropdown
+        });
         });
     </script>
 </body>
