@@ -45,8 +45,17 @@
 
                 <div class="form-group">
                     <label for="department" class="block text-sm font-medium text-gray-700">Department:</label>
-                    <input type="text" id="department" name="department" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" value="{{ old('department', $notulen->department) }}" required>
+                    <select id="department" name="department[]" multiple class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                        @php
+                            $selectedDepartments = json_decode(old('department', $notulen->department), true);
+                        @endphp
+                        <option value="HR" {{ in_array('HR', $selectedDepartments) ? 'selected' : '' }}>HR</option>
+                        <option value="IT" {{ in_array('IT', $selectedDepartments) ? 'selected' : '' }}>IT</option>
+                        <option value="Finance" {{ in_array('Finance', $selectedDepartments) ? 'selected' : '' }}>Finance</option>
+                        <option value="Marketing" {{ in_array('Marketing', $selectedDepartments) ? 'selected' : '' }}>Marketing</option>
+                    </select>
                 </div>
+                
 
                 <div class="form-group">
                     <label for="meeting_date" class="block text-sm font-medium text-gray-700">Meeting Date:</label>

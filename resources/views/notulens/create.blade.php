@@ -92,16 +92,16 @@
                             <div class="mb-4">
                                 <label for="department"
                                     class="block text-gray-700 text-sm font-bold mb-2">Department</label>
-                                <select name="department" id="department"
+                                <select name="department[]" id="department" multiple
                                     class="shadow appearance-none border rounded w-full md:w-3/5 lg:w-3/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                     required>
-                                    <option value="" disabled selected>Select department</option>
                                     <option value="HR">HR</option>
                                     <option value="IT">IT</option>
                                     <option value="Finance">Finance</option>
                                     <option value="Marketing">Marketing</option>
                                 </select>
                             </div>
+                            
                             <div class="mb-4">
                                 <label for="participants"
                                     class="block text-gray-700 text-sm font-bold mb-2">Participants</label>

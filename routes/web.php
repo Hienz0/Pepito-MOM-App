@@ -28,12 +28,13 @@ Route::get('/inject-dummy-notulens', function () {
     $users = User::all();
     $totalUsers = $users->count();
 
+
     for ($i = 0; $i < 20; $i++) {
-        // Create a dummy notulen
+        // Create a dummy notulen with multiple departments
         $notulen = Notulen::create([
             'meeting_title' => 'Dummy Meeting ' . ($i + 1),
             'meeting_date' => Carbon::now()->addDays($i)->format('Y-m-d'),
-            'department' => 'Dummy Department',
+            'department' => json_encode(['HR', 'IT', 'Finance']), // Store multiple departments as JSON
             'meeting_time' => Carbon::now()->addHours($i)->format('H:i'),
             'meeting_location' => 'Dummy Location',
             'agenda' => 'Dummy Agenda ' . ($i + 1),
@@ -42,6 +43,7 @@ Route::get('/inject-dummy-notulens', function () {
             'scripter_id' => $scripter->id,
             'status' => 'Open',
         ]);
+
 
         // Attach random participants
         $participantCount = rand(1, min(5, $totalUsers));

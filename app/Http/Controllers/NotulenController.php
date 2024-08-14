@@ -40,7 +40,8 @@ class NotulenController extends Controller
 
         $request->validate([
             'meeting_title' => 'required|string',
-            'department' => 'required|string',
+            'department' => 'required|array|min:1',
+            'department.*' => 'string', // Validate each department as a string
             'meeting_date' => 'required|date',
             'meeting_time' => 'required|date_format:H:i',
             'meeting_location' => 'required|string',
@@ -59,7 +60,7 @@ class NotulenController extends Controller
             $notulen = Notulen::create([
                 'meeting_title' => $request->meeting_title,
                 'meeting_date' => $request->meeting_date,
-                'department' => $request->department,
+                'department' => json_encode($request->department), // Store as JSON
                 'meeting_time' => $request->meeting_time,
                 'meeting_location' => $request->meeting_location,
                 'agenda' => $request->agenda,
@@ -236,7 +237,8 @@ class NotulenController extends Controller
             // Validate the request data
             $validatedData = $request->validate([
                 'meeting_title' => 'required|string|max:255',
-                'department' => 'required|string',
+                'department' => 'required|array',
+                'department.*' => 'string', // Validate each department as a string
                 'meeting_date' => 'required|date',
                 'meeting_time' => 'required|date_format:H:i:s',
                 'meeting_location' => 'required|string',
@@ -255,7 +257,8 @@ class NotulenController extends Controller
                 'guests.*.email' => 'required|email',
                 'status' => 'nullable|string',
             ]);
-    
+            // Handle the department array and convert it to JSON
+            $validatedData['department'] = json_encode($request->department);
             Log::info('Validated data for update', ['validated_data' => $validatedData]);
     
             // Update the notulen

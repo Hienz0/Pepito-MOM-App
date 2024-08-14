@@ -14,7 +14,7 @@ class CreateNotulensTable extends Migration
         Schema::create('notulens', function (Blueprint $table) {
             $table->id();
             $table->string('meeting_title');
-            $table->string('department');
+            $table->json('department'); // Change this to JSON
             $table->date('meeting_date');
             $table->time('meeting_time');
             $table->string('meeting_location');

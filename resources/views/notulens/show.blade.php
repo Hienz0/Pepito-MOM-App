@@ -79,7 +79,13 @@
                 <h2 class="text-2xl">{{ $notulen->meeting_title }}</h2>
             </div>
             <div class="p-4">
-                <p><strong>Department</strong> {{  $notulen->department }}</p>
+                <p><strong>Department</strong> 
+                    @if(is_array(json_decode($notulen->department)))
+                        {{ implode(', ', json_decode($notulen->department)) }}
+                    @else
+                        {{ $notulen->department }}
+                    @endif
+                </p>
                 <p><strong>Date:</strong> {{ $notulen->meeting_date }}</p>
                 <p><strong>Time:</strong> {{ $notulen->meeting_time }}</p>
                 <p><strong>Location:</strong> {{ $notulen->meeting_location }}</p>
