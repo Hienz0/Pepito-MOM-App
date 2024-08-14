@@ -138,6 +138,9 @@
                 <p><strong>Discussion:</strong> {{ $notulen->discussion }}</p>
                 <p><strong>Decisions:</strong> {{ $notulen->decisions }}</p>
 
+                {{-- Distrubute Button --}}
+                <button id="distributeButton" class="bg-green-500 text-white px-4 py-2 rounded ml-2">Distribute</button>
+
                 <h3 class="text-xl font-semibold mt-6">All Tasks</h3>
                 <table class="w-full mt-4 border-collapse border border-gray-300">
                     <thead>
@@ -376,6 +379,46 @@
             userDropdown.classList.toggle('hidden');
             event.stopPropagation(); // Prevent the document click event from immediately hiding the dropdown
         });
+
+        document.getElementById('distributeButton').addEventListener('click', function () {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "This will send the meeting details to all participants!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, send it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // AJAX call to trigger email sending
+            $.ajax({
+                type: 'POST',
+                url: '{{ route("distribute.mom", $notulen->id) }}', // Pass the notulen_id as a parameter
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function (response) {
+                    Swal.fire(
+                        'Sent!',
+                        'The meeting details have been sent to all participants.',
+                        'success'
+                    );
+                },
+                error: function (error) {
+                    Swal.fire(
+                        'Error!',
+                        'There was an error sending the emails. Please try again.',
+                        'error'
+                    );
+                }
+            });
+        }
+    });
+});
+
+
+
         });
     </script>
 </body>

@@ -88,6 +88,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/notulens/{id}/edit', [NotulenController::class, 'edit'])->name('notulens.edit');
     Route::put('/notulens/{id}', [NotulenController::class, 'update'])->name('notulens.update');
 
+    //distribute notulen
+    Route::post('notulens/{id}/distribute', [NotulenController::class, 'distribute'])->name('distribute.mom');
+
+
+
 
     Route::get('/home', function () {
         return view('home');

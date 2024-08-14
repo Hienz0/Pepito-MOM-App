@@ -13,6 +13,7 @@ use App\Mail\NotulenAdded;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\TaskNotification;
 use App\Mail\GuestNotification;
+use App\Mail\MoMDetailsMail; 
 use Exception;
 
 class NotulenController extends Controller
@@ -361,5 +362,28 @@ class NotulenController extends Controller
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
         }
+
+        
     }
+
+
+    public function distribute(Request $request, $id)
+    {
+        Log::info('Distribute method called', ['request_data' => $request->all()]);
+    
+    
+        $notulen = Notulen::findOrFail($id); // Use route parameter `$id`
+        $participants = $notulen->participants; // If `participants` is a relationship
+// Adjust according to how you manage participants
+    
+        foreach ($participants as $participant) {
+            Mail::to($participant->email)->send(new MoMDetailsMail($notulen));
+        }
+    
+        return redirect()->back()->with('success', 'MoM details have been sent.');
+    }
+    
+    
+    
+    
 }
