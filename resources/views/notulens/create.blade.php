@@ -73,7 +73,7 @@
         <h1 class="mb-6 text-3xl font-bold text-center">Add a new Minutes Of Meeting</h1>
         <div class="bg-white shadow-md rounded-lg mb-6">
 
-            <form id="notulenForm" method="POST" action="{{ route('notulens.store') }}">
+            <form id="notulenForm" method="POST" enctype="multipart/form-data" action="{{ route('notulens.store') }}">
                 @csrf
 
                 <div class="bg-gray-800 text-white p-4 rounded-t-lg">
@@ -276,6 +276,14 @@
                             <option value="Complete">Complete</option>
                         </select>
                     </div>
+
+                    <div class="mb-4">
+                        <label for="task_attachment" class="block text-gray-700 font-medium">Attachment</label>
+                        <input type="file" id="task_attachment" name="attachment">
+                    </div>
+                    
+                    
+
                     <button type="button"
                         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 focus:outline-none focus:shadow-outline"
                         id="addTaskBtn">Add Task</button>

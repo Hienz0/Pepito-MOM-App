@@ -79,11 +79,32 @@ class NotulenController extends Controller
                 if (json_last_error() !== JSON_ERROR_NONE) {
                     throw new \Exception('Invalid JSON in tasks field');
                 }
+                
     
                 foreach ($tasks as $task) {
                     $taskPics = array_map(function($taskPic) {
                         return $taskPic['id'];
                     }, $task['task_pics']);
+                    // Initialize attachmentPath
+                    $attachmentPath = null;
+
+                    if ($request->hasFile('attachment')) {
+                        Log::info('Attachment found in request.');
+                        if ($request->file('attachment')->isValid()) {
+                            try {
+                                $attachmentPath = $request->file('attachment')->store('attachments', 'public');
+                                Log::info('Attachment uploaded successfully', ['path' => $attachmentPath]);
+                            } catch (\Exception $e) {
+                                Log::error('Failed to upload attachment', ['error' => $e->getMessage()]);
+                            }
+                        } else {
+                            Log::info('Attachment is not valid');
+                        }
+                    } else {
+                        Log::info('No attachment found in request');
+                    }
+                                    
+                     
     
                     // Create the task with task_pic as an array
                     $createdTask = $notulen->tasks()->create([
@@ -92,7 +113,7 @@ class NotulenController extends Controller
                         'task_due_date' => $task['task_due_date'],
                         'status' => $task['task_status'] ?? 'Pending',
                         'description' => $task['description'] ?? null,
-                        'attachment' => $task['attachment'] ?? null,
+                        'attachment' => $attachmentPath,
                     ]);
     
                     // Send email to each PIC in the task
