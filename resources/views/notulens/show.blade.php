@@ -139,7 +139,14 @@
                 <p><strong>Decisions:</strong> {{ $notulen->decisions }}</p>
 
                 {{-- Distrubute Button --}}
-                <button id="distributeButton" class="bg-green-500 text-white px-4 py-2 rounded ml-2">Distribute</button>
+                <button id="distributeButton" 
+                    class="text-white px-4 py-2 rounded ml-2 
+                    {{ $notulen->status === 'Inactive' ? 'bg-gray-500 cursor-not-allowed' : 'bg-green-500' }}" 
+                    {{ $notulen->status === 'Inactive' ? 'disabled' : '' }}>
+                    Distribute
+                </button>
+
+
 
                 <h3 class="text-xl font-semibold mt-6">All Tasks</h3>
                 <table class="w-full mt-4 border-collapse border border-gray-300">
@@ -229,12 +236,19 @@
                                     @endif
                                 </td>
                                 <td class="border border-gray-300 p-2">
-                                    <button class="bg-blue-500 text-white px-4 py-2 rounded update-task-btn"
-                                        data-task-id="{{ $task->id }}" data-task-topic="{{ $task->task_topic }}"
-                                        data-task-description="{{ $task->description }}"
-                                        data-task-status="{{ $task->status }}"
-                                        data-task-attachment="{{ $task->attachment }}">Update</button>
+                                    @if ($notulen->status !== 'Inactive')
+                                        <button class="bg-blue-500 text-white px-4 py-2 rounded update-task-btn"
+                                            data-task-id="{{ $task->id }}" data-task-topic="{{ $task->task_topic }}"
+                                            data-task-description="{{ $task->description }}"
+                                            data-task-status="{{ $task->status }}"
+                                            data-task-attachment="{{ $task->attachment }}">Update</button>
+                                    @else
+                                        <button class="bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed" disabled>
+                                            Update
+                                        </button>
+                                    @endif
                                 </td>
+                                
                             </tr>
                         @endforeach
                     </tbody>

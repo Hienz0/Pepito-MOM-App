@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\TaskNotification;
 use App\Mail\GuestNotification;
 use App\Mail\MoMDetailsMail; 
+use App\Mail\MomInactivatedMail;
 use Exception;
 
 class NotulenController extends Controller
@@ -374,16 +375,34 @@ class NotulenController extends Controller
     
         $notulen = Notulen::findOrFail($id); // Use route parameter `$id`
         $participants = $notulen->participants; // If `participants` is a relationship
-// Adjust according to how you manage participants
+        // Adjust according to how you manage participants
     
         foreach ($participants as $participant) {
             Mail::to($participant->email)->send(new MoMDetailsMail($notulen));
         }
+            // Update the status of the notulen to 'Distributed'
+        $notulen->status = 'Distributed';
+        $notulen->save();
     
         return redirect()->back()->with('success', 'MoM details have been sent.');
     }
     
-    
+    public function inactivate(Request $request, $id)
+    {
+        $notulen = Notulen::findOrFail($id);
+        $notulen->status = 'Inactive';
+        $notulen->save();
+
+        // Get participants (Assuming you have a relation to participants)
+        $participants = $notulen->participants;
+
+        foreach ($participants as $participant) {
+            Mail::to($participant->email)->send(new MomInactivatedMail($notulen));
+        }
+
+        return redirect()->back()->with('success', 'MoM has been inactivated and participants have been notified.');
+    }
+
     
     
 }

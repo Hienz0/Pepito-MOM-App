@@ -91,6 +91,10 @@ Route::middleware(['auth'])->group(function () {
     //distribute notulen
     Route::post('notulens/{id}/distribute', [NotulenController::class, 'distribute'])->name('distribute.mom');
 
+    // Inactivate a Mom
+    Route::patch('/notulens/{id}/inactivate', [NotulenController::class, 'inactivate'])->name('notulens.inactivate');
+
+
 
 
 

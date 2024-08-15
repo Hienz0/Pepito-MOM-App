@@ -7,6 +7,8 @@
     <title>Pepito MOM App</title>
     <!-- Include Tailwind CSS for styling -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 
     {{-- bootstrap --}}
@@ -132,25 +134,23 @@
                                     </a>
 
                                     @auth
-                                        @if (Auth::user()->id == $notulen->scripter_id)
-                                            <!-- Edit Icon -->
-                                            <a href="{{ route('notulens.edit', $notulen->id) }}"
-                                                class="text-yellow-500 hover:text-yellow-700" data-bs-toggle="tooltip"
-                                                title="Edit">
-                                                <i class="fa-solid fa-edit text-xl"></i>
-                                            </a>
-
-                                            <!-- Inactivate Icon -->
-                                            <form action="{{-- route('notulens.inactivate', $notulen->id) --}}" method="POST" class="inline-block">
-                                                @csrf
-                                                @method('PATCH')
-                                                <button type="submit" class="text-red-500 hover:text-red-700"
-                                                    data-bs-toggle="tooltip" title="Inactivate"
-                                                    onclick="return confirm('Are you sure you want to inactivate this notulen?');">
-                                                    <i class="fa-solid fa-ban text-xl"></i>
-                                                </button>
-                                            </form>
-                                        @endif
+                                    @if (Auth::user()->id == $notulen->scripter_id && $notulen->status != 'Inactive')
+                                    <!-- Edit Icon -->
+                                    <a href="{{ route('notulens.edit', $notulen->id) }}"
+                                        class="text-yellow-500 hover:text-yellow-700" data-bs-toggle="tooltip"
+                                        title="Edit">
+                                        <i class="fa-solid fa-edit text-xl"></i>
+                                    </a>
+                
+                                    <!-- Inactivate Icon -->
+                                    <form id="inactivateForm" action="{{ route('notulens.inactivate', $notulen->id) }}" method="POST" class="inline-block">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="button" class="text-red-500 hover:text-red-700" data-bs-toggle="tooltip" title="Inactivate">
+                                            <i class="fa-solid fa-ban text-xl"></i>
+                                        </button>
+                                    </form>
+                                @endif
                                     @endauth
                                 </td>
                             </tr>
@@ -294,6 +294,29 @@
             document.getElementById('searchInput').addEventListener('input', filterRows);
 
             // Initial display and pagination
+
+// Handle Inactivation with Confirmation
+document.querySelectorAll('#inactivateForm button').forEach(button => {
+    button.addEventListener('click', function(event) {
+        event.preventDefault();
+        event.stopPropagation(); // Prevents the <tr> click event
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, inactivate it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this.closest('form').submit();
+            }
+        });
+    });
+});
+
+
 
             displayRows();
             updatePagination();
