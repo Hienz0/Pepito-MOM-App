@@ -30,8 +30,9 @@
                 <!-- Navbar image -->
                 <div class="flex-shrink-0 mr-auto h-12">
                     <a href="/">
-                        <img src="{{ asset('images/pepito-logo.png') }}" alt="Navbar Logo" class="h-12 w-auto ml-2" src="/">
-                        </a>
+                        <img src="{{ asset('images/pepito-logo.png') }}" alt="Navbar Logo" class="h-12 w-auto ml-2"
+                            src="/">
+                    </a>
                 </div>
                 <!-- Icons Section -->
                 <div class="flex items-center space-x-4">
@@ -61,7 +62,8 @@
                                 </div>
                             </div>
                             <div class="border-t border-gray-200"></div>
-                            <div class="px-4 py-2 px-4 py-2 hover:bg-gray-100 transition-colors duration-300 rounded-md">
+                            <div
+                                class="px-4 py-2 px-4 py-2 hover:bg-gray-100 transition-colors duration-300 rounded-md">
                                 <form action="{{ route('logout') }}" method="POST">
                                     @csrf
                                     <button type="submit"
@@ -92,7 +94,8 @@
                 <input type="text" id="searchInput" placeholder="   Search by title or ID"
                     class="px-4 py-2 pl-12 border rounded w-full text-gray-700">
                 <!-- Search Icon -->
-                <i class="fa-solid fa-magnifying-glass absolute left-1 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
+                <i
+                    class="fa-solid fa-magnifying-glass absolute left-1 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
             </div>
             <a href="{{ route('notulens.create') }}"
                 class="btn text-white px-4 py-2 rounded bg-[#79B51F] hover:bg-[#69A01C]">
@@ -134,23 +137,26 @@
                                     </a>
 
                                     @auth
-                                    @if (Auth::user()->id == $notulen->scripter_id && $notulen->status != 'Inactive')
-                                    <!-- Edit Icon -->
-                                    <a href="{{ route('notulens.edit', $notulen->id) }}"
-                                        class="text-yellow-500 hover:text-yellow-700" data-bs-toggle="tooltip"
-                                        title="Edit">
-                                        <i class="fa-solid fa-edit text-xl"></i>
-                                    </a>
-                
-                                    <!-- Inactivate Icon -->
-                                    <form id="inactivateForm" action="{{ route('notulens.inactivate', $notulen->id) }}" method="POST" class="inline-block">
-                                        @csrf
-                                        @method('PATCH')
-                                        <button type="button" class="text-red-500 hover:text-red-700" data-bs-toggle="tooltip" title="Inactivate">
-                                            <i class="fa-solid fa-ban text-xl"></i>
-                                        </button>
-                                    </form>
-                                @endif
+                                        @if (Auth::user()->id == $notulen->scripter_id && $notulen->status != 'Inactive')
+                                            <!-- Edit Icon -->
+                                            <a href="{{ route('notulens.edit', $notulen->id) }}"
+                                                class="text-yellow-500 hover:text-yellow-700" data-bs-toggle="tooltip"
+                                                title="Edit">
+                                                <i class="fa-solid fa-edit text-xl"></i>
+                                            </a>
+
+                                            <!-- Inactivate Icon -->
+                                            <form id="inactivateForm"
+                                                action="{{ route('notulens.inactivate', $notulen->id) }}" method="POST"
+                                                class="inline-block">
+                                                @csrf
+                                                @method('PATCH')
+                                                <button type="button" class="text-red-500 hover:text-red-700"
+                                                    data-bs-toggle="tooltip" title="Inactivate">
+                                                    <i class="fa-solid fa-ban text-xl"></i>
+                                                </button>
+                                            </form>
+                                        @endif
                                     @endauth
                                 </td>
                             </tr>
@@ -225,35 +231,124 @@
                 }
             }
 
+
+            // Ole updatePagination Function
+            // function updatePagination() {
+            //     const pagination = document.getElementById('pagination');
+            //     pagination.innerHTML = '';
+            //     for (let i = 1; i <= totalPages; i++) {
+            //         const pageButton = document.createElement('button');
+            //         pageButton.textContent = i;
+            //         pageButton.className = 'px-2 py-1 rounded';
+            //         if (i === currentPage) {
+            //             pageButton.classList.add('bg-[#79B51F]', 'text-white');
+            //         } else {
+            //             pageButton.classList.add('bg-white', 'text-[#79B51F]', 'border', 'border-[#79B51F]');
+            //             pageButton.style.transition = 'background-color 0.3s, color 0.3s';
+            //             pageButton.onmouseover = function() {
+            //                 pageButton.style.backgroundColor = '#79B51F';
+            //                 pageButton.style.color = '#FF9D03';
+            //             };
+            //             pageButton.onmouseout = function() {
+            //                 pageButton.style.backgroundColor = 'white';
+            //                 pageButton.style.color = '#79B51F';
+            //             };
+            //             pageButton.onclick = function() {
+            //                 currentPage = i;
+            //                 displayRows();
+            //                 updatePagination();
+            //             };
+            //         }
+            //         pagination.appendChild(pageButton);
+            //     }
+            // }
+
             function updatePagination() {
-                const pagination = document.getElementById('pagination');
-                pagination.innerHTML = '';
-                for (let i = 1; i <= totalPages; i++) {
-                    const pageButton = document.createElement('button');
-                    pageButton.textContent = i;
-                    pageButton.className = 'px-2 py-1 rounded';
-                    if (i === currentPage) {
-                        pageButton.classList.add('bg-[#79B51F]', 'text-white');
-                    } else {
-                        pageButton.classList.add('bg-white', 'text-[#79B51F]', 'border', 'border-[#79B51F]');
-                        pageButton.style.transition = 'background-color 0.3s, color 0.3s';
-                        pageButton.onmouseover = function() {
-                            pageButton.style.backgroundColor = '#79B51F';
-                            pageButton.style.color = '#FF9D03';
-                        };
-                        pageButton.onmouseout = function() {
-                            pageButton.style.backgroundColor = 'white';
-                            pageButton.style.color = '#79B51F';
-                        };
-                        pageButton.onclick = function() {
-                            currentPage = i;
-                            displayRows();
-                            updatePagination();
-                        };
-                    }
-                    pagination.appendChild(pageButton);
-                }
-            }
+    const pagination = document.getElementById('pagination');
+    pagination.innerHTML = '';
+
+    function createPageButton(pageNumber, active) {
+        const pageButton = document.createElement('button');
+        pageButton.textContent = pageNumber;
+        pageButton.className = 'px-2 py-1 rounded';
+        if (active) {
+            pageButton.classList.add('bg-[#79B51F]', 'text-white');
+        } else {
+            pageButton.classList.add('bg-white', 'text-[#79B51F]', 'border', 'border-[#79B51F]');
+            pageButton.style.transition = 'background-color 0.3s, color 0.3s';
+            pageButton.onmouseover = function() {
+                pageButton.style.backgroundColor = '#79B51F';
+                pageButton.style.color = '#FF9D03';
+            };
+            pageButton.onmouseout = function() {
+                pageButton.style.backgroundColor = 'white';
+                pageButton.style.color = '#79B51F';
+            };
+            pageButton.onclick = function() {
+                currentPage = pageNumber;
+                displayRows();
+                updatePagination();
+            };
+        }
+        return pageButton;
+    }
+
+    // Helper function to add ellipsis
+    function addEllipsis() {
+        const ellipsis = document.createElement('span');
+        ellipsis.textContent = '...';
+        ellipsis.className = 'px-2 py-1';
+        pagination.appendChild(ellipsis);
+    }
+
+    // Always show the first page button
+    pagination.appendChild(createPageButton(1, currentPage === 1));
+
+    if (totalPages <= 10) {
+        // Show all page buttons if there are 10 or fewer pages
+        for (let i = 2; i <= totalPages; i++) {
+            pagination.appendChild(createPageButton(i, i === currentPage));
+        }
+    } else {
+        let startPage, endPage;
+
+        if (currentPage <= 6) {
+            // If the current page is within the first 6, show the first 8 pages
+            startPage = 2;
+            endPage = 8;
+        } else if (currentPage >= totalPages - 5) {
+            // If the current page is within the last 6 pages, show the last 8 pages
+            startPage = totalPages - 7;
+            endPage = totalPages - 1;
+        } else {
+            // Otherwise, show the current page in the middle with 2 pages before and after
+            startPage = currentPage - 2;
+            endPage = currentPage + 2;
+        }
+
+        // Show ellipsis after the first page if we're not showing the first 8 pages
+        if (startPage > 2) {
+            addEllipsis();
+        }
+
+        // Show the calculated range of pages
+        for (let i = startPage; i <= endPage; i++) {
+            pagination.appendChild(createPageButton(i, i === currentPage));
+        }
+
+        // Show ellipsis before the last page if we're not showing the last 8 pages
+        if (endPage < totalPages - 1) {
+            addEllipsis();
+        }
+
+        // Show last page button
+        pagination.appendChild(createPageButton(totalPages, currentPage === totalPages));
+    }
+}
+
+// Initial call to updatePagination
+updatePagination();
+
 
             document.getElementById('prevPage').addEventListener('click', function() {
                 if (currentPage > 1) {
@@ -276,7 +371,7 @@
                 for (let i = 0; i < rows.length; i++) {
                     const title = rows[i].cells[0].textContent.toLowerCase();
                     const id = rows[i].cells[0].dataset
-                    .id; // Assume ID is stored in a data attribute or can be retrieved
+                        .id; // Assume ID is stored in a data attribute or can be retrieved
                     if (title.includes(searchInput) || (id && id.includes(searchInput))) {
                         rows[i].style.display = '';
                     } else {
@@ -295,26 +390,26 @@
 
             // Initial display and pagination
 
-// Handle Inactivation with Confirmation
-document.querySelectorAll('#inactivateForm button').forEach(button => {
-    button.addEventListener('click', function(event) {
-        event.preventDefault();
-        event.stopPropagation(); // Prevents the <tr> click event
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Yes, inactivate it!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                this.closest('form').submit();
-            }
-        });
-    });
-});
+            // Handle Inactivation with Confirmation
+            document.querySelectorAll('#inactivateForm button').forEach(button => {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    event.stopPropagation(); // Prevents the <tr> click event
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Yes, inactivate it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            this.closest('form').submit();
+                        }
+                    });
+                });
+            });
 
 
 
