@@ -115,7 +115,7 @@ class NotulenController extends Controller
                         'task_pic' => json_encode($taskPics),
                         'task_due_date' => $task['task_due_date'],
                         'status' => $task['task_status'] ?? 'Pending',
-                        'description' => $task['description'] ?? null,
+                        'description' => $task['task_description'] ?? null,
                         'attachment' => $attachmentPath,
                     ]);
     

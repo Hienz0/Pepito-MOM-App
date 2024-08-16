@@ -89,18 +89,68 @@
                                     class="shadow appearance-none border rounded w-full md:w-3/5 lg:w-3/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                     id="meeting_title" name="meeting_title" placeholder="Enter meeting title" required>
                             </div>
-                            <div class="mb-4">
+                            <div class="mb-4 relative">
                                 <label for="department"
                                     class="block text-gray-700 text-sm font-bold mb-2">Department</label>
-                                <select name="department[]" id="department" multiple
-                                    class="shadow appearance-none border rounded w-full md:w-3/5 lg:w-3/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                    required>
-                                    <option value="HR">HR</option>
-                                    <option value="IT">IT</option>
-                                    <option value="Finance">Finance</option>
-                                    <option value="Marketing">Marketing</option>
-                                </select>
+                                <div class="shadow appearance-none border rounded w-full md:w-3/5 lg:w-3/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline cursor-pointer flex justify-between items-center"
+                                     onclick="toggleDropdown()">
+                                    <span id="dropdown-label" class="truncate">Select Departments</span>
+                                    <svg class="inline w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                              d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                                <div id="checkbox-dropdown" class="absolute hidden shadow bg-white border rounded mt-2 w-full md:w-3/5 lg:w-3/5 z-10">
+                                    <div class="p-2">
+                                        <div class="flex items-center mb-2">
+                                            <input id="department_hr" name="department[]" type="checkbox" value="HR" 
+                                                   class="mr-2" onchange="updateLabel()">
+                                            <label for="department_hr" class="text-gray-700">HR</label>
+                                        </div>
+                                        <div class="flex items-center mb-2">
+                                            <input id="department_it" name="department[]" type="checkbox" value="IT" 
+                                                   class="mr-2" onchange="updateLabel()">
+                                            <label for="department_it" class="text-gray-700">IT</label>
+                                        </div>
+                                        <div class="flex items-center mb-2">
+                                            <input id="department_finance" name="department[]" type="checkbox" value="Finance" 
+                                                   class="mr-2" onchange="updateLabel()">
+                                            <label for="department_finance" class="text-gray-700">Finance</label>
+                                        </div>
+                                        <div class="flex items-center mb-2">
+                                            <input id="department_marketing" name="department[]" type="checkbox" value="Marketing" 
+                                                   class="mr-2" onchange="updateLabel()">
+                                            <label for="department_marketing" class="text-gray-700">Marketing</label>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+                            
+                            <script>
+                                function toggleDropdown() {
+                                    const dropdown = document.getElementById('checkbox-dropdown');
+                                    dropdown.classList.toggle('hidden');
+                                }
+                            
+                                function updateLabel() {
+                                    const checkboxes = document.querySelectorAll('input[name="department[]"]:checked');
+                                    const label = document.getElementById('dropdown-label');
+                                    const selected = Array.from(checkboxes).map(cb => cb.nextElementSibling.textContent).join(', ');
+                            
+                                    label.textContent = selected.length > 0 ? selected : 'Select Departments';
+                                }
+                            
+                                // Close the dropdown if the user clicks outside of it
+                                document.addEventListener('click', function(event) {
+                                    const dropdown = document.getElementById('checkbox-dropdown');
+                                    const button = dropdown.previousElementSibling;
+                                    if (!button.contains(event.target) && !dropdown.contains(event.target)) {
+                                        dropdown.classList.add('hidden');
+                                    }
+                                });
+                            </script>
+                            
                             
                             <div class="mb-4">
                                 <label for="participants"
@@ -232,57 +282,86 @@
 
                 </div>
 
+                
+
+                
+
+
+
                 <div class="bg-gray-800 text-white p-4 rounded-t-lg">
                     <h2 class="text-xl font-semibold mb-0">Task Section</h2>
                 </div>
                 <div class="p-6">
+
+                    
                     <!-- Tasks Section -->
                     <h3 class="text-xl font-semibold mt-6 py-6">Task Section</h3>
 
-                    <div class="mb-4">
-                        <label for="task_topic" class="block text-gray-700 text-sm font-bold mb-2">Task Topic</label>
-                        <input type="text"
-                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="task_topic" placeholder="Enter task topic">
-                    </div>
-                    <!-- Trigger Button -->
-                    <div class="mb-4">
-                        <label for="task_pic" class="block text-gray-700 text-sm font-bold mb-2">Person in
-                            Charge</label>
-                        <button type="button"
-                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                            id="openPICModalBtn">Select PIC</button>
-                        <select
-                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="task_pic" name="task_pic[]" multiple required>
-                            <option value="">Select a PIC</option>
-                        </select>
+                    <div class="flex flex-wrap mb-4">
 
-                    </div>
-                    <div class="mb-4">
-                        <label for="task_due_date" class="block text-gray-700 text-sm font-bold mb-2">Due Date</label>
-                        <input type="date"
-                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="task_due_date">
-                    </div>
-                        <!-- Task Status -->
-                    <div class="mb-4">
-                        <label for="task_status" class="block text-gray-700 text-sm font-bold mb-2">Status</label>
-                        <select
-                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="task_status" name="task_status">
-                            <option value="Pending" selected>Pending</option>
-                            <option value="In Progress">In Progress</option>
-                            <option value="Complete">Complete</option>
-                        </select>
+                        <div class="w-full md:w-1/2 md:pr-2">
+                            <div class="mb-4 w-full md:w-1/2 md:pr-2">
+                                <label for="task_topic" class="block text-gray-700 text-sm font-bold mb-2">Task Topic</label>
+                                <input type="text"
+                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    id="task_topic" placeholder="Enter task topic">
+                            </div>
+    
+                                                <!-- Trigger Button -->
+                            <div class="mb-4 w-full md:w-1/2 md:pr-2">
+                                <label for="task_pic" class="block text-gray-700 text-sm font-bold mb-2">Person in
+                                    Charge</label>
+                                <button type="button"
+                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                    id="openPICModalBtn">Select PIC</button>
+                                <select
+                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    id="task_pic" name="task_pic[]" multiple required>
+                                    <option value="">Select a PIC</option>
+                                </select>
+    
+                            </div>
+    
+                                                    <!-- Task Status -->
+                            <div class="mb-4 w-full md:w-1/2 md:pr-2">
+                                <label for="task_status" class="block text-gray-700 text-sm font-bold mb-2">Status</label>
+                                <select
+                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    id="task_status" name="task_status">
+                                    <option value="Pending" selected>Pending</option>
+                                    <option value="In Progress">In Progress</option>
+                                    <option value="Complete">Complete</option>
+                                </select>
+                            </div>
+                        </div>
+    
+                        <div class="w-full md:w-1/2 md:pl-2">
+                            <div class="mb-4 w-full md:w-1/2 md:pr-2">
+                                <label for="task_due_date" class="block text-gray-700 text-sm font-bold mb-2">Due Date</label>
+                                <input type="date"
+                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    id="task_due_date">
+                            </div>
+    
+                            
+                            <div class="mb-4 w-full md:w-1/2 md:pr-2">
+                                <label for="task_attachment" class="block text-gray-700 font-medium">Attachment</label>
+                                <input type="file" id="task_attachment" name="attachment">
+                            </div>
+
+                                    <!-- Task Description -->
+                            <div class="mb-4 w-full">
+                                <label for="task_description" class="block text-gray-700 text-sm font-bold mb-2">Description</label>
+                                <textarea
+                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    id="task_description" rows="3" placeholder="Enter task description"></textarea>
+                            </div>
+                        
+                        </div>
                     </div>
 
-                    <div class="mb-4">
-                        <label for="task_attachment" class="block text-gray-700 font-medium">Attachment</label>
-                        <input type="file" id="task_attachment" name="attachment">
-                    </div>
-                    
-                    
+
+
 
                     <button type="button"
                         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 focus:outline-none focus:shadow-outline"
@@ -296,6 +375,7 @@
                                     <th class="px-4 py-2">PIC</th>
                                     <th class="px-4 py-2">Due Date</th>
                                     <th class="px-4 py-2">Status</th>
+                                    <th class="px-4 py-2">Attachment</th>
                                     <th class="px-4 py-2">Action</th>
                                 </tr>
                             </thead>
@@ -756,6 +836,7 @@
             const taskTopicInput = document.getElementById('task_topic');
             const taskDueDateInput = document.getElementById('task_due_date');
             const tasksInput = document.getElementById('tasksInput');
+            const taskDescriptionInput = document.getElementById('task_description');
             let tasks = [];
 
             addTaskBtn.addEventListener('click', () => {
@@ -763,6 +844,7 @@
                 const selectedPicOptions = Array.from(taskPicSelect.selectedOptions);
                 const taskDueDate = taskDueDateInput.value;
                 const taskStatus = document.getElementById('task_status').value;
+                const taskDescription = taskDescriptionInput.value;
 
                 if (!taskTopic || selectedPicOptions.length === 0 || !taskDueDate) {
                     Swal.fire({
@@ -782,7 +864,8 @@
                     task_topic: taskTopic,
                     task_pics: taskPics,
                     task_due_date: taskDueDate,
-                    task_status: taskStatus
+                    task_status: taskStatus,
+                    task_description: taskDescription
                 };
                 tasks.push(task);
 
@@ -792,6 +875,7 @@
                     <td class="border px-2 py-1">${taskPics.map(pic => pic.name).join(', ')}</td>
                     <td class="border px-2 py-1">${taskDueDate}</td>
                     <td class="border px-2 py-1">${taskStatus}</td>
+                    <td class="border px-2 py-1">${taskDescription}</td>
                     <td class="border px-2 py-1">
                         <button type="button" class="bg-red-500 text-white font-bold py-1 px-2 rounded remove-task-btn">Remove</button>
                     </td>
@@ -810,6 +894,8 @@
                 taskPicSelect.value = '';
                 taskDueDateInput.value = '';
                 document.getElementById('task_status').value = 'Pending';
+                taskDescriptionInput.value = '';
+
             });
 
             function updateTasksInput() {

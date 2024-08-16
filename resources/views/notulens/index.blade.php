@@ -8,6 +8,7 @@
     <!-- Include Tailwind CSS for styling -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css" integrity="sha512-rRQtF4V2wtAvXsou4iUAs2kXHi3Lj9NE7xJR77DE7GHsxgY9RTWy93dzMXgDIG8ToiRTD45VsDNdTiUagOFeZA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 
 
@@ -39,7 +40,7 @@
                     <!-- Notification Icon -->
                     <div class="relative flex items-center justify-center h-full">
                         <button type="button" class="text-gray-700 hover:text-gray-900 focus:outline-none">
-                            <i class="fa-regular fa-bell text-4xl"></i>
+                            <i class="zmdi zmdi-notifications text-4xl"></i>
                         </button>
                         <!-- Dropdown for notifications could go here -->
                     </div>
@@ -47,7 +48,7 @@
                     <div class="relative">
                         <button type="button" id="userMenuButton"
                             class="flex items-center text-gray-700 hover:text-gray-900 focus:outline-none">
-                            <i class="fa-regular fa-user text-4xl"></i>
+                            <i class="zmdi zmdi-account text-gray-700 text-4xl"></i>
                         </button>
                         <!-- Dropdown Menu -->
                         <div id="userDropdown"
@@ -63,7 +64,7 @@
                             </div>
                             <div class="border-t border-gray-200"></div>
                             <div
-                                class="px-4 py-2 px-4 py-2 hover:bg-gray-100 transition-colors duration-300 rounded-md">
+                                class=" px-4 py-2 hover:bg-gray-100 transition-colors duration-300 rounded-md">
                                 <form action="{{ route('logout') }}" method="POST">
                                     @csrf
                                     <button type="submit"
@@ -324,7 +325,7 @@
             // Otherwise, show the current page in the middle with 2 pages before and after
             startPage = currentPage - 2;
             endPage = currentPage + 2;
-        }
+        } 
 
         // Show ellipsis after the first page if we're not showing the first 8 pages
         if (startPage > 2) {

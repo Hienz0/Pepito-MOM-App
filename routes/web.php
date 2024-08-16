@@ -29,7 +29,7 @@ Route::get('/inject-dummy-notulens', function () {
     $totalUsers = $users->count();
 
 
-    for ($i = 0; $i < 100; $i++) {
+    for ($i = 0; $i < 120; $i++) {
         // Create a dummy notulen with multiple departments
         $notulen = Notulen::create([
             'meeting_title' => 'Dummy Meeting ' . ($i + 1),
