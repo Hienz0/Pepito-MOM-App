@@ -7,6 +7,12 @@
     <title>Add New MOM</title>
     <!-- Include Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css" integrity="sha512-rRQtF4V2wtAvXsou4iUAs2kXHi3Lj9NE7xJR77DE7GHsxgY9RTWy93dzMXgDIG8ToiRTD45VsDNdTiUagOFeZA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    
+
+
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -28,7 +34,7 @@
                     <!-- Notification Icon -->
                     <div class="relative flex items-center justify-center h-full">
                         <button type="button" class="text-gray-700 hover:text-gray-900 focus:outline-none">
-                            <i class="fa-regular fa-bell text-4xl"></i>
+                            <i class="zmdi zmdi-notifications text-4xl"></i>
                         </button>
                         <!-- Dropdown for notifications could go here -->
                     </div>
@@ -36,7 +42,7 @@
                     <div class="relative">
                         <button type="button" id="userMenuButton"
                             class="flex items-center text-gray-700 hover:text-gray-900 focus:outline-none">
-                            <i class="fa-regular fa-user text-4xl"></i>
+                            <i class="zmdi zmdi-account text-gray-700 text-4xl"></i>
                         </button>
                         <!-- Dropdown Menu -->
                         <div id="userDropdown"
@@ -52,7 +58,7 @@
                             </div>
                             <div class="border-t border-gray-200"></div>
                             <div
-                                class="px-4 py-2 px-4 py-2 hover:bg-gray-100 transition-colors duration-300 rounded-md">
+                                class=" px-4 py-2 hover:bg-gray-100 transition-colors duration-300 rounded-md">
                                 <form action="{{ route('logout') }}" method="POST">
                                     @csrf
                                     <button type="submit"
@@ -66,19 +72,33 @@
         </div>
     </nav>
 
+    <a href="{{ route('notulens.index') }}" class="bg-[#79B51F] hover:bg-[#69A01C] text-white px-4 mx-6 py-2 rounded" style="position: absolute;">
+        <i class="fas fa-home"></i> Back to Home
+    </a>
+
     {{-- Main Content --}}
-    <div class="container mx-auto mt-28">
-        <a href="{{ route('notulens.index') }}" class="bg-blue-500 text-white px-4 py-2 rounded">Back to Notulens</a>
+    <div class="container mx-auto mt-24 px-0 min-[1380px]:px-80">
 
-        <h1 class="mb-6 text-3xl font-bold text-center">Add a new Minutes Of Meeting</h1>
-        <div class="bg-white shadow-md rounded-lg mb-6">
 
-            <form id="notulenForm" method="POST" enctype="multipart/form-data" action="{{ route('notulens.store') }}">
-                @csrf
+        
 
-                <div class="bg-gray-800 text-white p-4 rounded-t-lg">
-                    <h2 class="text-xl font-semibold mb-0">Add a new Minutes Of Meeting</h2>
+  
+        <form id="notulenForm" method="POST" enctype="multipart/form-data" action="{{ route('notulens.store') }}">
+            @csrf
+
+
+            <div class="bg-white shadow-md rounded-lg mb-6">
+
+
+
+                <div class="p-6">
+
+                    <div class=" text-white p-4" style="background-color: #FF9D03">
+                        <h2 class="text-xl font-semibold mb-0">Add a New Minutes of Meeting</h2>
+                    </div>
                 </div>
+                
+
                 <div class="p-6">
                     <div class="flex flex-wrap mb-4">
                         <div class="w-full md:w-1/2 md:pr-2">
@@ -86,13 +106,14 @@
                                 <label for="meeting_title" class="block text-gray-700 text-sm font-bold mb-2">Meeting
                                     Title</label>
                                 <input type="text"
-                                    class="shadow appearance-none border rounded w-full md:w-3/5 lg:w-3/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    class="shadow appearance-none border rounded w-full md:w-4/5 lg:w-4/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                     id="meeting_title" name="meeting_title" placeholder="Enter meeting title" required>
+                                    {{-- md:w-3/5 lg:w-3/5 --}}
                             </div>
                             <div class="mb-4 relative">
                                 <label for="department"
                                     class="block text-gray-700 text-sm font-bold mb-2">Department</label>
-                                <div class="shadow appearance-none border rounded w-full md:w-3/5 lg:w-3/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline cursor-pointer flex justify-between items-center"
+                                <div class="shadow appearance-none border rounded w-full md:w-4/5 lg:w-4/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline cursor-pointer flex justify-between items-center"
                                      onclick="toggleDropdown()">
                                     <span id="dropdown-label" class="truncate">Select Departments</span>
                                     <svg class="inline w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -101,7 +122,7 @@
                                               d="M19 9l-7 7-7-7"></path>
                                     </svg>
                                 </div>
-                                <div id="checkbox-dropdown" class="absolute hidden shadow bg-white border rounded mt-2 w-full md:w-3/5 lg:w-3/5 z-10">
+                                <div id="checkbox-dropdown" class="absolute hidden shadow bg-white border rounded mt-2 w-full md:w-4/5 lg:w-4/5 z-10">
                                     <div class="p-2">
                                         <div class="flex items-center mb-2">
                                             <input id="department_hr" name="department[]" type="checkbox" value="HR" 
@@ -156,7 +177,7 @@
                                 <label for="participants"
                                     class="block text-gray-700 text-sm font-bold mb-2">Participants</label>
                                 <button type="button"
-                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 focus:outline-none focus:shadow-outline"
+                                    class="bg-[#79B51F] hover:bg-[#69A01C] text-white font-bold py-2 px-4 rounded mb-4 focus:outline-none focus:shadow-outline"
                                     id="openParticipantModalBtn">Select Participants</button>
 
                                 <input type="hidden" name="participants[]" id="participantsInput" required>
@@ -164,7 +185,7 @@
                             </div>
                         </div>
                         <div class="w-full md:w-1/2 md:pl-2">
-                            <div class="flex mb-4 md:w-3/5 lg:w-3/5">
+                            <div class="flex mb-4 md:w-4/5 lg:w-4/5">
                                 <div class="w-1/2 pr-2">
                                     <label for="meeting_date"
                                         class="block text-gray-700 text-sm font-bold mb-2">Date</label>
@@ -184,7 +205,7 @@
                                 <label for="meeting_location"
                                     class="block text-gray-700 text-sm font-bold mb-2">Location</label>
                                 <select name="meeting_location" id="meeting_location"
-                                    class="shadow appearance-none border rounded w-full md:w-3/5 lg:w-3/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    class="shadow appearance-none border rounded w-full md:w-4/5 lg:w-4/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                     required>
                                     <option value="" disabled selected>Select Location</option>
                                     <option value="Location 1">Location 1</option>
@@ -196,7 +217,7 @@
                                 <label for="scripter"
                                     class="block text-gray-700 text-sm font-bold mb-2">Scripter</label>
                                 <input type="text"
-                                    class="shadow appearance-none border rounded w-full md:w-3/5 lg:w-3/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shad-outline"
+                                    class="shadow appearance-none border rounded w-full md:w-4/5 lg:w-4/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shad-outline"
                                     id="scripter" name="scripter" value="{{ $scripter->name }}" readonly>
                             </div>
 
@@ -288,121 +309,136 @@
 
 
 
-                <div class="bg-gray-800 text-white p-4 rounded-t-lg">
+
+
+        </div>
+        
+
+        <div class="bg-white shadow-md rounded-lg mb-6">
+            <div class="p-6">
+
+                <div class=" text-white p-4" style="background-color: #FF9D03">
                     <h2 class="text-xl font-semibold mb-0">Task Section</h2>
                 </div>
-                <div class="p-6">
+            </div>
 
-                    
-                    <!-- Tasks Section -->
-                    <h3 class="text-xl font-semibold mt-6 py-6">Task Section</h3>
+            <div class="p-6">
 
-                    <div class="flex flex-wrap mb-4">
+                
+                <!-- Tasks Section -->
+                <h3 class="text-xl font-semibold mt-6 py-6">Task Section</h3>
 
-                        <div class="w-full md:w-1/2 md:pr-2">
-                            <div class="mb-4 w-full md:w-1/2 md:pr-2">
-                                <label for="task_topic" class="block text-gray-700 text-sm font-bold mb-2">Task Topic</label>
-                                <input type="text"
-                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                    id="task_topic" placeholder="Enter task topic">
-                            </div>
-    
-                                                <!-- Trigger Button -->
-                            <div class="mb-4 w-full md:w-1/2 md:pr-2">
-                                <label for="task_pic" class="block text-gray-700 text-sm font-bold mb-2">Person in
-                                    Charge</label>
-                                <button type="button"
-                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                                    id="openPICModalBtn">Select PIC</button>
-                                <select
-                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                    id="task_pic" name="task_pic[]" multiple required>
-                                    <option value="">Select a PIC</option>
-                                </select>
-    
-                            </div>
-    
-                                                    <!-- Task Status -->
-                            <div class="mb-4 w-full md:w-1/2 md:pr-2">
-                                <label for="task_status" class="block text-gray-700 text-sm font-bold mb-2">Status</label>
-                                <select
-                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                    id="task_status" name="task_status">
-                                    <option value="Pending" selected>Pending</option>
-                                    <option value="In Progress">In Progress</option>
-                                    <option value="Complete">Complete</option>
-                                </select>
-                            </div>
+                <div class="flex flex-wrap mb-4">
+
+                    <div class="w-full md:w-1/2 md:pr-2">
+                        <div class="mb-4 w-full md:w-4/5 md:pr-2">
+                            <label for="task_topic" class="block text-gray-700 text-sm font-bold mb-2">Task Topic</label>
+                            <input type="text"
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                id="task_topic" placeholder="Enter task topic">
                         </div>
-    
-                        <div class="w-full md:w-1/2 md:pl-2">
-                            <div class="mb-4 w-full md:w-1/2 md:pr-2">
-                                <label for="task_due_date" class="block text-gray-700 text-sm font-bold mb-2">Due Date</label>
-                                <input type="date"
-                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                    id="task_due_date">
-                            </div>
-    
-                            
-                            <div class="mb-4 w-full md:w-1/2 md:pr-2">
-                                <label for="task_attachment" class="block text-gray-700 font-medium">Attachment</label>
-                                <input type="file" id="task_attachment" name="attachment">
-                            </div>
 
-                                    <!-- Task Description -->
-                            <div class="mb-4 w-full">
-                                <label for="task_description" class="block text-gray-700 text-sm font-bold mb-2">Description</label>
-                                <textarea
-                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                    id="task_description" rows="3" placeholder="Enter task description"></textarea>
-                            </div>
+                                            <!-- Trigger Button -->
+                        <div class="mb-4 w-full md:w-4/5 md:pr-2">
+                            <label for="task_pic" class="block text-gray-700 text-sm font-bold mb-2">Person in
+                                Charge</label>
+                            <button type="button"
+                                class="bg-[#79B51F] hover:bg-[#69A01C] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                id="openPICModalBtn">Select PIC</button>
+                            <select
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                id="task_pic" name="task_pic[]" multiple required>
+                                <option value="">There is no PIC selected</option>
+                            </select>
+
+                        </div>
+
+                                                <!-- Task Status -->
+                        <div class="mb-4 w-full md:w-4/5 md:pr-2">
+                            <label for="task_status" class="block text-gray-700 text-sm font-bold mb-2">Status</label>
+                            <select
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                id="task_status" name="task_status">
+                                <option value="Pending" selected>Pending</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Complete">Complete</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="w-full md:w-1/2 md:pl-2">
+                        <div class="mb-4 w-full md:w-4/5 md:pr-2">
+                            <label for="task_due_date" class="block text-gray-700 text-sm font-bold mb-2">Due Date</label>
+                            <input type="date"
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                id="task_due_date">
+                        </div>
+
                         
+                        <div class="mb-4 w-full md:w-4/5 md:pr-2">
+                            <label for="task_attachment" class="block text-gray-700 font-medium">Attachment</label>
+                            <input type="file" id="task_attachment" name="attachment" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
                         </div>
+
+                                <!-- Task Description -->
+                        <div class="mb-4 w-full md:w-4/5">
+                            <label for="task_description" class="block text-gray-700 text-sm font-bold mb-2">Description</label>
+                            <textarea
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                id="task_description" rows="3" placeholder="Enter task description"></textarea>
+                        </div>
+                    
                     </div>
-
-
-
-
-                    <button type="button"
-                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 focus:outline-none focus:shadow-outline"
-                        id="addTaskBtn">Add Task</button>
-
-                    <div class="overflow-x-auto mb-4">
-                        <table class="min-w-full bg-white border border-gray-300">
-                            <thead class="bg-gray-800 text-white">
-                                <tr>
-                                    <th class="px-4 py-2">Topic</th>
-                                    <th class="px-4 py-2">PIC</th>
-                                    <th class="px-4 py-2">Due Date</th>
-                                    <th class="px-4 py-2">Status</th>
-                                    <th class="px-4 py-2">Attachment</th>
-                                    <th class="px-4 py-2">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tasksTable">
-                                <!-- Task rows will be appended here -->
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- Hidden input to collect tasks -->
-                    <input type="hidden" name="tasks" id="tasksInput" required>
-                    <input type="hidden" id="guestsInput" name="guests">
-
                 </div>
 
 
 
 
+                <button type="button"
+                    class="bg-[#79B51F] hover:bg-[#69A01C] text-white font-bold py-2 px-4 rounded mb-4 focus:outline-none focus:shadow-outline"
+                    id="addTaskBtn">Add Task</button>
 
-                <button type="submit" id="submitBtn"
-                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full focus:outline-none focus:shadow-outline">Add
-                    Notulen</button>
-            </form>
+                <div class="overflow-x-auto mb-4 task-table-section">
+                    <table class="min-w-full bg-white border border-gray-300">
+                        <thead class="bg-gray-800 text-white">
+                            <tr>
+                                <th class="px-4 py-2">Topic</th>
+                                <th class="px-4 py-2">PIC</th>
+                                <th class="px-4 py-2">Due Date</th>
+                                <th class="px-4 py-2">Status</th>
+                                <th class="px-4 py-2">Attachment</th>
+                                <th class="px-4 py-2">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tasksTable">
+                            <!-- Task rows will be appended here -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Hidden input to collect tasks -->
+                <input type="hidden" name="tasks" id="tasksInput" required>
+                <input type="hidden" id="guestsInput" name="guests">
+
+            </div>
+
+
+
+
 
 
 
         </div>
+
+        <div class="bg-white shadow-md rounded-lg mb-6">
+            <button type="submit" id="submitBtn"
+            class="bg-[#79B51F] hover:bg-[#69A01C] text-white font-bold py-2 px-4 rounded w-full focus:outline-none focus:shadow-outline">Add MoM</button>
+        </div>
+
+
+        </form>
+        
+
     </div>
 
 
@@ -540,7 +576,7 @@
 
             function updateTaskPicOptions() {
                 const participants = [];
-                taskPicSelect.innerHTML = '<option value="">Select a PIC</option>';
+                taskPicSelect.innerHTML = '<option value="">There is no PIC selected</option>';
                 participantsList.querySelectorAll('span').forEach(item => {
                     const id = item.getAttribute('data-id');
                     const name = item.textContent;
@@ -572,6 +608,13 @@
                         div.appendChild(span);
                         div.appendChild(checkbox);
                         picList.appendChild(div);
+                                    // Attach event listener to toggle checkbox when the div is clicked
+                        div.addEventListener('click', (e) => {
+                            // Prevent the event from firing if the checkbox itself is clicked
+                            if (e.target !== checkbox) {
+                                checkbox.checked = !checkbox.checked;
+                            }
+                        });
                     }
                 });
             }
@@ -582,7 +625,7 @@
                 if (selectedPICs.length > 0) {
                     taskPic.innerHTML = '';
                 } else {
-                    taskPic.innerHTML = '<option value="">Select a PIC</option>';
+                    taskPic.innerHTML = '<option value="">There is no PIC selected</option>';
                 }
 
                 selectedPICs.forEach((pic) => {
@@ -619,6 +662,19 @@
                 addSelectedPICsToTaskPic(selectedPICs);
                 console.log(selectedPICs);
                 document.getElementById('picModal').classList.add('hidden');
+            });
+
+            // Initialize pic item click functionality
+            document.querySelectorAll('.pic-item').forEach(item => {
+                const checkbox = item.querySelector('.pic-checkbox');
+
+                // Add event listener to toggle the checkbox when the item is clicked
+                item.addEventListener('click', (e) => {
+                    // Prevent the event from firing if the checkbox itself is clicked
+                    if (e.target !== checkbox) {
+                        checkbox.checked = !checkbox.checked;
+                    }
+                });
             });
 
             // Open modal
@@ -784,6 +840,20 @@
                 participantModal.classList.add('hidden');
             });
 
+
+            // Initialize participant item click functionality
+            document.querySelectorAll('.participant-item').forEach(item => {
+                const checkbox = item.querySelector('.participant-checkbox');
+
+                // Add event listener to toggle the checkbox when the item is clicked
+                item.addEventListener('click', (e) => {
+                    // Prevent the event from firing if the checkbox itself is clicked
+                    if (e.target !== checkbox) {
+                        checkbox.checked = !checkbox.checked;
+                    }
+                });
+            });
+
             function updateParticipantsInput() {
                 const participants = [];
                 participantsList.querySelectorAll('tr').forEach(row => {
@@ -818,7 +888,7 @@
 
             function updateTaskPicOptions() {
                 const participants = [];
-                taskPicSelect.innerHTML = '<option value="">Select a PIC</option>';
+                taskPicSelect.innerHTML = '<option value="">There is no PIC selected</option>';
                 participantsList.querySelectorAll('tr').forEach(row => {
                     const id = row.querySelector('td:nth-child(1)').textContent.trim();
                     const name = row.querySelector('td:nth-child(2)').textContent.trim();
@@ -884,10 +954,12 @@
                     tasksTable.removeChild(taskRow);
                     tasks = tasks.filter(t => t !== task);
                     updateTasksInput();
+                    updateTaskTableVisibility()
                 });
 
                 tasksTable.appendChild(taskRow);
                 updateTasksInput();
+                updateTaskTableVisibility()
 
                 // Reset input fields
                 taskTopicInput.value = '';
@@ -901,6 +973,16 @@
             function updateTasksInput() {
                 tasksInput.value = JSON.stringify(tasks);
             }
+
+            function updateTaskTableVisibility() {
+                if (tasksTable.children.length === 0) {
+                    document.querySelector('.task-table-section').classList.add('hidden');
+                } else {
+                    document.querySelector('.task-table-section').classList.remove('hidden');
+                }
+            }
+
+            updateTaskTableVisibility();
 
             submitBtn.addEventListener('click', (event) => {
                 event.preventDefault();
