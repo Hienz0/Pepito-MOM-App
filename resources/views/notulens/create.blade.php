@@ -19,7 +19,7 @@
 
 <body class="bg-gray-100">
     <!-- Navbar -->
-    <nav style="background-color: #F9F9F9;" class="fixed w-full shadow-md h-20 top-0 left-0">
+    <nav style="background-color: #F9F9F9;" class="fixed w-full shadow-md h-20 top-0 left-0 z-50">
         <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
             <div class="flex items-center justify-between h-full">
                 <!-- Navbar image -->
@@ -72,7 +72,7 @@
         </div>
     </nav>
 
-    <a href="{{ route('notulens.index') }}" class="bg-[#79B51F] hover:bg-[#69A01C] text-white px-4 mx-6 py-2 rounded" style="position: absolute;">
+    <a href="{{ route('notulens.index') }}" class="bg-[#79B51F] hover:bg-[#69A01C] text-white px-4 mx-6 py-2 rounded min-[1380px]:absolute">
         <i class="fas fa-home"></i> Back to Home
     </a>
 
@@ -400,7 +400,7 @@
 
                 <div class="overflow-x-auto mb-4 task-table-section">
                     <table class="min-w-full bg-white border border-gray-300">
-                        <thead class="bg-gray-800 text-white">
+                        <thead class="bg-[#FF9D03] text-white">
                             <tr>
                                 <th class="px-4 py-2">Topic</th>
                                 <th class="px-4 py-2">PIC</th>

@@ -8,7 +8,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css" integrity="sha512-rRQtF4V2wtAvXsou4iUAs2kXHi3Lj9NE7xJR77DE7GHsxgY9RTWy93dzMXgDIG8ToiRTD45VsDNdTiUagOFeZA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css"
+        integrity="sha512-rRQtF4V2wtAvXsou4iUAs2kXHi3Lj9NE7xJR77DE7GHsxgY9RTWy93dzMXgDIG8ToiRTD45VsDNdTiUagOFeZA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <style>
         .container {
@@ -21,7 +24,7 @@
 <body>
 
     <!-- Navbar -->
-    <nav style="background-color: #F9F9F9;" class="fixed w-full shadow-md h-20 top-0 left-0">
+    <nav style="background-color: #F9F9F9;" class="fixed w-full shadow-md h-20 top-0 left-0 z-50">
         <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
             <div class="flex items-center justify-between h-full">
                 <!-- Navbar image -->
@@ -48,7 +51,7 @@
                         </button>
                         <!-- Dropdown Menu -->
                         <div id="userDropdown"
-                            class="hidden absolute right-0 mt-2 w-64 bg-white rounded-md shadow-lg z-[9999]">
+                            class="hidden absolute right-0 mt-2 w-64 bg-white rounded-md shadow-lg]">
                             <div class="flex items-center px-4 py-3">
                                 <div class="rounded-full h-full bg-gray-300 p-2">
                                     <i class="fa-regular fa-user text-gray-700 text-2xl"></i>
@@ -59,8 +62,7 @@
                                 </div>
                             </div>
                             <div class="border-t border-gray-200"></div>
-                            <div
-                                class=" px-4 py-2 hover:bg-gray-100 transition-colors duration-300 rounded-md">
+                            <div class=" px-4 py-2 hover:bg-gray-100 transition-colors duration-300 rounded-md">
                                 <form action="{{ route('logout') }}" method="POST">
                                     @csrf
                                     <button type="submit"
@@ -74,54 +76,58 @@
         </div>
     </nav>
 
-        
-    <div class="container mx-auto mt-24">
-        <h1 class="mb-8 text-center text-3xl font-bold">Minutes of Meeting Details</h1>
+    <a href="{{ route('notulens.index') }}" class="bg-[#79B51F] hover:bg-[#69A01C] text-white px-4 mx-6 py-2 rounded min-[1380px]:absolute">
+        <i class="fas fa-home"></i> Back to Home
+    </a>
+    <div class="container mx-auto mt-24 min-[1380px]:px-80">
+        <h1 class="mb-8 text-center text-3xl">Minutes of Meeting Details</h1>
 
-        <div class="bg-white shadow-md rounded-lg overflow-hidden mb-8">
-            <div class="bg-gray-800 text-white p-4">
-                <h2 class="text-2xl">{{ $notulen->meeting_title }}</h2>
+        <div class="bg-white shadow-[0_0px_50px_-15px_rgba(0,0,0,0.3)] rounded-lg overflow-hidden mb-8 p-4">
+            <div class="p-4">
+                <div class="bg-[#FF9D03] text-white p-4">
+                    <h2 class="text-2xl">{{ $notulen->meeting_title }}</h2>
+                </div>
             </div>
             <div class="p-4">
-                <p><strong>Department</strong> 
-                    @if(is_array(json_decode($notulen->department)))
+                <p class="pb-4"><strong>Department</strong>
+                    @if (is_array(json_decode($notulen->department)))
                         {{ implode(', ', json_decode($notulen->department)) }}
                     @else
                         {{ $notulen->department }}
                     @endif
                 </p>
-                <p><strong>Date:</strong> {{ $notulen->meeting_date }}</p>
-                <p><strong>Time:</strong> {{ $notulen->meeting_time }}</p>
-                <p><strong>Location:</strong> {{ $notulen->meeting_location }}</p>
-                <p><strong>Scripter:</strong> {{ $notulen->scripter->name }}</p>
-               
+                <p class="pb-4"><strong>Date:</strong> {{ $notulen->meeting_date }}</p>
+                <p class="pb-4"><strong>Time:</strong> {{ $notulen->meeting_time }}</p>
+                <p class="pb-4"><strong>Location:</strong> {{ $notulen->meeting_location }}</p>
+                <p class="pb-4"><strong>Scripter:</strong> {{ $notulen->scripter->name }}</p>
+
                 @if ($notulen->participants->isNotEmpty())
-                <h3 class="text-xl font-semibold mt-6">Participants</h3>
-                <table class="w-full mt-4 border-collapse border border-gray-300">
-                    <thead>
-                        <tr class="bg-gray-200">
-                            <th class="border border-gray-300 p-2">ID</th>
-                            <th class="border border-gray-300 p-2">Name</th>
-                            <th class="border border-gray-300 p-2">Email</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($notulen->participants as $participant)
-                            <tr>
-                                <td class="border border-gray-300 p-2">{{ $participant->id }}</td>
-                                <td class="border border-gray-300 p-2">{{ $participant->name }}</td>
-                                <td class="border border-gray-300 p-2">{{ $participant->email }}</td>
+                    <h3 class="text-xl font-semibold mt-6">Participants</h3>
+                    <table class="w-full mt-4 border-collapse border border-gray-300">
+                        <thead>
+                            <tr class="bg-[#FF9D03] text-white">
+                                <th class="border border-gray-300 p-2">ID</th>
+                                <th class="border border-gray-300 p-2">Name</th>
+                                <th class="border border-gray-300 p-2">Email</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            @endif
-                
+                        </thead>
+                        <tbody>
+                            @foreach ($notulen->participants as $participant)
+                                <tr>
+                                    <td class="border border-gray-300 p-2">{{ $participant->id }}</td>
+                                    <td class="border border-gray-300 p-2">{{ $participant->name }}</td>
+                                    <td class="border border-gray-300 p-2">{{ $participant->email }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                @endif
+
                 @if ($notulen->guests->isNotEmpty())
                     <h3 class="text-xl font-semibold mt-6">Guests</h3>
                     <table class="w-full mt-4 border-collapse border border-gray-300">
                         <thead>
-                            <tr class="bg-gray-200">
+                            <tr class="bg-[#FF9D03] text-white">
                                 <th class="border border-gray-300 p-2">Name</th>
                                 <th class="border border-gray-300 p-2">Email</th>
                             </tr>
@@ -138,134 +144,168 @@
                 @endif
 
 
-                <p><strong>Agenda:</strong> {{ $notulen->agenda }}</p>
-                <p><strong>Discussion:</strong> {{ $notulen->discussion }}</p>
-                <p><strong>Decisions:</strong> {{ $notulen->decisions }}</p>
+                <p class="pb-4"><strong>Agenda:</strong> {{ $notulen->agenda }}</p>
+                <p class="pb-4"><strong>Discussion:</strong> {{ $notulen->discussion }}</p>
+                <p class="pb-4"><strong>Decisions:</strong> {{ $notulen->decisions }}</p>
 
                 {{-- Distrubute Button --}}
-                <button id="distributeButton" 
-                    class="text-white px-4 py-2 rounded ml-2 
-                    {{ $notulen->status === 'Inactive' ? 'bg-gray-500 cursor-not-allowed' : 'bg-green-500' }}" 
-                    {{ $notulen->status === 'Inactive' ? 'disabled' : '' }}>
-                    Distribute
-                </button>
+                <div class="flex justify-end">
+                    <button id="distributeButton"
+                        class="text-white px-4 py-2 rounded
+                        {{ $notulen->status === 'Inactive' ? 'bg-gray-500 cursor-not-allowed' : 'bg-[#79B51F] hover:bg-[#69A01C]' }}"
+                        {{ $notulen->status === 'Inactive' ? 'disabled' : '' }}>
+                        Distribute
+                    </button>
+                </div>
+                
 
 
 
-                <h3 class="text-xl font-semibold mt-6">All Tasks</h3>
-                <table class="w-full mt-4 border-collapse border border-gray-300">
-                    <thead>
-                        <tr class="bg-gray-200">
-                            <th class="border border-gray-300 p-2">Topic</th>
-                            <th class="border border-gray-300 p-2">PIC</th>
-                            <th class="border border-gray-300 p-2">Due Date</th>
-                            <th class="border border-gray-300 p-2">Status</th>
-                            <th class="border border-gray-300 p-2">Description</th>
-                            <th class="border border-gray-300 p-2">Attachment</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($notulen->tasks as $task)
-                            <tr>
-                                <td class="border border-gray-300 p-2">{{ $task->task_topic }}</td>
-                                <td class="border border-gray-300 p-2">
-                                    @php
-                                        $taskPics = json_decode($task->task_pic, true);
-                                        $picNames = App\Models\User::whereIn('id', $taskPics)->pluck('name')->toArray();
-                                        echo implode(', ', $picNames);
-                                    @endphp
-                                </td>
-                                <td class="border border-gray-300 p-2">{{ $task->task_due_date }}</td>
-                                <td class="border border-gray-300 p-2" {{-- style="background-color: {{ $task->status === 'Complete' ? '#b3e6ac' : 'transparent' }}"> --}}
-                                    style="background-color: {{ $task->status === 'Complete' ? '#b3e6ac' : ($task->status === 'In Progress' ? '#63c6ff' : ($task->status === 'Due Today' ? '#ffeb3b' : ($task->status === 'Past Due' ? '#f44336' : 'transparent'))) }}">
 
-                                    {{ $task->status }}</td>
-                                <td class="border border-gray-300 p-2">{{ $task->description }}</td>
-                                <td class="border border-gray-300 p-2">
-                                    @if ($task->attachment)
-                                        <a href="{{ asset('storage/' . $task->attachment) }}" target="_blank"
-                                            class="text-blue-500 hover:underline">View Attachment</a>
-                                    @else
-                                        No Attachment
-                                    @endif
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-
-                <h3 class="text-xl font-semibold mt-6">My Tasks</h3>
-                <table class="w-full mt-4 border-collapse border border-gray-300">
-                    <thead>
-                        <tr class="bg-gray-200">
-                            <th class="border border-gray-300 p-2">Topic</th>
-                            <th class="border border-gray-300 p-2">PIC</th>
-                            <th class="border border-gray-300 p-2">Due Date</th>
-                            <th class="border border-gray-300 p-2">Status</th>
-                            <th class="border border-gray-300 p-2">Description</th>
-                            <th class="border border-gray-300 p-2">Attachment</th>
-                            <th class="border border-gray-300 p-2">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($userTasks as $task)
-                            <tr>
-                                <td class="border border-gray-300 p-2">{{ $task->task_topic }}</td>
-                                <td class="border border-gray-300 p-2">
-                                    @php
-                                        $taskPics = json_decode($task->task_pic, true);
-                                        $picNames = App\Models\User::whereIn('id', $taskPics)->pluck('name')->toArray();
-                                        echo implode(', ', $picNames);
-                                    @endphp
-                                </td>
-                                <td class="border border-gray-300 p-2">{{ $task->task_due_date }}</td>
-                                <td class="border border-gray-300 p-2"
-                                    style="background-color: {{ $task->status === 'Complete' ? '#b3e6ac' : ($task->status === 'In Progress' ? '#63c6ff' : ($task->status === 'Due Today' ? '#ffeb3b' : ($task->status === 'Past Due' ? '#f44336' : 'transparent'))) }}">
-                                    {{ $task->status }}</td>
-                                <td class="border border-gray-300 p-2">{{ $task->description }}</td>
-                                <td class="border border-gray-300 p-2">
-                                    @if ($task->attachment)
-                                        @if (Str::endsWith($task->attachment, ['.jpg', '.jpeg', '.png', '.gif']))
-                                            <a href="{{ asset('storage/' . $task->attachment) }}" target="_blank"
-                                                class="text-blue-500 hover:underline">View Image</a>
-                                        @elseif (Str::endsWith($task->attachment, ['.pdf', '.docx', '.pptx']))
-                                            <a href="{{ asset('storage/' . $task->attachment) }}" target="_blank"
-                                                class="text-blue-500 hover:underline">View Document</a>
-                                        @else
-                                            <a href="{{ asset('storage/' . $task->attachment) }}" target="_blank"
-                                                class="text-blue-500 hover:underline">Download File</a>
-                                        @endif
-                                    @else
-                                        No Attachment
-                                    @endif
-                                </td>
-                                <td class="border border-gray-300 p-2">
-                                    @if ($notulen->status !== 'Inactive')
-                                        <button class="bg-blue-500 text-white px-4 py-2 rounded update-task-btn"
-                                            data-task-id="{{ $task->id }}" data-task-topic="{{ $task->task_topic }}"
-                                            data-task-description="{{ $task->description }}"
-                                            data-task-status="{{ $task->status }}"
-                                            data-task-attachment="{{ $task->attachment }}">Update</button>
-                                    @else
-                                        <button class="bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed" disabled>
-                                            Update
-                                        </button>
-                                    @endif
-                                </td>
-                                
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
             </div>
         </div>
 
-        <a href="{{ route('notulens.index') }}" class="bg-blue-500 text-white px-4 py-2 rounded">Back to Notulens</a>
+
+        @if ($notulen->tasks->isNotEmpty())
+        <div class="all-tasks">
+            <h3 class="text-xl font-semibold mt-6">All Tasks</h3>
+
+            <div class="bg-white shadow-[0_0px_50px_-15px_rgba(0,0,0,0.3)] rounded-lg overflow-hidden mb-8 p-4">
+    
+                <div class="p-4">
+                    <table class="w-full mt-4 border-collapse border border-gray-300">
+                        <thead>
+                            <tr class="bg-[#FF9D03] text-white">
+                                <th class="border border-gray-300 p-2">Topic</th>
+                                <th class="border border-gray-300 p-2">PIC</th>
+                                <th class="border border-gray-300 p-2">Due Date</th>
+                                <th class="border border-gray-300 p-2">Status</th>
+                                <th class="border border-gray-300 p-2">Description</th>
+                                <th class="border border-gray-300 p-2">Attachment</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($notulen->tasks as $task)
+                                <tr>
+                                    <td class="border border-gray-300 p-2">{{ $task->task_topic }}</td>
+                                    <td class="border border-gray-300 p-2">
+                                        @php
+                                            $taskPics = json_decode($task->task_pic, true);
+                                            $picNames = App\Models\User::whereIn('id', $taskPics)->pluck('name')->toArray();
+                                            echo implode(', ', $picNames);
+                                        @endphp
+                                    </td>
+                                    <td class="border border-gray-300 p-2">{{ $task->task_due_date }}</td>
+                                    <td class="border border-gray-300 p-2" {{-- style="background-color: {{ $task->status === 'Complete' ? '#b3e6ac' : 'transparent' }}"> --}}
+                                        style="background-color: {{ $task->status === 'Complete' ? '#b3e6ac' : ($task->status === 'In Progress' ? '#63c6ff' : ($task->status === 'Due Today' ? '#ffeb3b' : ($task->status === 'Past Due' ? '#f44336' : 'transparent'))) }}">
+        
+                                        {{ $task->status }}</td>
+                                    <td class="border border-gray-300 p-2">{{ $task->description }}</td>
+                                    <td class="border border-gray-300 p-2">
+                                        @if ($task->attachment)
+                                            <a href="{{ asset('storage/' . $task->attachment) }}" target="_blank"
+                                                class="text-blue-500 hover:underline">View Attachment</a>
+                                        @else
+                                            No Attachment
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+    
+            </div>
+        </div>   
+        @endif
+
+
+        @if ($userTasks->isNotEmpty())
+           
+        <div class="my-tasks">
+            <h3 class="text-xl font-semibold mt-6">My Tasks</h3>
+
+            <div class="bg-white shadow-[0_0px_50px_-15px_rgba(0,0,0,0.3)] rounded-lg overflow-hidden mb-8 p-4">
+                <div class="p-4">
+                    <table class="w-full mt-4 border-collapse border border-gray-300">
+                        <thead>
+                            <tr class="bg-[#FF9D03] text-white">
+                                <th class="border border-gray-300 p-2">Topic</th>
+                                <th class="border border-gray-300 p-2">PIC</th>
+                                <th class="border border-gray-300 p-2">Due Date</th>
+                                <th class="border border-gray-300 p-2">Status</th>
+                                <th class="border border-gray-300 p-2">Description</th>
+                                <th class="border border-gray-300 p-2">Attachment</th>
+                                <th class="border border-gray-300 p-2">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($userTasks as $task)
+                                <tr>
+                                    <td class="border border-gray-300 p-2">{{ $task->task_topic }}</td>
+                                    <td class="border border-gray-300 p-2">
+                                        @php
+                                            $taskPics = json_decode($task->task_pic, true);
+                                            $picNames = App\Models\User::whereIn('id', $taskPics)->pluck('name')->toArray();
+                                            echo implode(', ', $picNames);
+                                        @endphp
+                                    </td>
+                                    <td class="border border-gray-300 p-2">{{ $task->task_due_date }}</td>
+                                    <td class="border border-gray-300 p-2"
+                                        style="background-color: {{ $task->status === 'Complete' ? '#b3e6ac' : ($task->status === 'In Progress' ? '#63c6ff' : ($task->status === 'Due Today' ? '#ffeb3b' : ($task->status === 'Past Due' ? '#f44336' : 'transparent'))) }}">
+                                        {{ $task->status }}</td>
+                                    <td class="border border-gray-300 p-2">{{ $task->description }}</td>
+                                    <td class="border border-gray-300 p-2">
+                                        @if ($task->attachment)
+                                            @if (Str::endsWith($task->attachment, ['.jpg', '.jpeg', '.png', '.gif']))
+                                                <a href="{{ asset('storage/' . $task->attachment) }}" target="_blank"
+                                                    class="text-blue-500 hover:underline">View Image</a>
+                                            @elseif (Str::endsWith($task->attachment, ['.pdf', '.docx', '.pptx']))
+                                                <a href="{{ asset('storage/' . $task->attachment) }}" target="_blank"
+                                                    class="text-blue-500 hover:underline">View Document</a>
+                                            @else
+                                                <a href="{{ asset('storage/' . $task->attachment) }}" target="_blank"
+                                                    class="text-blue-500 hover:underline">Download File</a>
+                                            @endif
+                                        @else
+                                            No Attachment
+                                        @endif
+                                    </td>
+                                    <td class="border border-gray-300 p-2">
+                                        @if ($notulen->status !== 'Inactive')
+                                            <button class="bg-[#79B51F] hover:bg-[#69A01C] text-white px-4 py-2 rounded update-task-btn"
+                                                data-task-id="{{ $task->id }}"
+                                                data-task-topic="{{ $task->task_topic }}"
+                                                data-task-description="{{ $task->description }}"
+                                                data-task-status="{{ $task->status }}"
+                                                data-task-attachment="{{ $task->attachment }}">Update</button>
+                                        @else
+                                            <button class="bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed"
+                                                disabled>
+                                                Update
+                                            </button>
+                                        @endif
+                                    </td>
+        
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div> 
+        @endif
+    
+
+
+
+
+
     </div>
 
     <!-- Update Task Modal -->
-    <div class="fixed z-10 inset-0 overflow-y-auto hidden" id="updateTaskModal" aria-labelledby="updateTaskModalLabel"
-        aria-hidden="true">
+    <div class="fixed z-10 inset-0 overflow-y-auto hidden" id="updateTaskModal"
+        aria-labelledby="updateTaskModalLabel" aria-hidden="true">
         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div class="fixed inset-0 transition-opacity" aria-hidden="true">
                 <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
@@ -332,7 +372,7 @@
                     taskIdInput.value = taskId;
                     taskDescriptionInput.value = taskDescription;
                     taskCompleteInput.checked = (taskStatus ===
-                    'Complete'); // Set checked based on task status
+                        'Complete'); // Set checked based on task status
                     updateTaskForm.action = `/notulens/tasks/${taskId}`;
 
                     updateTaskModal.classList.remove('hidden');
@@ -383,57 +423,58 @@
             });
 
             document.addEventListener('click', function(event) {
-            var userMenuButton = document.getElementById('userMenuButton');
-            var userDropdown = document.getElementById('userDropdown');
+                var userMenuButton = document.getElementById('userMenuButton');
+                var userDropdown = document.getElementById('userDropdown');
 
-            // If the clicked element is not the dropdown or the button, hide the dropdown
-            if (!userMenuButton.contains(event.target) && !userDropdown.contains(event.target)) {
-                userDropdown.classList.add('hidden');
-            }
-        });
-
-        document.getElementById('userMenuButton').addEventListener('click', function(event) {
-            var userDropdown = document.getElementById('userDropdown');
-            userDropdown.classList.toggle('hidden');
-            event.stopPropagation(); // Prevent the document click event from immediately hiding the dropdown
-        });
-
-        document.getElementById('distributeButton').addEventListener('click', function () {
-    Swal.fire({
-        title: 'Are you sure?',
-        text: "This will send the meeting details to all participants!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, send it!'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            // AJAX call to trigger email sending
-            $.ajax({
-                type: 'POST',
-                url: '{{ route("distribute.mom", $notulen->id) }}', // Pass the notulen_id as a parameter
-                data: {
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function (response) {
-                    Swal.fire(
-                        'Sent!',
-                        'The meeting details have been sent to all participants.',
-                        'success'
-                    );
-                },
-                error: function (error) {
-                    Swal.fire(
-                        'Error!',
-                        'There was an error sending the emails. Please try again.',
-                        'error'
-                    );
+                // If the clicked element is not the dropdown or the button, hide the dropdown
+                if (!userMenuButton.contains(event.target) && !userDropdown.contains(event.target)) {
+                    userDropdown.classList.add('hidden');
                 }
             });
-        }
-    });
-});
+
+            document.getElementById('userMenuButton').addEventListener('click', function(event) {
+                var userDropdown = document.getElementById('userDropdown');
+                userDropdown.classList.toggle('hidden');
+                event
+            .stopPropagation(); // Prevent the document click event from immediately hiding the dropdown
+            });
+
+            document.getElementById('distributeButton').addEventListener('click', function() {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "This will send the meeting details to all participants!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, send it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // AJAX call to trigger email sending
+                        $.ajax({
+                            type: 'POST',
+                            url: '{{ route('distribute.mom', $notulen->id) }}', // Pass the notulen_id as a parameter
+                            data: {
+                                _token: '{{ csrf_token() }}'
+                            },
+                            success: function(response) {
+                                Swal.fire(
+                                    'Sent!',
+                                    'The meeting details have been sent to all participants.',
+                                    'success'
+                                );
+                            },
+                            error: function(error) {
+                                Swal.fire(
+                                    'Error!',
+                                    'There was an error sending the emails. Please try again.',
+                                    'error'
+                                );
+                            }
+                        });
+                    }
+                });
+            });
 
 
 

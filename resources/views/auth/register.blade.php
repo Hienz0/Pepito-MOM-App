@@ -44,11 +44,11 @@
                 <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="phone" name="phone" required>
             </div>
             <div class="flex items-center justify-between">
-                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Register</button>
+                <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Register</button>
             </div>
         </form>
         <div class="text-center mt-4">
-            <a href="/login" class="text-blue-500 hover:underline">Already have an account? Login</a>
+            <a href="/login" class="text-green-500 hover:underline">Already have an account? Login</a>
         </div>
     </div>
 </div>
