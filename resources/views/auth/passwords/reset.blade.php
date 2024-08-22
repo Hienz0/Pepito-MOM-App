@@ -11,41 +11,61 @@
     <!-- Include SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
-    <div class="w-full max-w-md bg-white rounded-lg shadow-md p-8">
-        <h2 class="text-2xl font-bold text-center mb-6">{{ __('Reset Password') }}</h2>
-        <form id="reset-password-form" method="POST" action="{{ route('password.update') }}">
-            @csrf
-            <input type="hidden" name="token" value="{{ $token }}">
-
-            <div class="mb-4">
-                <label for="email" class="block text-gray-700">{{ __('E-Mail Address') }}</label>
-                <input id="email" type="email" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm @error('email') border-red-500 @enderror" name="email" value="{{ $email ?? old('email') }}" required autocomplete="email" autofocus>
-                @error('email')
-                <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
-                @enderror
+<body class="bg-gray-100">
+        <!-- Navbar -->
+        <nav style="background-color: #F9F9F9;" class="fixed w-full shadow-md h-20">
+            <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <!-- Navbar image -->
+                    <div class="flex-shrink-0 mr-auto h-12">
+                        <img src="{{ asset('images/pepito-logo.png') }}" alt="Navbar Logo" class="h-12 w-auto ml-2 " src="/">
+                    </div>
+                    {{-- <div class="hidden md:flex items-center space-x-4">
+                        <a href="#" class="text-gray-700 hover:text-gray-900">Home</a>
+                        <a href="#" class="text-gray-700 hover:text-gray-900">About</a>
+                        <a href="#" class="text-gray-700 hover:text-gray-900">Contact</a>
+                    </div> --}}
+                </div>
             </div>
+        </nav>
 
-            <div class="mb-4">
-                <label for="password" class="block text-gray-700">{{ __('Password') }}</label>
-                <input id="password" type="password" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm @error('password') border-red-500 @enderror" name="password" required autocomplete="new-password">
-                @error('password')
-                <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
-                @enderror
+        <div class="flex items-center justify-center min-h-screen">
+            <div class="w-full max-w-md bg-white rounded-lg shadow-md p-8">
+                <h2 class="text-2xl font-bold text-center mb-6">{{ __('Reset Password') }}</h2>
+                <form id="reset-password-form" method="POST" action="{{ route('password.update') }}">
+                    @csrf
+                    <input type="hidden" name="token" value="{{ $token }}">
+        
+                    <div class="mb-4">
+                        <label for="email" class="block text-gray-700">{{ __('E-Mail Address') }}</label>
+                        <input id="email" type="email" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm @error('email') border-red-500 @enderror" name="email" value="{{ $email ?? old('email') }}" required autocomplete="email" autofocus>
+                        @error('email')
+                        <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                        @enderror
+                    </div>
+        
+                    <div class="mb-4">
+                        <label for="password" class="block text-gray-700">{{ __('Password') }}</label>
+                        <input id="password" type="password" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm @error('password') border-red-500 @enderror" name="password" required autocomplete="new-password">
+                        @error('password')
+                        <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                        @enderror
+                    </div>
+        
+                    <div class="mb-4">
+                        <label for="password-confirm" class="block text-gray-700">{{ __('Confirm Password') }}</label>
+                        <input id="password-confirm" type="password" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" name="password_confirmation" required autocomplete="new-password">
+                    </div>
+        
+                    <div class="flex items-center justify-between">
+                        <button type="submit" class="w-full bg-green-500 hover:bg-green-700 text-white py-2 rounded-md">
+                            {{ __('Reset Password') }}
+                        </button>
+                    </div>
+                </form>
             </div>
+        </div>
 
-            <div class="mb-4">
-                <label for="password-confirm" class="block text-gray-700">{{ __('Confirm Password') }}</label>
-                <input id="password-confirm" type="password" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" name="password_confirmation" required autocomplete="new-password">
-            </div>
-
-            <div class="flex items-center justify-between">
-                <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600">
-                    {{ __('Reset Password') }}
-                </button>
-            </div>
-        </form>
-    </div>
 
     <script>
         document.getElementById('reset-password-form').addEventListener('submit', function(event) {

@@ -20,13 +20,13 @@
             <div class="flex items-center justify-between h-16">
                 <!-- Navbar image -->
                 <div class="flex-shrink-0 mr-auto h-12">
-                    <img src="{{ asset('images/pepito-logo.png') }}" alt="Navbar Logo" class="h-12 w-auto ml-2">
+                    <img src="{{ asset('images/pepito-logo.png') }}" alt="Navbar Logo" class="h-12 w-auto ml-2 " src="/">
                 </div>
-                <div class="hidden md:flex items-center space-x-4">
+                {{-- <div class="hidden md:flex items-center space-x-4">
                     <a href="#" class="text-gray-700 hover:text-gray-900">Home</a>
                     <a href="#" class="text-gray-700 hover:text-gray-900">About</a>
                     <a href="#" class="text-gray-700 hover:text-gray-900">Contact</a>
-                </div>
+                </div> --}}
             </div>
         </div>
     </nav>

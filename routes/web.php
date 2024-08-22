@@ -55,12 +55,20 @@ Route::get('/inject-dummy-notulens', function () {
             $taskCount = rand(1, 5);
             for ($j = 0; $j < $taskCount; $j++) {
                 $taskPicCount = rand(1, min(3, $totalUsers));
-                $taskPics = $users->random($taskPicCount)->pluck('id')->toArray();
+                // Convert user IDs to strings and then encode
+                $taskPics = $users->random($taskPicCount)->pluck('id')->map(function ($id) {
+                    return (string) $id;
+                })->toArray();
+
+                // Manually encode to ensure double quotes
+                $taskPicString = '[' . implode(',', array_map(function($id) {
+                    return '"' . $id . '"';
+                }, $taskPics)) . ']';
 
                 NotulenTask::create([
                     'notulen_id' => $notulen->id,
                     'task_topic' => 'Dummy Task Topic ' . ($j + 1),
-                    'task_pic' => json_encode($taskPics),
+                    'task_pic' => $taskPicString,
                     'task_due_date' => Carbon::now()->addDays($j)->format('Y-m-d'),
                     'status' => 'Pending',
                     'description' => 'Dummy Description ' . ($j + 1),
