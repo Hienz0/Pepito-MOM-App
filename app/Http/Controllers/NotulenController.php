@@ -234,6 +234,10 @@ class NotulenController extends Controller
             Log::warning('Unauthorized update attempt', ['notulen_id' => $id, 'user_id' => Auth::id()]);
             return redirect()->route('notulens.index')->with('error', 'You do not have permission to update this notulen.');
         }
+        Log::info('Participants data before validation', ['participants' => $request->input('participants')]);
+
+        Log::info('Guests data before validation', ['guests' => $request->input('guests')]);
+
     
         try {
             // Validate the request data
@@ -303,6 +307,7 @@ class NotulenController extends Controller
     
             // Update guests
             if ($request->has('guests')) {
+                Log::info('Masuk guests');
                 $guests = $validatedData['guests']; // Use validated data for guests
                 Log::info('Updating guests', ['guests' => $guests]);
     
@@ -376,9 +381,13 @@ class NotulenController extends Controller
         $notulen = Notulen::findOrFail($id); // Use route parameter `$id`
         $participants = $notulen->participants; // If `participants` is a relationship
         // Adjust according to how you manage participants
+        $guests = $notulen->guests;
     
         foreach ($participants as $participant) {
             Mail::to($participant->email)->send(new MoMDetailsMail($notulen));
+        }
+        foreach ($guests as $guest) {
+            Mail::to($guest->email)->send(new MoMDetailsMail($notulen));
         }
             // Update the status of the notulen to 'Distributed'
         $notulen->status = 'Distributed';
