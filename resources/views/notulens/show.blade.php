@@ -21,7 +21,7 @@
     </style>
 </head>
 
-<body>
+<body class="bg-gray-100">
 
     <!-- Navbar -->
     <nav style="background-color: #F9F9F9;" class="fixed w-full shadow-md h-20 top-0 left-0 z-50">
@@ -79,8 +79,47 @@
     <a href="{{ route('notulens.index') }}" class="bg-[#79B51F] hover:bg-[#69A01C] text-white px-4 mx-6 py-2 rounded min-[1380px]:absolute">
         <i class="fas fa-home"></i> Back to Home
     </a>
+
+    <div class="mx-auto mt-24 ml-10 px-0 absolute bg-white shadow-md rounded-lg mb-6 w-96">
+        <!-- Manual Title -->
+        <h1 class="text-2xl font-bold text-center py-4">View MoM Details</h1>
+    
+        <!-- Overview Section -->
+        <section class="p-4">
+            <h2 class="text-xl font-semibold mb-2">Overview</h2>
+            <p class="text-sm text-gray-700">
+                The "View MoM Details" page allows users to review detailed information about a specific Minutes of Meeting (MoM) entry. This page presents key meeting information, participants, tasks, and more, enabling users to get a comprehensive view of the meeting's content and status.
+            </p>
+        </section>
+    
+        <!-- Steps to View MoM Details -->
+        <section class="p-4">
+            <h2 class="text-xl font-semibold mb-2">Steps to View MoM Details</h2>
+            <ol class="list-decimal pl-5 text-sm text-gray-700">
+                <li><strong>View Meeting Information:</strong> The top section displays the meeting title, department, date, time, location, and scripter.</li>
+                <li><strong>Review Participants:</strong> Check the list of participants and their details, including ID, name, and email.</li>
+                <li><strong>Review Guests:</strong> Check the list of guests invited to the meeting with their names and emails.</li>
+                <li><strong>Examine Agenda, Discussion, and Decisions:</strong> Review the meeting agenda, discussion points, and final decisions made during the meeting.</li>
+                <li><strong>Manage Tasks:</strong> View and manage tasks assigned during the meeting. The tasks section includes details like topic, PIC (Person In Charge), due date, status, description, and attachments. You can also update task details using the provided options.</li>
+                <li><strong>Distribute MoM:</strong> If the MoM status is active, you can click the "Distribute" button to send out the MoM to relevant parties.</li>
+            </ol>
+        </section>
+    
+        <!-- Features Section -->
+        <section class="p-4">
+            <h2 class="text-xl font-semibold mb-2">Features</h2>
+            <ul class="list-disc pl-5 text-sm text-gray-700">
+                <li><strong>Detailed Meeting View:</strong> Provides a comprehensive overview of all meeting details, including participants, guests, and tasks.</li>
+                <li><strong>Task Management:</strong> Easily view and manage tasks, including updating their status and attachments.</li>
+                <li><strong>Real-Time Status Updates:</strong> The MoM status is updated in real-time, and the "Distribute" button is only available if the MoM is active.</li>
+                <li><strong>Modal for Task Updates:</strong> Use the modal to update task details, add attachments, and mark tasks as complete.</li>
+            </ul>
+        </section>
+    </div>
+    
+
+    
     <div class="container mx-auto mt-24 min-[1380px]:px-80">
-        <h1 class="mb-8 text-center text-3xl">Minutes of Meeting Details</h1>
 
         <div class="bg-white shadow-[0_0px_50px_-15px_rgba(0,0,0,0.3)] rounded-lg overflow-hidden mb-8 p-4">
             <div class="p-4">

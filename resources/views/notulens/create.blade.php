@@ -76,6 +76,44 @@
         <i class="fas fa-home"></i> Back to Home
     </a>
 
+    <div class="mx-auto mt-24 ml-10 px-0 absolute bg-white shadow-md rounded-lg mb-6 w-96">
+        <!-- Manual Title -->
+        <h1 class="text-2xl font-bold text-center py-4">Add a New MoM</h1>
+    
+        <!-- Overview Section -->
+        <section class="p-4">
+            <h2 class="text-xl font-semibold mb-2">Overview</h2>
+            <p class="text-sm text-gray-700">
+                The "Add a New MoM" page allows users to create new Minutes of Meeting entries quickly and efficiently. This page is designed to capture essential meeting details, participant information, and key discussion points.
+            </p>
+        </section>
+    
+        <!-- Steps to Add a New MoM -->
+        <section class="p-4">
+            <h2 class="text-xl font-semibold mb-2">Steps to Add a New MoM</h2>
+            <ol class="list-decimal pl-5 text-sm text-gray-700">
+                <li><strong>Enter Meeting Details:</strong> Fill in the meeting title, date, time, and location. These fields are mandatory and help identify the meeting.</li>
+                <li><strong>Set the Agenda:</strong> Use the "Agenda" field to outline the topics to be discussed. This helps keep the meeting focused and organized.</li>
+                <li><strong>Add Participants:</strong> Click on the "Add Participants" button to open a modal. Here, you can select participants from a list or add new ones by entering their name and email. Each participant added will appear in the participant list below.</li>
+                <li><strong>Add Guests:</strong> The "Add Guests" section allows you to invite external participants. Use the "Add Guest" button to open a modal where you can enter the guest's name and email.</li>
+                <li><strong>Note Action Items:</strong> Use the action items section to document specific tasks assigned to participants. Each action item can include the task description, assignee, and due date.</li>
+                <li><strong>Save the MoM:</strong> Once all details are filled out, click the "Save" button to create the new MoM entry. You can also choose to "Save as Draft" if you need to come back and edit the details later.</li>
+            </ol>
+        </section>
+    
+        <!-- Features Section -->
+        <section class="p-4">
+            <h2 class="text-xl font-semibold mb-2">Features</h2>
+            <ul class="list-disc pl-5 text-sm text-gray-700">
+                <li><strong>Auto-Save:</strong> The app automatically saves your progress as you enter information, preventing data loss.</li>
+                <li><strong>Editable Participants List:</strong> You can easily add or remove participants and guests using the provided options.</li>
+                <li><strong>Real-Time Validation:</strong> Fields are validated in real-time to ensure all required information is provided correctly.</li>
+                <li><strong>Responsive Design:</strong> The page is optimized for both desktop and mobile devices, making it accessible from anywhere.</li>
+            </ul>
+        </section>
+    </div>
+    
+
     {{-- Main Content --}}
     <div class="container mx-auto mt-24 px-0 min-[1380px]:px-80">
 
@@ -93,7 +131,7 @@
 
                 <div class="p-6">
 
-                    <div class=" text-white p-4" style="background-color: #FF9D03">
+                    <div class="text-white p-4" style="background-color: #FF9D03">
                         <h2 class="text-xl font-semibold mb-0">Add a New Minutes of Meeting</h2>
                     </div>
                 </div>
@@ -377,7 +415,7 @@
                         
                         <div class="mb-4 w-full md:w-4/5 md:pr-2">
                             <label for="task_attachment" class="block text-gray-700 font-medium">Attachment</label>
-                            <input type="file" id="task_attachment" name="attachment" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                            <input type="file" id="task_attachment" name="attachment" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
                         </div>
 
                                 <!-- Task Description -->
