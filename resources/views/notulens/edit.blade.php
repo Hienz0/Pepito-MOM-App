@@ -17,7 +17,42 @@
             max-width: 800px;
             margin: 0 auto;
         }
+
+        #tooltip {
+            transition: opacity 0.2s ease;
+            opacity: 0;
+        }
+
+        #tooltip:not(.hidden) {
+            opacity: 1;
+        }
+
+        #tooltip {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        /* Ensure the header and content are stacked vertically */
+        /* Ensure the tooltip uses Flexbox to stack elements vertically */
+        #tooltip {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Style adjustments */
+        .tooltip-header {
+            margin-bottom: 12px;
+            /* Space between title and content */
+        }
+
+        .tooltip-content p {
+            margin: 0;
+            /* Ensure no extra margin in the content */
+        }
     </style>
+
+
+
 </head>
 
 <body class="bg-gray-100">
@@ -73,48 +108,79 @@
         </div>
     </nav>
 
-    <a href="{{ route('notulens.index') }}" class="bg-[#79B51F] hover:bg-[#69A01C] text-white px-4 mx-6 py-2 rounded min-[1380px]:absolute">
+    <a href="{{ route('notulens.index') }}"
+        class="bg-[#79B51F] hover:bg-[#69A01C] text-white px-4 mx-6 py-2 rounded min-[1380px]:absolute">
         <i class="fas fa-home"></i> Back to Home
     </a>
 
     <div class="mx-auto mt-24 ml-10 px-0 absolute bg-white shadow-md rounded-lg mb-6 w-96">
         <!-- Manual Title -->
         <h1 class="text-2xl font-bold text-center py-4">Edit MoM</h1>
-    
+
         <!-- Overview Section -->
         <section class="p-4">
             <h2 class="text-xl font-semibold mb-2">Overview</h2>
             <p class="text-sm text-gray-700">
-                The "Edit MoM" page enables users to modify existing Minutes of Meeting entries. This page is designed to update meeting details, participants, and tasks, ensuring that the records are accurate and up-to-date.
+                The "Edit MoM" page enables users to modify existing Minutes of Meeting entries. This page is designed
+                to update meeting details, participants, and tasks, ensuring that the records are accurate and
+                up-to-date.
             </p>
         </section>
-    
+
         <!-- Steps to Edit a MoM -->
         <section class="p-4">
             <h2 class="text-xl font-semibold mb-2">Steps to Edit a MoM</h2>
             <ol class="list-decimal pl-5 text-sm text-gray-700">
-                <li><strong>Update Meeting Details:</strong> Edit the meeting title, date, time, and location as needed. These fields are essential for maintaining accurate meeting records.</li>
-                <li><strong>Modify the Agenda:</strong> Adjust the "Agenda" field to reflect any changes in the topics discussed during the meeting. This helps in keeping the meeting summary relevant.</li>
-                <li><strong>Edit Participants:</strong> Use the "Edit Participants" button to modify the list of participants. You can add new participants or remove existing ones. Ensure that the participant list is accurate.</li>
-                <li><strong>Update Guests:</strong> The "Edit Guests" section allows you to adjust the list of external participants. Use the "Edit Guest" button to modify guest details as necessary.</li>
-                <li><strong>Revise Action Items:</strong> Update the action items section to reflect any changes in tasks or deadlines. Each task can be edited to update the description, assignee, or due date.</li>
-                <li><strong>Save Changes:</strong> Click the "Save" button to apply the updates to the MoM entry. You can also choose to "Save as Draft" if you need to continue editing later.</li>
+                <li><strong>Update Meeting Details:</strong> Edit the meeting title, date, time, and location as needed.
+                    These fields are essential for maintaining accurate meeting records.</li>
+                <li><strong>Modify the Agenda:</strong> Adjust the "Agenda" field to reflect any changes in the topics
+                    discussed during the meeting. This helps in keeping the meeting summary relevant.</li>
+                <li><strong>Edit Participants:</strong> Use the "Edit Participants" button to modify the list of
+                    participants. You can add new participants or remove existing ones. Ensure that the participant list
+                    is accurate.</li>
+                <li><strong>Update Guests:</strong> The "Edit Guests" section allows you to adjust the list of external
+                    participants. Use the "Edit Guest" button to modify guest details as necessary.</li>
+                <li><strong>Revise Action Items:</strong> Update the action items section to reflect any changes in
+                    tasks or deadlines. Each task can be edited to update the description, assignee, or due date.</li>
+                <li><strong>Save Changes:</strong> Click the "Save" button to apply the updates to the MoM entry. You
+                    can also choose to "Save as Draft" if you need to continue editing later.</li>
             </ol>
         </section>
-    
+
         <!-- Features Section -->
         <section class="p-4">
             <h2 class="text-xl font-semibold mb-2">Features</h2>
             <ul class="list-disc pl-5 text-sm text-gray-700">
-                <li><strong>Real-Time Updates:</strong> Changes are reflected immediately, ensuring that all modifications are up-to-date.</li>
-                <li><strong>Editable Fields:</strong> All fields, including participants and tasks, can be updated to reflect the latest information.</li>
-                <li><strong>Validation and Alerts:</strong> The page provides real-time validation to ensure that all required fields are filled out correctly. Alerts will notify you of any issues.</li>
-                <li><strong>Responsive Design:</strong> The page is designed to work seamlessly on both desktop and mobile devices, making editing convenient from any device.</li>
+                <li><strong>Real-Time Updates:</strong> Changes are reflected immediately, ensuring that all
+                    modifications are up-to-date.</li>
+                <li><strong>Editable Fields:</strong> All fields, including participants and tasks, can be updated to
+                    reflect the latest information.</li>
+                <li><strong>Validation and Alerts:</strong> The page provides real-time validation to ensure that all
+                    required fields are filled out correctly. Alerts will notify you of any issues.</li>
+                <li><strong>Responsive Design:</strong> The page is designed to work seamlessly on both desktop and
+                    mobile devices, making editing convenient from any device.</li>
             </ul>
         </section>
     </div>
-    
-    
+
+    <!-- Tooltip element outside all input fields and main container -->
+    <!-- Tooltip element -->
+    <!-- Tooltip element -->
+    <div id="tooltip"
+        class="fixed top-4 right-4 mt-24 mr-4 bg-white shadow-md rounded-lg w-96 p-4 text-sm text-gray-700 hidden">
+        <div id="tooltip-heading-container" class="tooltip-header">
+            <h1 id="tooltip-heading" class="text-2xl font-bold">Tooltip <i class="fas fa-info-circle"></i></h1>
+        </div>
+        <div id="tooltip-content-container" class="tooltip-content">
+            <p></p>
+        </div>
+    </div>
+
+
+
+
+
+
 
     {{-- main content --}}
     <div class="container mx-auto mt-24 px-0 min-[1380px]:px-80">
@@ -148,14 +214,16 @@
                             <label for="meeting_title" class="block text-sm font-medium text-gray-700 mt-4">Meeting
                                 Title:</label>
                             <input type="text" id="meeting_title" name="meeting_title"
-                                class="shadow appearance-none border rounded w-full md:w-4/5 lg:w-4/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                value="{{ old('meeting_title', $notulen->meeting_title) }}" required>
+                                class="has-tooltip shadow appearance-none border rounded w-full md:w-4/5 lg:w-4/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                value="{{ old('meeting_title', $notulen->meeting_title) }}" required
+                                data-tooltip="Please enter the title of the meeting in this field. The title should be descriptive enough to clearly identify the purpose of the meeting. For example, you might enter something like 'Quarterly Sales Review' or 'Project Kickoff Meeting'. This field is required and must be filled out to proceed.">
                         </div>
                         <div class="mt-4 relative">
                             <label for="department"
                                 class="block text-gray-700 text-sm font-bold mb-2">Department</label>
-                            <div class="shadow appearance-none border rounded w-full md:w-4/5 lg:w-4/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline cursor-pointer flex justify-between items-center"
-                                onclick="toggleDropdown()">
+                            <div class="has-tooltip shadow appearance-none border rounded w-full md:w-4/5 lg:w-4/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline cursor-pointer flex justify-between items-center"
+                                onclick="toggleDropdown()"
+                                data-tooltip="Click to edit the department selection. You can choose multiple departments from the list. The selected departments will be shown here. If no department is selected, 'Select Departments' will be displayed as the default text.">
                                 <span id="dropdown-label" class="truncate">
                                     @php
                                         $selectedDepartments = json_decode(
@@ -227,8 +295,9 @@
                                     <label for="meeting_date" class="block text-sm font-medium text-gray-700">Meeting
                                         Date:</label>
                                     <input type="date" id="meeting_date" name="meeting_date"
-                                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                        value="{{ old('meeting_date', $notulen->meeting_date) }}" required>
+                                        class="has-tooltip shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                        value="{{ old('meeting_date', $notulen->meeting_date) }}" required
+                                        data-tooltip="Select the meeting date from the calendar. The date should be in the format YYYY-MM-DD. Ensure that the date you select is correct, as it will be used to schedule the meeting and cannot be changed once submitted. If the date is incorrect, you may need to update it before finalizing the submission.">
                                 </div>
                             </div>
                             <div class="w-1/2 pl-2">
@@ -236,8 +305,9 @@
                                     <label for="meeting_time" class="block text-sm font-medium text-gray-700">Meeting
                                         Time:</label>
                                     <input type="time" id="meeting_time" name="meeting_time"
-                                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                        value="{{ old('meeting_time', $notulen->meeting_time) }}" required>
+                                        class="has-tooltip shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                        value="{{ old('meeting_time', $notulen->meeting_time) }}" required
+                                        data-tooltip="Select the meeting time using the time picker. The time should be in the format HH:MM, where hours are in 24-hour format (e.g., 14:30 for 2:30 PM). Ensure the time you select is accurate as it will be used to schedule the meeting. If the time is incorrect, you will need to update it before finalizing the submission. This field is required and must be filled in to proceed with the scheduling.">
                                 </div>
                             </div>
                         </div>
@@ -245,8 +315,9 @@
                             <label for="meeting_location" class="block text-sm font-medium text-gray-700">Meeting
                                 Location:</label>
                             <select id="meeting_location" name="meeting_location"
-                                class="shadow appearance-none border rounded w-full md:w-4/5 lg:w-4/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                required>
+                                class="has-tooltip shadow appearance-none border rounded w-full md:w-4/5 lg:w-4/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                required
+                                data-tooltip="Select the meeting location from the dropdown list. You can choose from available options such as conference rooms, online meetings, or specific locations. Make sure to choose the correct location where the meeting will take place. If you select 'Online,' ensure you provide the necessary online meeting details elsewhere. If 'Off-site' or other specific locations are selected, additional information might be needed. This selection is crucial for organizing the meeting and should accurately reflect the meeting's venue.">
                                 @php
                                     $locations = [
                                         'Conference Room A',
@@ -289,22 +360,25 @@
                 <div class="form-group mt-4">
                     <label for="agenda" class="block text-sm font-medium text-gray-700">Agenda:</label>
                     <textarea id="agenda" name="agenda"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        rows="4" required>{{ old('agenda', $notulen->agenda) }}</textarea>
+                        class="has-tooltip shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        rows="4" required
+                        data-tooltip="Enter the detailed agenda for the meeting in this text area. Include key topics to be discussed, objectives, and any important points that need to be covered. This section helps to outline the structure of the meeting and ensure all relevant topics are addressed. Make sure to provide clear and organized information to facilitate an efficient and productive meeting. If you have attachments or additional notes related to the agenda, consider mentioning them here or providing links where necessary. This field is required to proceed with the meeting planning.">{{ old('agenda', $notulen->agenda) }}</textarea>
                 </div>
 
                 <div class="form-group mt-4">
                     <label for="discussion" class="block text-sm font-medium text-gray-700">Discussion:</label>
                     <textarea id="discussion" name="discussion"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        rows="4">{{ old('discussion', $notulen->discussion) }}</textarea>
+                        class="has-tooltip shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        rows="4"
+                        data-tooltip="Provide a detailed summary of the discussions that took place during the meeting in this text area. Include key points, decisions made, action items assigned, and any relevant comments or observations. This section should capture the essence of the meeting's discussion to ensure all participants are informed of what was discussed and agreed upon. Make sure to document any follow-up actions or points that require attention. This information is critical for maintaining accurate records and ensuring accountability.">{{ old('discussion', $notulen->discussion) }}</textarea>
                 </div>
 
                 <div class="form-group mt-4">
                     <label for="decisions" class="block text-sm font-medium text-gray-700">Decisions:</label>
                     <textarea id="decisions" name="decisions"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        rows="4">{{ old('decisions', $notulen->decisions) }}</textarea>
+                        class="has-tooltip shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        rows="4"
+                        data-tooltip="Document all decisions made during the meeting in this text area. Clearly outline each decision, including who is responsible for executing it, and any relevant deadlines or conditions associated with it. This section is crucial for tracking agreed-upon actions and ensuring accountability. Make sure to be precise and include any important details that were discussed. This record helps in monitoring progress and serves as a reference for future meetings. If there are multiple decisions, consider using bullet points or a numbered list for clarity.">{{ old('decisions', $notulen->decisions) }}</textarea>
                 </div>
             </div>
 
@@ -639,7 +713,7 @@
                     // If the PIC select dropdown exists, add the participant to it
                     if (picSelect) {
                         const index = picSelect.getAttribute(
-                        'data-index'); // Get the index from the data attribute
+                            'data-index'); // Get the index from the data attribute
                         const specificPicSelect = document.querySelector(
                             `select[name="tasks[${index}][task_pic][]"]`);
 
@@ -663,7 +737,7 @@
                     // If the PIC select dropdown exists, remove the participant from it
                     if (picSelect) {
                         const index = picSelect.getAttribute(
-                        'data-index'); // Get the index from the data attribute
+                            'data-index'); // Get the index from the data attribute
                         const specificPicSelect = document.querySelector(
                             `select[name="tasks[${index}][task_pic][]"]`);
 
@@ -815,17 +889,17 @@
         });
 
         // Remove Guest
-// Remove Guest
-document.addEventListener('click', function(event) {
-    if (event.target.classList.contains('remove-guest')) {
-        const row = event.target.closest('tr');
-        
-        // Remove the guest from the table
-        if (row) {
-            row.remove();
-        }
-    }
-});
+        // Remove Guest
+        document.addEventListener('click', function(event) {
+            if (event.target.classList.contains('remove-guest')) {
+                const row = event.target.closest('tr');
+
+                // Remove the guest from the table
+                if (row) {
+                    row.remove();
+                }
+            }
+        });
 
 
 
@@ -857,6 +931,29 @@ document.addEventListener('click', function(event) {
                 if (result.isConfirmed) {
                     e.target.submit();
                 }
+            });
+        });
+        document.addEventListener('DOMContentLoaded', () => {
+            const tooltip = document.getElementById('tooltip');
+            const tooltipElements = document.querySelectorAll('.has-tooltip');
+            const tooltipHeading = document.getElementById('tooltip-heading');
+
+            tooltipElements.forEach(element => {
+                element.addEventListener('mouseenter', (event) => {
+                    // Update the tooltip heading or content as needed
+
+                    // Set the tooltip content from the data-tooltip attribute
+                    const tooltipContent = event.target.getAttribute('data-tooltip');
+                    tooltip.querySelector('p').innerText = tooltipContent;
+
+                    // Show the tooltip
+                    tooltip.classList.remove('hidden');
+                });
+
+                element.addEventListener('mouseleave', () => {
+                    // Hide the tooltip
+                    tooltip.classList.add('hidden');
+                });
             });
         });
     </script>

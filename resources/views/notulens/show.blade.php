@@ -13,12 +13,44 @@
         integrity="sha512-rRQtF4V2wtAvXsou4iUAs2kXHi3Lj9NE7xJR77DE7GHsxgY9RTWy93dzMXgDIG8ToiRTD45VsDNdTiUagOFeZA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <style>
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-    </style>
+        <style>
+            .container {
+                max-width: 800px;
+                margin: 0 auto;
+            }
+    
+            #tooltip {
+                transition: opacity 0.2s ease;
+                opacity: 0;
+            }
+    
+            #tooltip:not(.hidden) {
+                opacity: 1;
+            }
+    
+            #tooltip {
+                display: flex;
+                justify-content: flex-end;
+            }
+    
+            /* Ensure the header and content are stacked vertically */
+            /* Ensure the tooltip uses Flexbox to stack elements vertically */
+            #tooltip {
+                display: flex;
+                flex-direction: column;
+            }
+    
+            /* Style adjustments */
+            .tooltip-header {
+                margin-bottom: 12px;
+                /* Space between title and content */
+            }
+    
+            .tooltip-content p {
+                margin: 0;
+                /* Ensure no extra margin in the content */
+            }
+        </style>
 </head>
 
 <body class="bg-gray-100">
@@ -116,6 +148,17 @@
             </ul>
         </section>
     </div>
+
+        <!-- Tooltip element -->
+        <div id="tooltip"
+        class="fixed top-4 right-4 mt-24 mr-4 bg-white shadow-md rounded-lg w-96 p-4 text-sm text-gray-700 hidden">
+        <div id="tooltip-heading-container" class="tooltip-header">
+            <h1 id="tooltip-heading" class="text-2xl font-bold">Tooltip <i class="fas fa-info-circle"></i></h1>
+        </div>
+        <div id="tooltip-content-container" class="tooltip-content">
+            <p></p>
+        </div>
+    </div>
     
 
     
@@ -190,11 +233,17 @@
                 {{-- Distrubute Button --}}
                 <div class="flex justify-end">
                     <button id="distributeButton"
-                        class="text-white px-4 py-2 rounded
-                        {{ $notulen->status === 'Inactive' ? 'bg-gray-500 cursor-not-allowed' : 'bg-[#79B51F] hover:bg-[#69A01C]' }}"
-                        {{ $notulen->status === 'Inactive' ? 'disabled' : '' }}>
-                        Distribute
-                    </button>
+                    class="has-tooltip text-white px-4 py-2 rounded
+                    @if($notulen->status === 'Inactive') bg-gray-500 cursor-not-allowed @else bg-[#79B51F] hover:bg-[#69A01C] @endif"
+                    @if($notulen->status === 'Inactive') 
+                        disabled 
+                        data-tooltip="This MoM is inactive and cannot be distributed. Only the scripter can distribute the MoM, but it is currently disabled."
+                    @else 
+                        data-tooltip="You are the scripter. You can distribute this MoM to all participants via email."
+                    @endif>
+                    Distribute
+                </button>
+                
                 </div>
                 
 
@@ -206,7 +255,7 @@
 
 
         @if ($notulen->tasks->isNotEmpty())
-        <div class="all-tasks">
+        <div class="has-tooltip all-tasks" data-tooltip="This section displays all the tasks associated with the current MoM (Minutes of Meeting). Each task is listed with its topic, the person(s) in charge (PIC), due date, current status, description, and any associated attachments. Use this table to review the tasks, their progress, and ensure all actions are being tracked effectively. The table helps to keep everyone on the same page and facilitates follow-up on pending or completed tasks. Click on 'View Attachment' to see any files related to a task.">
             <h3 class="text-xl font-semibold mt-6">All Tasks</h3>
 
             <div class="bg-white shadow-[0_0px_50px_-15px_rgba(0,0,0,0.3)] rounded-lg overflow-hidden mb-8 p-4">
@@ -261,7 +310,7 @@
 
         @if ($userTasks->isNotEmpty())
            
-        <div class="my-tasks">
+        <div class="has-tooltip my-tasks" data-tooltip="This section lists all the tasks assigned to you from the current MoM (Minutes of Meeting). Review your tasks, check due dates, update statuses, and ensure that you are on track with your responsibilities. This personalized view helps you stay organized and manage your workload efficiently.">
             <h3 class="text-xl font-semibold mt-6">My Tasks</h3>
 
             <div class="bg-white shadow-[0_0px_50px_-15px_rgba(0,0,0,0.3)] rounded-lg overflow-hidden mb-8 p-4">
@@ -312,15 +361,15 @@
                                     </td>
                                     <td class="border border-gray-300 p-2">
                                         @if ($notulen->status !== 'Inactive')
-                                            <button class="bg-[#79B51F] hover:bg-[#69A01C] text-white px-4 py-2 rounded update-task-btn"
+                                            <button class="has-tooltip bg-[#79B51F] hover:bg-[#69A01C] text-white px-4 py-2 rounded update-task-btn"
                                                 data-task-id="{{ $task->id }}"
                                                 data-task-topic="{{ $task->task_topic }}"
                                                 data-task-description="{{ $task->description }}"
                                                 data-task-status="{{ $task->status }}"
-                                                data-task-attachment="{{ $task->attachment }}">Update</button>
+                                                data-task-attachment="{{ $task->attachment }}" data-tooltip="Click to update the selected task. This will open a modal where you can add or modify the task's description, attach files if necessary, and update the status. Ensure that all task information is up-to-date to reflect the current progress.">Update</button>
                                         @else
-                                            <button class="bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed"
-                                                disabled>
+                                            <button class="has-tooltip bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed"
+                                                disabled data-tooltip="This button is disabled because the MoM (Minutes of Meeting) has been marked as inactive. You can no longer update tasks associated with this MoM. If further updates are needed, please consult the administrator or create a new MoM.">
                                                 Update
                                             </button>
                                         @endif
@@ -517,6 +566,31 @@
 
 
 
+        });
+
+                // tooltip
+                document.addEventListener('DOMContentLoaded', () => {
+            const tooltip = document.getElementById('tooltip');
+            const tooltipElements = document.querySelectorAll('.has-tooltip');
+            const tooltipHeading = document.getElementById('tooltip-heading');
+
+            tooltipElements.forEach(element => {
+                element.addEventListener('mouseenter', (event) => {
+                    // Update the tooltip heading or content as needed
+
+                    // Set the tooltip content from the data-tooltip attribute
+                    const tooltipContent = event.target.getAttribute('data-tooltip');
+                    tooltip.querySelector('p').innerText = tooltipContent;
+
+                    // Show the tooltip
+                    tooltip.classList.remove('hidden');
+                });
+
+                element.addEventListener('mouseleave', () => {
+                    // Hide the tooltip
+                    tooltip.classList.add('hidden');
+                });
+            });
         });
     </script>
 </body>
