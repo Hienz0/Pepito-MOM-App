@@ -464,7 +464,7 @@
                                 <label for="task_pic" class="block text-gray-700 text-sm font-bold mb-2">Person in
                                     Charge</label>
                                 <button type="button"
-                                    class="has-tooltip bg-[#79B51F] hover:bg-[#69A01C] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                    class="has-tooltip bg-[#79B51F] hover:bg-[#69A01C] text-white font-bold py-2 px-4 mb-2 rounded focus:outline-none focus:shadow-outline"
                                     id="openPICModalBtn"
                                     data-tooltip="Click this button to open a modal where you can search for and select the person(s) responsible for this task. The modal allows you to choose multiple people using checkboxes. Once selected, their names will be displayed below in the 'Person in Charge' dropdown. Ensure that the correct individuals are assigned to avoid any confusion or delay in task completion. The dropdown will update to reflect the selected PIC(s).">Select
                                     PIC</button>
@@ -580,108 +580,113 @@
     </div>
 
 
-    <!-- Modal -->
-    <div id="participantModal" class="fixed z-10 inset-0 overflow-y-auto hidden">
-        <div class="flex items-center justify-center min-h-screen px-4">
-            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+<!-- Modal -->
+<div id="participantModal" class="fixed z-10 inset-0 hidden overflow-y-auto">
+    <div class="flex items-center justify-center min-h-screen px-4">
+        <div class="fixed inset-0 bg-black bg-opacity-30" aria-hidden="true"></div>
+        <div class="bg-white rounded-lg shadow-lg sm:max-w-md w-full transform transition-all">
+            <!-- Modal Header -->
+            <div class="bg-white border-b border-gray-200 px-4 py-2.5 rounded-t-lg">
+                <h3 class="text-sm font-medium text-gray-700">Select Participants</h3>
             </div>
-            <div class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
-                <div class="bg-gray-800 text-white px-4 py-3">
-                    <h3 class="text-lg leading-6 font-medium">Select Participants</h3>
-                </div>
-                <div class="p-4" style="max-height: 400px; overflow-y: auto;">
-                    <input type="text" id="participantSearch"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        placeholder="Search participants by name or ID">
-                    <div id="participantList" class="mt-4">
-                        @foreach ($users as $user)
-                            <div class="participant-item flex justify-between items-center p-2 border-b"
-                                data-id="{{ $user->id }}" data-name="{{ $user->name }}">
-                                <span>{{ $user->name }} (ID: {{ $user->id }})</span>
-                                <input type="checkbox" class="participant-checkbox">
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-                <div class="bg-gray-200 px-4 py-3 flex justify-end">
-                    <button type="button" class="bg-green-500 text-white font-bold py-2 px-4 rounded mr-2"
-                        id="openAddGuestModalBtn">Add Guest</button>
-                    <button type="button" class="bg-red-500 text-white font-bold py-2 px-4 rounded mr-2"
-                        id="closeParticipantModalBtn">Cancel</button>
-                    <button type="button" class="bg-blue-500 text-white font-bold py-2 px-4 rounded"
-                        id="selectParticipantsBtn">Select</button>
+            <!-- Modal Content -->
+            <div class="px-4 py-3 max-h-80 overflow-y-auto">
+                <input type="text" id="participantSearch"
+                    class="border border-gray-300 rounded w-full py-1.5 px-2 text-sm text-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    placeholder="Search participants by name or ID">
+                <div id="participantList" class="mt-3">
+                    @foreach ($users as $user)
+                        <div class="participant-item flex justify-between items-center p-2 border-b border-gray-100"
+                            data-id="{{ $user->id }}" data-name="{{ $user->name }}">
+                            <span class="text-sm text-gray-700">{{ $user->name }} (ID: {{ $user->id }})</span>
+                            <input type="checkbox" class="participant-checkbox h-4 w-4 text-blue-600">
+                        </div>
+                    @endforeach
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Add Guest Modal -->
-    <div id="addGuestModal" class="fixed z-10 inset-0 overflow-y-auto hidden">
-        <div class="flex items-center justify-center min-h-screen px-4">
-            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
-            </div>
-            <div class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
-                <div class="bg-gray-800 text-white px-4 py-3">
-                    <h3 class="text-lg leading-6 font-medium">Add Guest</h3>
-                </div>
-                <div class="p-4">
-                    <label for="guest_name" class="block text-gray-700 text-sm font-bold mb-2">Guest Name</label>
-                    <input type="text" id="guest_name"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        placeholder="Enter guest name">
-                    <label for="guest_email" class="block text-gray-700 text-sm font-bold mb-2 mt-4">Guest
-                        Email</label>
-                    <input type="email" id="guest_email"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        placeholder="Enter guest email">
-                </div>
-                <div class="bg-gray-200 px-4 py-3 flex justify-end">
-
-                    <button type="button" class="bg-red-500 text-white font-bold py-2 px-4 rounded mr-2"
-                        id="closeAddGuestModalBtn">Cancel</button>
-                    <button type="button" class="bg-blue-500 text-white font-bold py-2 px-4 rounded"
-                        id="addGuestBtn">Add Guest</button>
-                </div>
+            <!-- Modal Footer -->
+            <div class="bg-gray-50 px-4 py-2.5 flex justify-end space-x-2 rounded-b-lg">
+                <button type="button" class="bg-blue-500 text-white text-sm font-semibold py-1 px-3 rounded shadow-sm hover:bg-blue-600 transition"
+                    id="selectParticipantsBtn">Select</button>
+                <button type="button" class="bg-red-500 text-white text-sm font-semibold py-1 px-3 rounded shadow-sm hover:bg-red-600 transition"
+                    id="closeParticipantModalBtn">Cancel</button>
+                <button type="button" class="bg-green-500 text-white text-sm font-semibold py-1 px-3 rounded shadow-sm hover:bg-green-600 transition"
+                    id="openAddGuestModalBtn">Add Guest</button>
             </div>
         </div>
     </div>
+</div>
+
+
+<!-- Add Guest Modal -->
+<div id="addGuestModal" class="fixed z-10 inset-0 hidden overflow-y-auto">
+    <div class="flex items-center justify-center min-h-screen px-4">
+        <div class="fixed inset-0 bg-black bg-opacity-30" aria-hidden="true"></div>
+        <div class="bg-white rounded-lg shadow-lg sm:max-w-md w-full transform transition-all">
+            <!-- Modal Header -->
+            <div class="bg-white border-b border-gray-200 px-4 py-2.5 rounded-t-lg">
+                <h3 class="text-sm font-medium text-gray-700">Add Guest</h3>
+            </div>
+            <!-- Modal Content -->
+            <div class="px-4 py-3">
+                <label for="guest_name" class="block text-sm text-gray-700 mb-1">Guest Name</label>
+                <input type="text" id="guest_name"
+                    class="border border-gray-300 rounded w-full py-1.5 px-2 text-sm text-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    placeholder="Enter guest name">
+                <label for="guest_email" class="block text-sm text-gray-700 mb-1 mt-3">Guest Email</label>
+                <input type="email" id="guest_email"
+                    class="border border-gray-300 rounded w-full py-1.5 px-2 text-sm text-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    placeholder="Enter guest email">
+            </div>
+            <!-- Modal Footer -->
+            <div class="bg-gray-50 px-4 py-2.5 flex justify-end space-x-2 rounded-b-lg">
+                <button type="button" class="bg-red-500 text-white text-sm font-semibold py-1 px-3 rounded shadow-sm hover:bg-red-600 transition"
+                    id="closeAddGuestModalBtn">Cancel</button>
+                <button type="button" class="bg-blue-500 text-white text-sm font-semibold py-1 px-3 rounded shadow-sm hover:bg-blue-600 transition"
+                    id="addGuestBtn">Add Guest</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
     <!-- PIC Selection Modal -->
     <!-- PIC Selection Modal -->
-    <div id="picModal" class="fixed z-10 inset-0 overflow-y-auto hidden">
-        <div class="flex items-center justify-center min-h-screen px-4">
-            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+<!-- PIC Selection Modal -->
+<div id="picModal" class="fixed z-10 inset-0 hidden overflow-y-auto">
+    <div class="flex items-center justify-center min-h-screen px-4">
+        <div class="fixed inset-0 bg-black bg-opacity-30" aria-hidden="true"></div>
+        <div class="bg-white rounded-lg shadow-lg sm:max-w-md w-full transform transition-all">
+            <!-- Modal Header -->
+            <div class="bg-white border-b border-gray-200 px-4 py-2.5 rounded-t-lg">
+                <h3 class="text-sm font-medium text-gray-700">Select Person in Charge</h3>
             </div>
-            <div class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
-                <div class="bg-gray-800 text-white px-4 py-3">
-                    <h3 class="text-lg leading-6 font-medium">Select Person in Charge</h3>
+            <!-- Modal Content -->
+            <div class="px-4 py-3 max-h-80 overflow-y-auto">
+                <input type="text" id="picSearch"
+                    class="border border-gray-300 rounded w-full py-1.5 px-2 text-sm text-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    placeholder="Search PICs by name or ID">
+                <div id="picList" class="mt-3">
+                    @foreach ($users as $user)
+                        <div class="pic-item flex justify-between items-center p-2 border-b border-gray-100"
+                            data-id="{{ $user->id }}" data-name="{{ $user->name }}">
+                            <span class="text-sm text-gray-700">{{ $user->name }} (ID: {{ $user->id }})</span>
+                            <input type="checkbox" class="pic-checkbox h-4 w-4 text-blue-600">
+                        </div>
+                    @endforeach
                 </div>
-                <div class="p-4" style="max-height: 400px; overflow-y: auto;">
-                    <input type="text" id="picSearch"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        placeholder="Search PICs by name or ID">
-                    <div id="picList" class="mt-4">
-                        @foreach ($users as $user)
-                            <div class="pic-item flex justify-between items-center p-2 border-b"
-                                data-id="{{ $user->id }}" data-name="{{ $user->name }}">
-                                <span>{{ $user->name }} (ID: {{ $user->id }})</span>
-                                <input type="checkbox" class="pic-checkbox">
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-                <div class="bg-gray-200 px-4 py-3 flex justify-end">
-                    <button type="button" class="bg-red-500 text-white font-bold py-2 px-4 rounded mr-2"
-                        id="closePICModalBtn">Cancel</button>
-                    <button type="button" class="bg-blue-500 text-white font-bold py-2 px-4 rounded"
-                        id="selectPICsBtn">Select</button>
-                </div>
+            </div>
+            <!-- Modal Footer -->
+            <div class="bg-gray-50 px-4 py-2.5 flex justify-end space-x-2 rounded-b-lg">
+                <button type="button" class="bg-red-500 text-white text-sm font-semibold py-1 px-3 rounded shadow-sm hover:bg-red-600 transition"
+                    id="closePICModalBtn">Cancel</button>
+                <button type="button" class="bg-blue-500 text-white text-sm font-semibold py-1 px-3 rounded shadow-sm hover:bg-blue-600 transition"
+                    id="selectPICsBtn">Select</button>
             </div>
         </div>
     </div>
+</div>
+
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>

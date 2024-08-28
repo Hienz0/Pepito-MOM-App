@@ -178,14 +178,17 @@
                         {{ $notulen->department }}
                     @endif
                 </p>
-                <p class="pb-4"><strong>Date:</strong> {{ $notulen->meeting_date }}</p>
-                <p class="pb-4"><strong>Time:</strong> {{ $notulen->meeting_time }}</p>
-                <p class="pb-4"><strong>Location:</strong> {{ $notulen->meeting_location }}</p>
-                <p class="pb-4"><strong>Scripter:</strong> {{ $notulen->scripter->name }}</p>
+                <div class="has-tooltip" data-tooltip="This section provides detailed information about the meeting. It includes the scheduled date, which is the day the meeting is set to occur. The time field specifies when the meeting will commence, ensuring all participants can be punctual. The location indicates where the meeting will take place, which could be a physical address or a virtual meeting link. Finally, the scripter is the individual responsible for documenting the meeting notes and minutes, ensuring accurate records of the discussions and decisions are maintained.">
+                    <p class="pb-4"><strong>Date:</strong> {{ $notulen->meeting_date }}</p>
+                    <p class="pb-4"><strong>Time:</strong> {{ $notulen->meeting_time }}</p>
+                    <p class="pb-4"><strong>Location:</strong> {{ $notulen->meeting_location }}</p>
+                    <p class="pb-4"><strong>Scripter:</strong> {{ $notulen->scripter->name }}</p>
+    
+                </div>
 
                 @if ($notulen->participants->isNotEmpty())
                     <h3 class="text-xl font-semibold mt-6">Participants</h3>
-                    <table class="w-full mt-4 border-collapse border border-gray-300">
+                    <table class="has-tooltip w-full mt-4 border-collapse border border-gray-300" data-tooltip="This table provides details about the participants of the meeting. Each row includes the participant's unique ID, their full name, and their email address. This information helps in identifying and contacting the participants as needed.">
                         <thead>
                             <tr class="bg-[#FF9D03] text-white">
                                 <th class="border border-gray-300 p-2">ID</th>
@@ -207,7 +210,7 @@
 
                 @if ($notulen->guests->isNotEmpty())
                     <h3 class="text-xl font-semibold mt-6">Guests</h3>
-                    <table class="w-full mt-4 border-collapse border border-gray-300">
+                    <table class="has-tooltip w-full mt-4 border-collapse border border-gray-300" data-tooltip="This table lists the guests attending the meeting. Each row provides the guest's full name and their email address, helping to identify and contact them if needed.">
                         <thead>
                             <tr class="bg-[#FF9D03] text-white">
                                 <th class="border border-gray-300 p-2">Name</th>
@@ -225,10 +228,11 @@
                     </table>
                 @endif
 
-
-                <p class="pb-4"><strong>Agenda:</strong> {{ $notulen->agenda }}</p>
-                <p class="pb-4"><strong>Discussion:</strong> {{ $notulen->discussion }}</p>
-                <p class="pb-4"><strong>Decisions:</strong> {{ $notulen->decisions }}</p>
+                <div class="has-tooltip" data-tooltip="This section provides a summary of the meeting content. It includes the agenda, which outlines the topics to be discussed; the discussion, which provides details on the conversations and key points raised during the meeting; and the decisions, which summarize the conclusions and actions agreed upon. This information is crucial for understanding the meeting's objectives, outcomes, and next steps.">
+                    <p class="pb-4"><strong>Agenda:</strong> {{ $notulen->agenda }}</p>
+                    <p class="pb-4"><strong>Discussion:</strong> {{ $notulen->discussion }}</p>
+                    <p class="pb-4"><strong>Decisions:</strong> {{ $notulen->decisions }}</p>    
+                </div>
 
                 {{-- Distrubute Button --}}
                 <div class="flex justify-end">
@@ -419,7 +423,7 @@
                     <div class="mb-4">
                         <label for="task_attachment" class="block text-gray-700 font-medium">Attachment</label>
                         <input type="file"
-                            class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                            class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
                             id="task_attachment" name="attachment">
                     </div>
                     <div class="mb-4 flex items-center">
@@ -429,8 +433,8 @@
                     </div>
                     <div class="flex justify-end">
                         <button type="button"
-                            class="bg-gray-500 text-white px-4 py-2 rounded mr-2 close-modal">Close</button>
-                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Update Task</button>
+                            class="bg-gray-500 hover:bg-gray-700 text-white px-4 py-2 rounded mr-2 close-modal">Close</button>
+                        <button type="submit" class="bg-green-500 hover:bg-green-700 text-white px-4 py-2 rounded">Update Task</button>
                     </div>
                 </form>
             </div>

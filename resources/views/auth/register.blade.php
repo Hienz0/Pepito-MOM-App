@@ -12,6 +12,24 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body class="bg-gray-100">
+        <!-- Navbar -->
+        <nav style="background-color: #F9F9F9;" class="fixed w-full shadow-md h-20">
+            <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <!-- Navbar image -->
+                    <div class="flex-shrink-0 mr-auto h-12">
+                        <img src="{{ asset('images/pepito-logo.png') }}" alt="Navbar Logo" class="h-12 w-auto ml-2 " src="/">
+                    </div>
+                    {{-- <div class="hidden md:flex items-center space-x-4">
+                        <a href="#" class="text-gray-700 hover:text-gray-900">Home</a>
+                        <a href="#" class="text-gray-700 hover:text-gray-900">About</a>
+                        <a href="#" class="text-gray-700 hover:text-gray-900">Contact</a>
+                    </div> --}}
+                </div>
+            </div>
+        </nav>
+
+
 <div class="flex items-center justify-center min-h-screen">
     <div class="bg-white shadow-md rounded px-8 py-6 w-full max-w-lg">
         <h2 class="text-center text-2xl font-bold mb-4">Register</h2>

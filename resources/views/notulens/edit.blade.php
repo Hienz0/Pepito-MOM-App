@@ -8,6 +8,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Include Choices.js CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+
+<!-- Include Choices.js JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css"
         integrity="sha512-rRQtF4V2wtAvXsou4iUAs2kXHi3Lj9NE7xJR77DE7GHsxgY9RTWy93dzMXgDIG8ToiRTD45VsDNdTiUagOFeZA=="
@@ -204,7 +210,7 @@
             @csrf
             @method('PUT')
 
-            <div class="bg-white shadow-[0_0px_50px_-15px_rgba(0,0,0,0.3)] rounded-lg overflow-hidden mb-8 p-4">
+            <div class="bg-white shadow-[0_0px_50px_-15px_rgba(0,0,0,0.3)] rounded-lg overflow-hidden mb-8 p-6">
                 <div class="text-white p-4" style="background-color: #FF9D03">
                     <h1 class="text-2xl font-semibold mb-0">Edit MoM</h1>
                 </div>
@@ -218,12 +224,12 @@
                                 value="{{ old('meeting_title', $notulen->meeting_title) }}" required
                                 data-tooltip="Please enter the title of the meeting in this field. The title should be descriptive enough to clearly identify the purpose of the meeting. For example, you might enter something like 'Quarterly Sales Review' or 'Project Kickoff Meeting'. This field is required and must be filled out to proceed.">
                         </div>
-                        <div class="mt-4 relative">
+                        <div class="has-tooltip mt-4 relative"
+                            data-tooltip="Click to edit the department selection. You can choose multiple departments from the list. The selected departments will be shown here. If no department is selected, 'Select Departments' will be displayed as the default text.">
                             <label for="department"
                                 class="block text-gray-700 text-sm font-bold mb-2">Department</label>
-                            <div class="has-tooltip shadow appearance-none border rounded w-full md:w-4/5 lg:w-4/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline cursor-pointer flex justify-between items-center"
-                                onclick="toggleDropdown()"
-                                data-tooltip="Click to edit the department selection. You can choose multiple departments from the list. The selected departments will be shown here. If no department is selected, 'Select Departments' will be displayed as the default text.">
+                            <div class="shadow appearance-none border rounded w-full md:w-4/5 lg:w-4/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline cursor-pointer flex justify-between items-center"
+                                onclick="toggleDropdown()">
                                 <span id="dropdown-label" class="truncate">
                                     @php
                                         $selectedDepartments = json_decode(
@@ -311,13 +317,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group mt-4">
+                        <div class="has-tooltip form-group mt-4"
+                            data-tooltip="Select the meeting location from the dropdown list. You can choose from available options such as conference rooms, online meetings, or specific locations. Make sure to choose the correct location where the meeting will take place. If you select 'Online,' ensure you provide the necessary online meeting details elsewhere. If 'Off-site' or other specific locations are selected, additional information might be needed. This selection is crucial for organizing the meeting and should accurately reflect the meeting's venue.">
                             <label for="meeting_location" class="block text-sm font-medium text-gray-700">Meeting
                                 Location:</label>
                             <select id="meeting_location" name="meeting_location"
-                                class="has-tooltip shadow appearance-none border rounded w-full md:w-4/5 lg:w-4/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                required
-                                data-tooltip="Select the meeting location from the dropdown list. You can choose from available options such as conference rooms, online meetings, or specific locations. Make sure to choose the correct location where the meeting will take place. If you select 'Online,' ensure you provide the necessary online meeting details elsewhere. If 'Off-site' or other specific locations are selected, additional information might be needed. This selection is crucial for organizing the meeting and should accurately reflect the meeting's venue.">
+                                class="shadow appearance-none border rounded w-full md:w-4/5 lg:w-4/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                required>
                                 @php
                                     $locations = [
                                         'Conference Room A',
@@ -384,7 +390,7 @@
 
 
 
-            <div class="bg-white shadow-[0_0px_50px_-15px_rgba(0,0,0,0.3)] rounded-lg overflow-hidden mb-8 p-4">
+            <div class="bg-white shadow-[0_0px_50px_-15px_rgba(0,0,0,0.3)] rounded-lg overflow-hidden mb-8 p-6">
                 <div class="text-white p-4" style="background-color: #FF9D03">
                     <h1 class="text-2xl font-semibold mb-0">Edit Particpant & Guest</h1>
                 </div>
@@ -392,7 +398,8 @@
                 <div class="form-group mt-4">
                     <label for="participants" class="block text-sm font-medium text-gray-700">Participants:</label>
                     <div class="overflow-x-auto">
-                        <table class="min-w-full bg-white border border-gray-300 rounded-md shadow-sm">
+                        <table class="has-tooltip min-w-full bg-white border border-gray-300 rounded-md shadow-sm"
+                            data-tooltip="This table displays the complete list of participants currently associated with this meeting. Each row includes the participant's unique ID, their name, and an action button that allows you to remove them from the list. To add new participants, or to make other changes to the existing list, please use the 'Manage Participants' button below. This button will open a modal where you can search for participants, select or deselect them, and then update the list accordingly.">
                             <thead>
                                 <tr class="bg-gray-100">
                                     <th class="py-2 px-4 border-b text-left text-sm font-medium text-gray-700">ID</th>
@@ -408,11 +415,11 @@
                                         <td class="py-2 px-4 border-b">
                                             <input type="text" name="participants[]"
                                                 value="{{ $participant->id }}" readonly
-                                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-200">
+                                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                                         </td>
                                         <td class="py-2 px-4 border-b">
                                             <input type="text" value="{{ $participant->name }}" readonly
-                                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-200">
+                                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                                         </td>
                                         <td class="py-2 px-4 border-b text-center">
                                             <button type="button"
@@ -424,69 +431,73 @@
                         </table>
                     </div>
                     <button type="button" id="add-participant"
-                        class="bg-[#79B51F] hover:bg-[#69A01C] text-white font-bold py-2 px-4 my-4 rounded mb-4 focus:outline-none focus:shadow-outline">Add
+                        class="has-tooltip bg-[#79B51F] hover:bg-[#69A01C] text-white font-bold py-2 px-4 my-4 rounded mb-4 focus:outline-none focus:shadow-outline"
+                        data-tooltip="Click this button to open the participant management modal, where you can search for new participants to add to the meeting. In the modal, you can select multiple participants, who will then be added to the list of participants for this meeting. Ensure to save your changes after adding participants to update the participant list accordingly.">Add
                         Participant</button>
+                        <button type="button"
+                        class="open-guest-modal if-guest-empty has-tooltip bg-[#79B51F] hover:bg-[#69A01C] text-white font-bold py-2 px-4 my-4 rounded mb-4 focus:outline-none focus:shadow-outline"
+                        data-tooltip="Click this button to open the 'Add Guest' modal. In the modal, you can enter the name and email address of a new guest to invite them to the meeting. Make sure to input accurate information, as this will be used to send invitations and meeting details to the guest. After adding a guest, they will appear in the guest list below. Use this feature to efficiently manage additional attendees for the meeting.">Add
+                        Guest</button>
                 </div>
 
                 <!-- Modal -->
-                <div id="participant-modal"
-                    class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center hidden">
-                    <div class="bg-white rounded-lg shadow-lg p-6 w-1/2">
-                        <h2 class="text-lg font-medium text-gray-700 mb-4">Select Participants</h2>
-                        <!-- Search input -->
-                        <div class="mb-4">
-                            <input type="text" id="search-participants" placeholder="Search by ID or Name..."
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
-                        </div>
+<!-- Participant Modal -->
+<div id="participant-modal" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center hidden">
+    <div class="bg-white rounded-lg shadow-lg p-5 sm:w-1/3 w-full mx-4 transform transition-all">
+        <!-- Modal Header -->
+        <h2 class="text-base font-semibold text-gray-800 mb-3">Select Participants</h2>
+        
+        <!-- Search Input -->
+        <div class="mb-3">
+            <input type="text" id="search-participants" placeholder="Search by ID or Name..."
+                class="w-full px-3 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500">
+        </div>
 
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full bg-white border border-gray-300 rounded-md shadow-sm">
-                                <thead>
-                                    <tr class="bg-gray-100">
-                                        <th class="py-2 px-4 border-b text-left text-sm font-medium text-gray-700">ID
-                                        </th>
-                                        <th class="py-2 px-4 border-b text-left text-sm font-medium text-gray-700">Name
-                                        </th>
-                                        <th class="py-2 px-4 border-b text-left text-sm font-medium text-gray-700">
-                                            Select</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="modal-participants-container">
-                                    @foreach ($users as $participant)
-                                        <!-- Changed $allParticipants to $users -->
-                                        <tr>
-                                            <td class="py-2 px-4 border-b">{{ $participant->id }}</td>
-                                            <td class="py-2 px-4 border-b">{{ $participant->name }}</td>
-                                            <td class="py-2 px-4 border-b text-center">
-                                                <input type="checkbox" class="participant-checkbox"
-                                                    value="{{ $participant->id }}"
-                                                    data-name="{{ $participant->name }}">
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
+        <!-- Participant Table -->
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white border border-gray-300 rounded-md">
+                <thead>
+                    <tr class="bg-gray-100">
+                        <th class="py-1 px-2 border-b text-left text-xs font-medium text-gray-700">ID</th>
+                        <th class="py-1 px-2 border-b text-left text-xs font-medium text-gray-700">Name</th>
+                        <th class="py-1 px-2 border-b text-left text-xs font-medium text-gray-700">Select</th>
+                    </tr>
+                </thead>
+                <tbody id="modal-participants-container">
+                    @foreach ($users as $participant)
+                        <tr>
+                            <td class="py-1 px-2 border-b text-sm text-gray-600">{{ $participant->id }}</td>
+                            <td class="py-1 px-2 border-b text-sm text-gray-600">{{ $participant->name }}</td>
+                            <td class="py-1 px-2 border-b text-center">
+                                <input type="checkbox" class="participant-checkbox h-4 w-4 text-blue-500" 
+                                       value="{{ $participant->id }}" data-name="{{ $participant->name }}">
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
 
-                            </table>
-                        </div>
-                        <div class="mt-4 flex justify-end">
-                            <button id="add-selected-participants" type="button"
-                                class="bg-blue-500 text-white py-2 px-4 rounded-md shadow-sm hover:bg-blue-600 hidden">Add
-                                Selected</button>
-                            <button id="close-modal" type="button"
-                                class="ml-2 bg-gray-500 text-white py-2 px-4 rounded-md shadow-sm hover:bg-gray-600">Complete</button>
-                        </div>
+        <!-- Modal Footer -->
+        <div class="mt-3 flex justify-end space-x-2">
+            <button id="add-selected-participants" type="button"
+                class="bg-blue-500 text-white text-sm font-medium py-1.5 px-3 rounded-md shadow-sm hover:bg-blue-600 transition hidden">Add Selected</button>
+            <button id="close-modal" type="button"
+                class="bg-gray-500 text-white text-sm font-medium py-1.5 px-3 rounded-md shadow-sm hover:bg-gray-600 transition">Complete</button>
+        </div>
+    </div>
+</div>
 
-                    </div>
-                </div>
 
 
 
 
                 <!-- Add guests section -->
-                <div class="form-group">
+                <div id="guests-section" class="form-group hidden">
                     <label for="guests" class="block text-sm font-medium text-gray-700">Guests:</label>
                     <div class="overflow-x-auto">
-                        <table class="min-w-full bg-white border border-gray-300 rounded-md shadow-sm">
+                        <table class="has-tooltip min-w-full bg-white border border-gray-300 rounded-md shadow-sm"
+                            data-tooltip="This table displays all the guests invited to the meeting. You can manage guest information, such as their names and email addresses, directly in the table. Use the 'Remove' button to delete a guest if necessary. Remember to use the 'Manage Guests' button below to add new guests or to make bulk changes. Ensure that the guest information is accurate and up-to-date, as it will be used for communication related to the meeting.">
                             <thead>
                                 <tr class="bg-gray-100">
                                     <th class="py-2 px-4 border-b text-left text-sm font-medium text-gray-700">Name
@@ -521,35 +532,43 @@
                             </tbody>
                         </table>
                     </div>
-                    <button type="button" id="open-guest-modal"
-                        class="bg-[#79B51F] hover:bg-[#69A01C] text-white font-bold py-2 px-4 my-4 rounded mb-4 focus:outline-none focus:shadow-outline">Add
+                    <button type="button"
+                        class="open-guest-modal has-tooltip bg-[#79B51F] hover:bg-[#69A01C] text-white font-bold py-2 px-4 my-4 rounded mb-4 focus:outline-none focus:shadow-outline"
+                        data-tooltip="Click this button to open the 'Add Guest' modal. In the modal, you can enter the name and email address of a new guest to invite them to the meeting. Make sure to input accurate information, as this will be used to send invitations and meeting details to the guest. After adding a guest, they will appear in the guest list below. Use this feature to efficiently manage additional attendees for the meeting.">Add
                         Guest</button>
                 </div>
-                <!-- Guest Modal -->
-                <div id="guest-modal"
-                    class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center hidden">
-                    <div class="bg-white p-4 rounded-md shadow-lg w-1/2">
-                        <h2 class="text-lg font-medium mb-4">Add Guest</h2>
-                        <div class="mb-4">
-                            <label for="guest-name" class="block text-sm font-medium text-gray-700">Name:</label>
-                            <input type="text" id="guest-name"
-                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                placeholder="Guest Name">
-                        </div>
-                        <div class="mb-4">
-                            <label for="guest-email" class="block text-sm font-medium text-gray-700">Email:</label>
-                            <input type="email" id="guest-email"
-                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                placeholder="Guest Email">
-                        </div>
-                        <div class="flex justify-end">
-                            <button id="add-guest" type="button"
-                                class="bg-blue-500 text-white py-2 px-4 rounded-md">Add Guest</button>
-                            <button id="close-guest-modal" type="button"
-                                class="ml-2 bg-gray-500 text-white py-2 px-4 rounded-md">Close</button>
-                        </div>
-                    </div>
-                </div>
+<!-- Guest Modal -->
+<div id="guest-modal" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center hidden">
+    <div class="bg-white p-5 rounded-lg shadow-lg w-full sm:w-1/3 mx-4">
+        <!-- Modal Header -->
+        <h2 class="text-base font-semibold text-gray-800 mb-4">Add Guest</h2>
+        
+        <!-- Guest Name Input -->
+        <div class="mb-3">
+            <label for="guest-name" class="block text-sm font-medium text-gray-700">Name:</label>
+            <input type="text" id="guest-name"
+                class="w-full px-3 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+                placeholder="Guest Name">
+        </div>
+
+        <!-- Guest Email Input -->
+        <div class="mb-3">
+            <label for="guest-email" class="block text-sm font-medium text-gray-700">Email:</label>
+            <input type="email" id="guest-email"
+                class="w-full px-3 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+                placeholder="Guest Email">
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="flex justify-end space-x-2">
+            <button id="add-guest" type="button"
+                class="bg-blue-500 text-white text-sm font-medium py-1.5 px-3 rounded-md shadow-sm hover:bg-blue-600 transition">Add Guest</button>
+            <button id="close-guest-modal" type="button"
+                class="bg-gray-500 text-white text-sm font-medium py-1.5 px-3 rounded-md shadow-sm hover:bg-gray-600 transition">Close</button>
+        </div>
+    </div>
+</div>
+
 
 
 
@@ -561,7 +580,7 @@
 
 
 
-            <div class="bg-white shadow-[0_0px_50px_-15px_rgba(0,0,0,0.3)] rounded-lg overflow-hidden mb-8 p-4">
+            <div class="bg-white shadow-[0_0px_50px_-15px_rgba(0,0,0,0.3)] rounded-lg overflow-hidden mb-8 p-6">
                 <div class="text-white p-4" style="background-color: #FF9D03">
                     <h1 class="text-2xl font-semibold mb-0">Edit Task</h1>
                 </div>
@@ -587,19 +606,21 @@
                                 </div>
 
                                 <div class="mb-2">
-                                    <label for="task_pic_{{ $loop->index }}"
-                                        class="block text-sm font-medium text-gray-700">Person in Charge (PIC):</label>
-                                    <select name="tasks[{{ $loop->index }}][task_pic][]" multiple
-                                        class="border border-gray-300 rounded-md shadow-sm w-full"
-                                        data-index="{{ $loop->index }}" id="task_pic_{{ $loop->index }}">
+                                    <label class="block text-sm font-medium text-gray-700">Person in Charge (PIC):</label>
+                                    <div class="border border-gray-300 rounded-md shadow-sm p-2">
+                                        <!-- Checkboxes for each participant -->
                                         @foreach ($notulen->participants as $participant)
-                                            <option value="{{ $participant->id }}"
-                                                {{ in_array($participant->id, json_decode($task->task_pic)) ? 'selected' : '' }}>
-                                                {{ $participant->name }}
-                                            </option>
+                                            <div class="flex items-center">
+                                                <input type="checkbox" name="tasks[{{ $loop->index }}][task_pic][]"
+                                                    value="{{ $participant->id }}"
+                                                    {{ in_array($participant->id, json_decode($task->task_pic)) ? 'checked' : '' }}
+                                                    class="mr-2">
+                                                <label class="text-gray-700">{{ $participant->name }}</label>
+                                            </div>
                                         @endforeach
-                                    </select>
+                                    </div>
                                 </div>
+                                
 
 
                                 <div class="mb-2">
@@ -682,21 +703,19 @@
 
         // Add/Remove Participants on Checkbox Change
         // Add/Remove Participants on Checkbox Change
-        document.querySelectorAll('.participant-checkbox').forEach(function(checkbox) {
-            checkbox.addEventListener('change', function() {
-                const participantId = checkbox.value;
-                const participantName = checkbox.getAttribute('data-name');
-                const container = document.getElementById('participants-container');
+// Update PIC options when a participant is added/removed
+document.querySelectorAll('.participant-checkbox').forEach(function(checkbox) {
+    checkbox.addEventListener('change', function() {
+        const participantId = checkbox.value;
+        const participantName = checkbox.getAttribute('data-name');
+        const container = document.getElementById('participants-container');
 
-                // Try to find a select element for PIC, but it's okay if it doesn't exist
-                const picSelect = document.querySelector('select[name^="tasks["]');
-
-                if (checkbox.checked) {
-                    // Add participant if checked and not already in the list
-                    if (!Array.from(container.querySelectorAll('input[name="participants[]"]')).some(
-                            input => input.value === participantId)) {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
+        if (checkbox.checked) {
+            // Add participant
+            if (!Array.from(container.querySelectorAll('input[name="participants[]"]')).some(
+                    input => input.value === participantId)) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
                     <td class="py-2 px-4 border-b">
                         <input type="text" name="participants[]" value="${participantId}" readonly class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-200">
                     </td>
@@ -707,51 +726,24 @@
                         <button type="button" class="remove-participant bg-red-500 text-white px-2 py-1 rounded-md">Remove</button>
                     </td>
                 `;
-                        container.appendChild(row);
-                    }
+                container.appendChild(row);
+            }
+        } else {
+            // Remove participant
+            const rowToRemove = Array.from(container.querySelectorAll('tr'))
+                .find(row => row.querySelector('input[name="participants[]"]').value === participantId);
+            if (rowToRemove) {
+                rowToRemove.remove();
+            }
+        }
 
-                    // If the PIC select dropdown exists, add the participant to it
-                    if (picSelect) {
-                        const index = picSelect.getAttribute(
-                            'data-index'); // Get the index from the data attribute
-                        const specificPicSelect = document.querySelector(
-                            `select[name="tasks[${index}][task_pic][]"]`);
-
-                        if (specificPicSelect && !Array.from(specificPicSelect.options).some(option =>
-                                option.value === participantId)) {
-                            const option = document.createElement('option');
-                            option.value = participantId;
-                            option.textContent = participantName;
-                            specificPicSelect.appendChild(option);
-                        }
-                    }
-                } else {
-                    // Remove participant if unchecked
-                    const rowToRemove = Array.from(container.querySelectorAll('tr'))
-                        .find(row => row.querySelector('input[name="participants[]"]').value ===
-                            participantId);
-                    if (rowToRemove) {
-                        rowToRemove.remove();
-                    }
-
-                    // If the PIC select dropdown exists, remove the participant from it
-                    if (picSelect) {
-                        const index = picSelect.getAttribute(
-                            'data-index'); // Get the index from the data attribute
-                        const specificPicSelect = document.querySelector(
-                            `select[name="tasks[${index}][task_pic][]"]`);
-
-                        if (specificPicSelect) {
-                            const optionToRemove = Array.from(specificPicSelect.options)
-                                .find(option => option.value === participantId);
-                            if (optionToRemove) {
-                                optionToRemove.remove();
-                            }
-                        }
-                    }
-                }
-            });
+        // Update checkboxes in all task items
+        Array.from(document.querySelectorAll('[id^="task_pic_container_"]')).forEach((container, i) => {
+            updatePICCheckboxes(i);
         });
+    });
+});
+
 
 
 
@@ -786,13 +778,14 @@
         });
 
 
-        // Add Task
-        document.getElementById('add-task').addEventListener('click', function() {
-            const container = document.getElementById('tasks-container');
-            const index = container.children.length; // Get the current number of task items
-            const item = document.createElement('div');
-            item.classList.add('task-item', 'mb-4', 'p-4', 'border', 'border-gray-300', 'rounded-md');
-            item.innerHTML = `
+// Add Task
+// Add Task
+document.getElementById('add-task').addEventListener('click', function () {
+    const container = document.getElementById('tasks-container');
+    const index = container.children.length; // Get the current number of task items
+    const item = document.createElement('div');
+    item.classList.add('task-item', 'mb-4', 'p-4', 'border', 'border-gray-300', 'rounded-md');
+    item.innerHTML = `
         <div class="flex items-center mb-2">
             <input type="text" name="tasks[${index}][task_topic]" class="border border-gray-300 rounded-md shadow-sm w-full mr-2" placeholder="Task Topic">
             <input type="date" name="tasks[${index}][task_due_date]" class="border border-gray-300 rounded-md shadow-sm w-full mr-2" placeholder="Due Date">
@@ -801,12 +794,11 @@
         </div>
 
         <div class="mb-2">
-            <label for="task_pic" class="block text-sm font-medium text-gray-700">Person in Charge (PIC):</label>
-            <select name="tasks[${index}][task_pic][]" multiple class="border border-gray-300 rounded-md shadow-sm w-full">
-                @foreach ($notulen->participants as $participant)
-                    <option value="{{ $participant->id }}">{{ $participant->name }}</option>
-                @endforeach
-            </select>
+            <label class="block text-sm font-medium text-gray-700">Person in Charge (PIC):</label>
+            <div class="border border-gray-300 rounded-md shadow-sm p-2">
+                <!-- Checkboxes will be dynamically added here -->
+                <div id="task_pic_container_${index}" class="space-y-2"></div>
+            </div>
         </div>
 
         <div class="mb-2">
@@ -830,13 +822,44 @@
                 id="task_attachment_${index}" name="tasks[${index}][attachment]">
         </div>
     `;
-            container.appendChild(item);
-        });
+    container.appendChild(item);
+
+    // Update the PIC checkboxes for this new task
+    updatePICCheckboxes(index);
+});
+
+
+// Function to update PIC options for a specific task index
+function updatePICCheckboxes(index) {
+    const container = document.getElementById(`task_pic_container_${index}`);
+    const participants = Array.from(document.querySelectorAll('input[name="participants[]"]'));
+
+    container.innerHTML = ''; // Clear existing checkboxes
+
+    participants.forEach(participant => {
+        const participantId = participant.value;
+        const participantName = participant.closest('tr').querySelector('td:nth-child(2) input').value;
+
+        const checkbox = document.createElement('div');
+        checkbox.classList.add('flex', 'items-center');
+
+        checkbox.innerHTML = `
+            <input type="checkbox" name="tasks[${index}][task_pic][]" value="${participantId}" class="mr-2">
+            <label class="text-gray-700">${participantName}</label>
+        `;
+
+        container.appendChild(checkbox);
+    });
+}
+
+
 
         // Open Modal
-        document.getElementById('open-guest-modal').addEventListener('click', function() {
-            document.getElementById('guest-modal').classList.remove('hidden');
-        });
+        document.querySelectorAll('.open-guest-modal').forEach(button => {
+             button.addEventListener('click', function() {
+        document.getElementById('guest-modal').classList.remove('hidden');
+    });
+});
 
         // Close Modal
         document.getElementById('close-guest-modal').addEventListener('click', function() {
@@ -844,30 +867,46 @@
         });
 
         // Add Guest
-        document.getElementById('add-guest').addEventListener('click', function() {
-            const nameInput = document.getElementById('guest-name');
-            const emailInput = document.getElementById('guest-email');
-            const name = nameInput.value.trim();
-            const email = emailInput.value.trim();
+// Function to check and toggle the visibility of the guests section
+function toggleGuestsSection() {
+    const container = document.getElementById('guests-container');
+    const guestsSection = document.getElementById('guests-section');
+    const addGuestButton = document.querySelector('.if-guest-empty');
 
-            if (name === '' || email === '') {
-                alert('Please fill out both fields.');
-                return;
-            }
+    if (container.querySelectorAll('tr').length > 0) {
+        guestsSection.classList.remove('hidden');
+        addGuestButton.classList.add('hidden');  // Hide the "Add Guest" button
+    } else {
+        guestsSection.classList.add('hidden');
+        addGuestButton.classList.remove('hidden');  // Show the "Add Guest" button
+    }
+}
 
-            const container = document.getElementById('guests-container');
-            const guestIndex = container.querySelectorAll('tr').length; // Get the current index
+// Call the function on page load to ensure the correct state
+document.addEventListener('DOMContentLoaded', toggleGuestsSection);
 
-            // Check if the guest is already in the table
-            if (Array.from(container.querySelectorAll('input[name^="guests["][email]')).some(input => input
-                    .value === email)) {
-                alert('This guest is already added.');
-                return;
-            }
+// Add Guest
+document.getElementById('add-guest').addEventListener('click', function() {
+    const nameInput = document.getElementById('guest-name');
+    const emailInput = document.getElementById('guest-email');
+    const name = nameInput.value.trim();
+    const email = emailInput.value.trim();
 
-            // Create a new row
-            const row = document.createElement('tr');
-            row.innerHTML = `
+    if (name === '' || email === '') {
+        alert('Please fill out both fields.');
+        return;
+    }
+
+    const container = document.getElementById('guests-container');
+    const guestIndex = container.querySelectorAll('tr').length;
+
+    if (Array.from(container.querySelectorAll('input[name^="guests["][email]')).some(input => input.value === email)) {
+        alert('This guest is already added.');
+        return;
+    }
+
+    const row = document.createElement('tr');
+    row.innerHTML = `
         <td class="py-2 px-4 border-b">
             <input type="text" name="guests[${guestIndex}][name]" value="${name}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Guest Name">
         </td>
@@ -878,28 +917,29 @@
             <button type="button" class="remove-guest bg-red-500 text-white px-2 py-1 rounded-md">Remove</button>
         </td>
     `;
-            container.appendChild(row);
+    container.appendChild(row);
 
-            // Hide the modal after adding the guest
-            document.getElementById('guest-modal').classList.add('hidden');
+    document.getElementById('guest-modal').classList.add('hidden');
 
-            // Clear input fields
-            nameInput.value = '';
-            emailInput.value = '';
-        });
+    nameInput.value = '';
+    emailInput.value = '';
 
-        // Remove Guest
-        // Remove Guest
-        document.addEventListener('click', function(event) {
-            if (event.target.classList.contains('remove-guest')) {
-                const row = event.target.closest('tr');
+    toggleGuestsSection();  // Recheck after adding a guest
+});
 
-                // Remove the guest from the table
-                if (row) {
-                    row.remove();
-                }
-            }
-        });
+// Remove Guest
+document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('remove-guest')) {
+        const row = event.target.closest('tr');
+
+        if (row) {
+            row.remove();
+        }
+
+        toggleGuestsSection();  // Recheck after removing a guest
+    }
+});
+
 
 
 
