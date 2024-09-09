@@ -605,7 +605,7 @@
                                 ''; // Highlight unread notifications
 
                             return `
-                    <a href="${link}" class="notification-item block px-4 py-3 ${highlightClass} hover:bg-gray-100 rounded-md transition duration-200 ease-in-out shadow-sm border-b border-gray-200">
+                    <a href="${link}" class="notification-item block px-4 py-2 mb-2 ${highlightClass} hover:bg-gray-100 rounded-md transition duration-200 ease-in-out shadow-sm border-b border-gray-200">
                         <div class="icon bg-blue-500 text-white rounded-full p-2 w-10 h-10 flex items-center justify-center mx-auto mb-2">
                             <i class="fas fa-bell"></i>
                         </div>
@@ -654,7 +654,7 @@
                         const updateCarousel = (index) => {
                             isScrolling = true; // Disable scrolling during transition
                             notificationsList.style.transform =
-                                `translateY(-${index * 165}px)`; // Adjusting for notification item height
+                                `translateY(-${index * 160}px)`; // Adjusting for notification item height
 
                             // Ensure the correct dot is highlighted
                             const dots = dotsContainer.querySelectorAll('.dot');

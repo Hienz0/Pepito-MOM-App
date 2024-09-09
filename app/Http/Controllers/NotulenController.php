@@ -593,16 +593,21 @@ class NotulenController extends Controller
 
     public function getTaskLogs($id)
     {
-        $logs = TaskLog::where('task_id', $id)->with('user')->get()->map(function ($log) {
-            return [
-                'update_description' => $log->update_description,
-                'updated_at' => $log->updated_at->format('Y-m-d H:i:s'),
-                'user_name' => $log->user->name,
-            ];
-        });
-
+        $logs = TaskLog::where('task_id', $id)
+            ->with('user')
+            ->orderBy('updated_at', 'desc') // Order by updated_at in descending order
+            ->get()
+            ->map(function ($log) {
+                return [
+                    'update_description' => $log->update_description,
+                    'updated_at' => $log->updated_at->format('Y-m-d H:i:s'),
+                    'user_name' => $log->user->name,
+                ];
+            });
+    
         return response()->json(['logs' => $logs]);
     }
+    
 
 
 
@@ -635,7 +640,7 @@ class NotulenController extends Controller
         $notulen->status = 'Inactive';
         $notulen->save();
 
-        // Get participants (Assuming you have a relation to participants)
+        // Get participants)
         $participants = $notulen->participants;
 
         foreach ($participants as $participant) {

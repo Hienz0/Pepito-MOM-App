@@ -261,68 +261,88 @@
                                     data-tooltip="Enter a clear and descriptive title for the meeting. The title should provide a brief summary of the meeting's purpose or topic. For example, 'Project Kickoff Meeting' or 'Quarterly Financial Review.' This title will be used to identify and organize the meeting in records and communications, so make sure it is specific and relevant to the meeting content. Avoid vague titles and ensure that the title is easy to understand for all participants.">
                                 {{-- md:w-3/5 lg:w-3/5 --}}
                             </div>
-                            <div class="mb-4 relative has-tooltip"
-                                data-tooltip="Select one or more departments relevant to the meeting. Use the checkboxes to choose the departments involved. For instance, you might select 'HR' if the meeting involves human resources or 'IT' if it relates to information technology. The selected departments help categorize and organize the meeting appropriately. Ensure you select all relevant departments to make sure the right people are informed and involved.">
-                                <label for="department"
-                                    class="block text-gray-700 text-sm font-bold mb-2">Department</label>
-                                <div class="shadow appearance-none border rounded w-full md:w-4/5 lg:w-4/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline cursor-pointer flex justify-between items-center"
-                                    onclick="toggleDropdown()">
-                                    <span id="dropdown-label" class="truncate">Select Departments</span>
-                                    <svg class="inline w-4 h-4 ml-2" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M19 9l-7 7-7-7"></path>
-                                    </svg>
+                            <div class="mb-4 relative has-tooltip" data-tooltip="Select one or more departments relevant to the meeting...">
+                                <label for="department" class="block text-gray-700 text-sm font-bold mb-2">Department</label>
+                                <div class="relative w-full md:w-4/5 lg:w-4/5">
+
+                                    <!-- Div that should be in front -->
+                                    <div id="dropdown-toggle" class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline cursor-pointer flex justify-between items-center z-10 relative">
+                                        <span id="dropdown-label" class="truncate">Select Departments</span>
+                                        <svg class="inline w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </div>
+                                
+                                    <!-- Input field that should be behind -->
+                                    <input type="text" id="dummyInput" class="absolute inset-0 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline cursor-pointer z-0" required>
                                 </div>
-                                <div id="checkbox-dropdown"
-                                    class="absolute hidden shadow bg-white border rounded mt-2 w-full md:w-4/5 lg:w-4/5 z-10">
+                                
+                            
+                                <div id="checkbox-dropdown" class="absolute hidden shadow bg-white border rounded mt-2 w-full md:w-4/5 lg:w-4/5 z-10">
                                     <div class="p-2">
                                         <div class="flex items-center mb-2">
-                                            <input id="department_hr" name="department[]" type="checkbox"
-                                                value="HR" class="mr-2" onchange="updateLabel()">
+                                            <input id="department_hr" name="department[]" type="checkbox" value="HR" class="mr-2" onchange="updateLabel()">
                                             <label for="department_hr" class="text-gray-700">HR</label>
                                         </div>
                                         <div class="flex items-center mb-2">
-                                            <input id="department_it" name="department[]" type="checkbox"
-                                                value="IT" class="mr-2" onchange="updateLabel()">
+                                            <input id="department_it" name="department[]" type="checkbox" value="IT" class="mr-2" onchange="updateLabel()">
                                             <label for="department_it" class="text-gray-700">IT</label>
                                         </div>
                                         <div class="flex items-center mb-2">
-                                            <input id="department_finance" name="department[]" type="checkbox"
-                                                value="Finance" class="mr-2" onchange="updateLabel()">
+                                            <input id="department_finance" name="department[]" type="checkbox" value="Finance" class="mr-2" onchange="updateLabel()">
                                             <label for="department_finance" class="text-gray-700">Finance</label>
                                         </div>
                                         <div class="flex items-center mb-2">
-                                            <input id="department_marketing" name="department[]" type="checkbox"
-                                                value="Marketing" class="mr-2" onchange="updateLabel()">
+                                            <input id="department_marketing" name="department[]" type="checkbox" value="Marketing" class="mr-2" onchange="updateLabel()">
                                             <label for="department_marketing" class="text-gray-700">Marketing</label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            
 
                             <script>
-                                function toggleDropdown() {
-                                    const dropdown = document.getElementById('checkbox-dropdown');
-                                    dropdown.classList.toggle('hidden');
-                                }
+                                            // Get the input element
+    const dummyInput = document.getElementById('dummyInput');
+    
+    // Prevent any interaction with the input
+    dummyInput.addEventListener('focus', (e) => e.preventDefault());
+    dummyInput.addEventListener('keydown', (e) => e.preventDefault());
+    dummyInput.addEventListener('input', (e) => e.preventDefault());
+    
+    // Toggle dropdown open/close
+    document.getElementById('dropdown-toggle').addEventListener('click', function() {
+        const dropdown = document.getElementById('checkbox-dropdown');
+        dropdown.classList.toggle('hidden');  // Toggle the hidden class
+    });
 
-                                function updateLabel() {
-                                    const checkboxes = document.querySelectorAll('input[name="department[]"]:checked');
-                                    const label = document.getElementById('dropdown-label');
-                                    const selected = Array.from(checkboxes).map(cb => cb.nextElementSibling.textContent).join(', ');
+    // Update label and manage the required attribute
+    function updateLabel() {
+        const checkboxes = document.querySelectorAll('input[name="department[]"]:checked');
+        const label = document.getElementById('dropdown-label');
+        const selected = Array.from(checkboxes).map(cb => cb.nextElementSibling.textContent).join(', ');
 
-                                    label.textContent = selected.length > 0 ? selected : 'Select Departments';
-                                }
+        label.textContent = selected.length > 0 ? selected : 'Select Departments';
 
-                                // Close the dropdown if the user clicks outside of it
-                                document.addEventListener('click', function(event) {
-                                    const dropdown = document.getElementById('checkbox-dropdown');
-                                    const button = dropdown.previousElementSibling;
-                                    if (!button.contains(event.target) && !dropdown.contains(event.target)) {
-                                        dropdown.classList.add('hidden');
-                                    }
-                                });
+        // Toggle required attribute on the dummy input based on checkbox selection
+        const dummyInput = document.getElementById('dummyInput');
+        if (checkboxes.length > 0) {
+            dummyInput.required = false; // Remove required if one or more checkboxes are checked
+        } else {
+            dummyInput.required = true;  // Add required if no checkboxes are checked
+        }
+    }
+
+    // Close the dropdown if the user clicks outside of it
+    document.addEventListener('click', function(event) {
+        const dropdown = document.getElementById('checkbox-dropdown');
+        const button = document.getElementById('dropdown-toggle');
+        
+        // Close the dropdown only if clicking outside both the button and the dropdown
+        if (!button.contains(event.target) && !dropdown.contains(event.target)) {
+            dropdown.classList.add('hidden');
+        }
+    });
                             </script>
 
 
@@ -662,7 +682,12 @@
                                 data-id="{{ $user->id }}" data-name="{{ $user->name }}">
                                 <span class="text-sm text-gray-700">{{ $user->name }} (ID:
                                     {{ $user->id }})</span>
-                                <input type="checkbox" class="participant-checkbox h-4 w-4 text-blue-600">
+                                    @if($user->id == auth()->user()->id)
+                                    <!-- Authenticated user's checkbox is checked and disabled -->
+                                    <input type="checkbox" class="participant-checkbox h-4 w-4 text-blue-600" checked disabled>
+                                @else
+                                    <input type="checkbox" class="participant-checkbox h-4 w-4 text-blue-600">
+                                @endif
                             </div>
                         @endforeach
                     </div>
@@ -1206,18 +1231,22 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
 
-            // Initialize participant item click functionality
-            document.querySelectorAll('.participant-item').forEach(item => {
-                const checkbox = item.querySelector('.participant-checkbox');
+// Initialize participant item click functionality
+document.querySelectorAll('.participant-item').forEach(item => {
+    const checkbox = item.querySelector('.participant-checkbox');
 
-                // Add event listener to toggle the checkbox when the item is clicked
-                item.addEventListener('click', (e) => {
-                    // Prevent the event from firing if the checkbox itself is clicked
-                    if (e.target !== checkbox) {
-                        checkbox.checked = !checkbox.checked;
-                    }
-                });
-            });
+    // Check if the checkbox is disabled (for the authenticated user)
+    const isDisabled = checkbox.hasAttribute('disabled');
+
+    // Add event listener to toggle the checkbox when the item is clicked
+    item.addEventListener('click', (e) => {
+        // Prevent the event from firing if the checkbox itself is clicked or if it is disabled
+        if (e.target !== checkbox && !isDisabled) {
+            checkbox.checked = !checkbox.checked;
+        }
+    });
+});
+
 
             function updateParticipantsInput() {
                 const participants = [];
@@ -1329,14 +1358,33 @@ document.addEventListener('DOMContentLoaded', function() {
                 const taskDescription = taskDescriptionInput.value;
                 const taskAttachment = taskAttachmentInput.files[0]; // Get the file object
 
-                if (!taskTopic || selectedPicOptions.length === 0 || !taskDueDate) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Please fill in all task fields.',
-                    });
-                    return;
-                }
+                if (!taskTopic) {
+    Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Please fill in the task topic.',
+    });
+    return;
+}
+
+if (selectedPicOptions.length === 0) {
+    Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Please select at least one PIC option.',
+    });
+    return;
+}
+
+if (!taskDueDate) {
+    Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Please select a due date.',
+    });
+    return;
+}
+
 
                 const taskPics = selectedPicOptions.map(option => ({
                     id: option.value,
@@ -1437,6 +1485,37 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // Temporarily prevent browser validation
                 notulenForm.noValidate = true;
+
+                    // Validate if participants are selected
+                        const selectedParticipants = participantsList.querySelectorAll('tr'); // Check if any participants are added
+
+                        if (selectedParticipants.length === 0) {
+        Swal.fire({
+            title: 'No Participants Selected',
+            text: 'Please select at least one participant before submitting.',
+            icon: 'warning',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'OK'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Scroll to the "Select Participants" button
+                const participantsSection = document.querySelector('#openParticipantModalBtn');
+                
+                // Set a timeout to ensure the scroll happens after SweetAlert2 closes
+                setTimeout(() => {
+                    participantsSection.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                    
+                    // Trigger the click event on the "Select Participants" button
+                    participantsSection.click(); // Open the participants modal
+                }, 500); // Adjust delay as necessary for a smooth transition
+            }
+        });
+        return; // Stop submission if no participants are selected
+    }
+
 
                 if (notulenForm.checkValidity()) {
                     // Clear previous attachment inputs

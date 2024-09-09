@@ -258,36 +258,35 @@
                                 value="{{ old('meeting_title', $notulen->meeting_title) }}" required
                                 data-tooltip="Please enter the title of the meeting in this field. The title should be descriptive enough to clearly identify the purpose of the meeting. For example, you might enter something like 'Quarterly Sales Review' or 'Project Kickoff Meeting'. This field is required and must be filled out to proceed.">
                         </div>
-                        <div class="has-tooltip mt-4 relative"
-                            data-tooltip="Click to edit the department selection. You can choose multiple departments from the list. The selected departments will be shown here. If no department is selected, 'Select Departments' will be displayed as the default text.">
-                            <label for="department"
-                                class="block text-gray-700 text-sm font-bold mb-2">Department</label>
-                            <div class="shadow appearance-none border rounded w-full md:w-4/5 lg:w-4/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline cursor-pointer flex justify-between items-center"
-                                onclick="toggleDropdown()">
-                                <span id="dropdown-label" class="truncate">
-                                    @php
-                                        $selectedDepartments = json_decode(
-                                            old('department', $notulen->department),
-                                            true,
-                                        );
-                                        echo empty($selectedDepartments)
-                                            ? 'Select Departments'
-                                            : implode(', ', $selectedDepartments);
-                                    @endphp
-                                </span>
-                                <svg class="inline w-4 h-4 ml-2" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M19 9l-7 7-7-7"></path>
-                                </svg>
+                        <div class="mb-4 relative has-tooltip" data-tooltip="Select one or more departments relevant to the meeting...">
+                            <label for="department" class="block text-gray-700 text-sm font-bold mb-2">Department</label>
+                            <div class="relative w-full md:w-4/5 lg:w-4/5">
+                        
+                                <!-- Div that should be in front -->
+                                <div id="dropdown-toggle" class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline cursor-pointer flex justify-between items-center z-10 relative" onclick="toggleDropdown()">
+                                    <span id="dropdown-label" class="truncate">
+                                        @php
+                                            $selectedDepartments = json_decode(old('department', $notulen->department), true);
+                                            echo empty($selectedDepartments) ? 'Select Departments' : implode(', ', $selectedDepartments);
+                                        @endphp
+                                    </span>
+                                    <svg class="inline w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                        
+                                <!-- Input field that should be behind -->
+                                <input type="text" id="dummyInput" class="absolute inset-0 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline cursor-pointer z-0" required>
+                        
                             </div>
-                            <div id="checkbox-dropdown"
-                                class="absolute hidden shadow bg-white border rounded mt-2 w-full md:w-4/5 lg:w-4/5 z-10">
+                        
+                            <div id="checkbox-dropdown" class="absolute hidden shadow bg-white border rounded mt-2 w-full md:w-4/5 lg:w-4/5 z-10">
                                 <div class="p-2">
                                     @php
                                         $departments = ['HR', 'IT', 'Finance', 'Marketing'];
+                                        $selectedDepartments = json_decode(old('department', $notulen->department), true);
                                     @endphp
-
+                        
                                     @foreach ($departments as $department)
                                         <div class="flex items-center mb-2">
                                             <input id="department_{{ strtolower($department) }}" name="department[]"
@@ -301,30 +300,42 @@
                                 </div>
                             </div>
                         </div>
-
+                        
                         <script>
                             function toggleDropdown() {
                                 const dropdown = document.getElementById('checkbox-dropdown');
                                 dropdown.classList.toggle('hidden');
                             }
-
+                        
                             function updateLabel() {
                                 const checkboxes = document.querySelectorAll('input[name="department[]"]:checked');
                                 const label = document.getElementById('dropdown-label');
                                 const selected = Array.from(checkboxes).map(cb => cb.nextElementSibling.textContent).join(', ');
-
+                        
                                 label.textContent = selected.length > 0 ? selected : 'Select Departments';
+                        
+                                // Toggle required attribute on the dummy input based on checkbox selection
+                                const dummyInput = document.getElementById('dummyInput');
+                                if (checkboxes.length > 0) {
+                                    dummyInput.required = false; // Remove required if one or more checkboxes are checked
+                                } else {
+                                    dummyInput.required = true;  // Add required if no checkboxes are checked
+                                }
                             }
-
+                        
                             // Close the dropdown if the user clicks outside of it
                             document.addEventListener('click', function(event) {
                                 const dropdown = document.getElementById('checkbox-dropdown');
-                                const button = dropdown.previousElementSibling;
+                                const button = document.getElementById('dropdown-toggle');
+                        
+                                // Close the dropdown only if clicking outside both the button and the dropdown
                                 if (!button.contains(event.target) && !dropdown.contains(event.target)) {
                                     dropdown.classList.add('hidden');
                                 }
                             });
                         </script>
+                        
+                        
 
                     </div>
 
@@ -528,7 +539,8 @@
                                                     <input type="checkbox"
                                                         class="participant-checkbox h-4 w-4 text-blue-500"
                                                         value="{{ $participant->id }}"
-                                                        data-name="{{ $participant->name }}">
+                                                        data-name="{{ $participant->name }}"
+                                                        @if ($participant->id == auth()->id()) checked disabled @endif>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -674,22 +686,25 @@
                         <div id="tasks-container">
                             <!-- Loop through each task only once -->
                             @foreach ($notulen->tasks as $taskIndex => $task)
+                            <div class="task-item mb-4 p-4 border shadow-lg rounded-md bg-gradient-to-r from-orange-200 to-orange-300">
                                 <div class="task-item mb-4 p-4 border border-gray-300 rounded-md shadow-sm bg-white">
                                     <input type="hidden" name="tasks[{{ $taskIndex }}][task_id]"
                                         value="{{ $task->id }}">
 
 
                                     <!-- Task Topic and Due Date -->
-                                    <div class="flex items-center mb-4 space-x-4">
+                                    <div class="flex items-center mb-4 space-x-4 bg-gradient-to-r from-green-400 to-green-600 p-4 rounded-md">
                                         <input type="text" name="tasks[{{ $taskIndex }}][task_topic]"
                                             value="{{ $task->task_topic }}"
                                             class="has-tooltip shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                             placeholder="Task Topic"
+                                            required
                                             data-tooltip="Enter the topic or title of the task. This should be a brief and descriptive label that summarizes the main objective or focus of the task. The topic helps identify and categorize the task for easier reference and management.">
                                         <input type="date" name="tasks[{{ $taskIndex }}][task_due_date]"
                                             value="{{ $task->task_due_date }}"
                                             class="has-tooltip shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                             placeholder="Due Date"
+                                            required
                                             data-tooltip="Select the due date for the task. This date should indicate when the task is expected to be completed. Make sure to choose a realistic deadline that allows sufficient time for task completion. The due date helps in tracking the progress and ensuring timely execution of tasks.">
                                         <button type="button"
                                             class="has-tooltip bg-gradient-to-r from-red-400 to-red-600 hover:from-red-500 hover:to-red-700 text-white text-sm font-medium py-1 px-3 rounded-md shadow-md hover:shadow-lg transition-all duration-200 ease-in-out remove-task flex items-center justify-center space-x-1"
@@ -857,6 +872,8 @@
                                         });
                                     </script>
                                 </div>
+                            </div>
+
                             @endforeach
 
                         </div>
@@ -1041,9 +1058,11 @@
             const container = document.getElementById('tasks-container');
             const index = container.children.length; // Get the current number of task items
             const item = document.createElement('div');
-            item.classList.add('task-item', 'mb-4', 'p-4', 'border', 'border-gray-300', 'rounded-md');
+            item.classList.add('task-item', 'mb-4', 'p-4', 'border', 'shadow-lg', 'rounded-md', 'bg-gradient-to-r', 'from-orange-200', 'to-orange-300');
             item.innerHTML = `
-                <div class="flex items-center mb-4 p-4 border border-gray-300 rounded-md shadow-sm bg-white">
+            <div class="task-item mb-4 p-4 border border-gray-300 rounded-md shadow-sm bg-white">
+                
+                               <div class="flex items-center mb-4 space-x-4 bg-gradient-to-r from-green-400 to-green-600 p-4 rounded-md">
                     <input type="text" name="tasks[${index}][task_topic]" 
                         class="border border-gray-300 rounded-md shadow-sm w-full mr-2 px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500" 
                         placeholder="Task Topic">
@@ -1060,7 +1079,7 @@
 
         <div class="mb-4">
             <label class="block text-sm font-medium text-gray-700 mb-1">Person in Charge (PIC):</label>
-            <button class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+            <button class="bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 text-white px-4 py-2 rounded-md"
                 id="openPicModalBtn_${index}" data-task-index="${index}" type="button">
                 Assign Person in Charge (PIC)
             </button>
@@ -1163,6 +1182,8 @@
                                 class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
                                 id="task_attachment_${index}" name="tasks[${index}][attachment]">
                         </div>
+            </div>
+ 
                     `;
 
             container.appendChild(item);
@@ -1505,6 +1526,27 @@
 
             // Temporarily disable browser validation
             this.noValidate = true;
+
+            let allTasksValid = true;
+
+             // Loop through all task containers to check if PIC is selected
+    const taskContainers = document.querySelectorAll('[id^="tasks-container"] .task-item');
+    taskContainers.forEach((taskContainer, index) => {
+        const picCheckboxes = taskContainer.querySelectorAll('.pic-checkbox, .guest-checkbox');
+        const isPicSelected = Array.from(picCheckboxes).some(checkbox => checkbox.checked);
+
+        if (!isPicSelected) {
+            allTasksValid = false;
+            Swal.fire({
+                title: 'Validation Error',
+                text: `Please select at least one Person in Charge (PIC) for task ${index + 1}.`,
+                icon: 'error',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'OK'
+            });
+            return; // Exit the loop if a task has no PIC selected
+        }
+    });
 
             if (this.checkValidity()) {
                 Swal.fire({
