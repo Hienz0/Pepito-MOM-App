@@ -57,7 +57,7 @@
                     </div>
                     <div class="flex items-center justify-between">
                         <button type="submit"
-                            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Login</button>
+                            class="bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Login</button>
                     </div>
                 </form>
                 <div class="text-center mt-4">

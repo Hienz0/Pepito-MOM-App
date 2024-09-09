@@ -15,9 +15,11 @@ class CreateNotulenTasksTable extends Migration
             $table->id();
             $table->foreignId('notulen_id')->constrained()->onDelete('cascade');
             $table->string('task_topic');
-            $table->json('task_pic'); // Change to JSON
+            $table->json('task_pic'); 
+            $table->json('guest_pic')->nullable(); // New nullable guest_pic column
             $table->date('task_due_date');
             $table->string('status')->default('Pending');
+            $table->string('completion')->default('0%'); // New column for task completion
             $table->text('description')->nullable();
             $table->string('attachment')->nullable();
             $table->timestamps();

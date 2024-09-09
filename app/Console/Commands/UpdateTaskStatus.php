@@ -7,6 +7,8 @@ use App\Models\NotulenTask;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\TaskReminder;
+use App\Models\User;
+use Illuminate\Support\Facades\Log; // Import Log facade
 
 class UpdateTaskStatus extends Command
 {
@@ -20,21 +22,19 @@ class UpdateTaskStatus extends Command
 
     public function handle()
     {
-        $tasks = NotulenTask::all();
+        $tasks = NotulenTask::with('user')->get(); // Eager load 'user' relationship
         $now = Carbon::now();
         $threeDaysFromNow = $now->copy()->addDays(3);
-
+    
         foreach ($tasks as $task) {
             $dueDate = Carbon::parse($task->task_due_date);
             if ($task->status !== 'Complete') {
                 if ($dueDate->isToday()) {
                     $task->status = 'Due Today';
-                    // Send reminder email for due today
-                    Mail::to($task->user->email)->send(new TaskReminder($task, 'due today'));
+                    $this->sendReminderEmails($task, 'due today');
                 } elseif ($dueDate->isPast()) {
                     $task->status = 'Past Due';
-                    // Send reminder email for past due
-                    Mail::to($task->user->email)->send(new TaskReminder($task, 'past due'));
+                    $this->sendReminderEmails($task, 'past due');
                 } else {
                     if ($task->attachment) {
                         $task->status = 'In Progress';
@@ -43,15 +43,40 @@ class UpdateTaskStatus extends Command
                     }
                 }
                 $task->save();
-
+    
                 // Check if the due date is in 3 days
                 if ($dueDate->isSameDay($threeDaysFromNow)) {
-                    // Send reminder email for due in 3 days
-                    Mail::to($task->user->email)->send(new TaskReminder($task, 'due in 3 days'));
+                    $this->sendReminderEmails($task, 'due in 3 days');
                 }
             }
         }
-
+    
         $this->info('Task statuses have been updated and reminder emails sent successfully.');
     }
+    
+
+    protected function sendReminderEmails($task, $reminderType)
+    {
+        // Decode the JSON string to an array
+        $taskPics = json_decode($task->task_pic, true);
+    
+        // Check if task_pic is not empty and contains valid user IDs
+        if (is_array($taskPics) && !empty($taskPics)) {
+            $users = User::whereIn('id', $taskPics)->get();
+    
+            // Log user details
+            Log::info("Sending {$reminderType} reminder for task ID {$task->id} to users: " . $users->pluck('email')->join(', '));
+    
+            foreach ($users as $user) {
+                Mail::to($user->email)->send(new TaskReminder($task, $reminderType));
+    
+                // Log each email sent
+                Log::info("Sent {$reminderType} reminder for task ID {$task->id} to user: {$user->email}");
+            }
+        } else {
+            // Log if no valid users found
+            Log::warning("No valid users found in task_pic for task ID {$task->id}");
+        }
+    }
+    
 }

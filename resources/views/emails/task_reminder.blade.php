@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Task Reminder: {{ ucfirst($reminderType) }}</h1>
-    <p>Dear {{ $task->user->name }},</p>
+    <p>Dear {{ $task->user->name ?? 'Valued User' }},</p> <!-- Using fallback to avoid null error -->
     <p>This is a reminder that the following task is {{ $reminderType }}:</p>
     <ul>
         <li><strong>Task Topic:</strong> {{ $task->task_topic }}</li>

@@ -13,14 +13,17 @@ class NotulenTask extends Model
         'notulen_id',
         'task_topic',
         'task_pic',
+        'guest_pic',  // Added guest_pic field
         'task_due_date',
         'status',
+        'completion',  // Added completion field
         'description',
         'attachment',
     ];
 
     protected $casts = [
         'task_pic' => 'array',
+        'guest_pic' => 'array',  // Cast guest_pic as an array
     ];
 
     public function notulen()
@@ -31,5 +34,10 @@ class NotulenTask extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'task_pic');
+    }
+
+    public function logs()
+    {
+        return $this->hasMany(TaskLog::class, 'task_id');
     }
 }

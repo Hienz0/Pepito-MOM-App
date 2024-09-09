@@ -86,6 +86,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/store', [NotulenController::class, 'store'])->name('notulens.store');
     Route::get('/notulens/{id}', [NotulenController::class, 'show'])->name('notulens.show');
     Route::put('/notulens/tasks/{id}', [NotulenController::class, 'updateTask'])->name('notulens.updateTask');
+    Route::get('/task/{id}/logs', [NotulenController::class, 'getTaskLogs']);
+
 
     // edit notulen
     Route::get('/notulens/{id}/edit', [NotulenController::class, 'edit'])->name('notulens.edit');
@@ -93,6 +95,12 @@ Route::middleware(['auth'])->group(function () {
 
     //distribute notulen
     Route::post('notulens/{id}/distribute', [NotulenController::class, 'distribute'])->name('distribute.mom');
+
+
+    // notification
+    Route::get('/notifications', [NotulenController::class, 'getNotifications']);
+    Route::post('/notifications/mark-all-as-read', [NotulenController::class, 'markAllAsRead']);
+
 
     // Inactivate a Mom
     Route::patch('/notulens/{id}/inactivate', [NotulenController::class, 'inactivate'])->name('notulens.inactivate');
