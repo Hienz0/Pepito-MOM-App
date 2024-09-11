@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task Notification</title>
 </head>
+<style>
+           a {
+        color: #ffffff; /* Inherit the text color from the parent element */
+        text-decoration: none; /* Remove the underline */
+    }
+</style>
 <body>
     <p>Hello {{ $task->user->name }},</p>
     <p>{{ $message }}</p>

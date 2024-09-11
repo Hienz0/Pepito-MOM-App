@@ -11,15 +11,18 @@ class MomInactivatedMail extends Mailable
     use Queueable, SerializesModels;
 
     public $notulen; // Add the notulen instance
+    public $inactivatedMoMUrl; // Add the URL instance
+
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($notulen)
+     public function __construct($notulen, $inactivatedMoMUrl)
     {
-        $this->notulen = $notulen; // Pass the notulen instance
+        $this->notulen = $notulen;
+        $this->inactivatedMoMUrl = $inactivatedMoMUrl; // Initialize the URL variable
     }
 
     /**
@@ -30,6 +33,9 @@ class MomInactivatedMail extends Mailable
     public function build()
     {
         return $this->subject('MoM Inactivated Notification')
-                    ->view('emails.mom_inactivated'); // Refer to the view you create next
+                    ->view('emails.mom_inactivated')
+                    ->with([
+                        'inactivatedMoMUrl' => $this->inactivatedMoMUrl, // Pass URL to view
+                    ]); // Refer to the view you create next
     }
 }

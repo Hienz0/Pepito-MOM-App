@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>New Notulen Added</title>
 </head>
+
+<style>
+
+a {
+        color: #ffffff; /* Inherit the text color from the parent element */
+        text-decoration: none; /* Remove the underline */
+    }
+</style>
 <body>
     <h1>New Notulen Added</h1>
     <p>A new notulen has been added with the following details:</p>

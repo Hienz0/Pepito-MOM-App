@@ -20,7 +20,7 @@ class CreateNotulensTable extends Migration
             $table->string('meeting_location');
             $table->text('agenda');
             $table->text('discussion');
-            $table->text('decisions');
+            $table->text('decisions')->nullable();
             $table->foreignId('scripter_id')->constrained('users')->onDelete('cascade');
             $table->string('status')->default('Open');
             $table->timestamps();

@@ -29,8 +29,8 @@ class NotulenController extends Controller
         $notulens = Notulen::whereHas('participants', function ($query) use ($user) {
             $query->where('user_id', $user->id);
         })->with('participants', 'tasks.user')
-        ->orderBy('created_at', 'desc') // Order by created_at in descending order
-        ->get();
+            ->orderBy('created_at', 'desc') // Order by created_at in descending order
+            ->get();
 
         return view('notulens.index', compact('notulens'));
     }
@@ -57,7 +57,7 @@ class NotulenController extends Controller
             'participants' => 'required|array|min:1',
             'agenda' => 'required|string',
             'discussion' => 'required|string',
-            'decisions' => 'required|string',
+            'decisions' => 'nullable|string',
             'tasks' => 'nullable|string',
             'guests' => 'nullable|string', // Validate guests as a JSON string
         ]);
@@ -126,16 +126,17 @@ class NotulenController extends Controller
                         'name' => $guest['name'],
                         'email' => $guest['email'],
                     ]);
-                                    // Store guest details in an associative array
-                $guestIds[$guest['email']] = [
-                    'id' => $createdGuest->id,
-                    'name' => $guest['name'],
-                    'email' => $guest['email'],
-                ];
-                    // Store or use the guest data as needed
-                    // For example, you can send a notification to the guests
-                    // Send email with attachment
-                    Mail::to($guest['email'])->send(new GuestNotification($notulen));
+                    // Store guest details in an associative array
+                    $guestIds[$guest['email']] = [
+                        'id' => $createdGuest->id,
+                        'name' => $guest['name'],
+                        'email' => $guest['email'],
+                    ];
+                    // Add guest email to send later
+                    $emailsToSend[] = [
+                        'recipient' => $guest['email'],
+                        'mail_class' => new GuestNotification($notulen),
+                    ];
                 }
             } else {
                 Log::info('Guests field is not present');
@@ -152,11 +153,11 @@ class NotulenController extends Controller
                     $taskPics = array_filter($task['task_pics'], function ($pic) {
                         return strpos($pic['name'], '(PIC)') !== false;
                     });
-                    
+
                     $taskGuestPics = array_filter($task['task_pics'], function ($pic) {
                         return strpos($pic['name'], '(Guest)') !== false;
                     });
-                    
+
 
                     Log::info('Filtered task PICs', ['taskPics' => $taskPics]);
                     Log::info('Filtered task guest PICs', ['taskGuestPics' => $taskGuestPics]);
@@ -169,16 +170,16 @@ class NotulenController extends Controller
                         $guest = $guestIds[$email] ?? null;
                         return $guest ? (string)$guest['id'] : null; // Ensure IDs are stored as strings
                     }, $taskGuestPics);
-                    
+
                     // Filter out null values
                     $taskGuestPicIds = array_filter($taskGuestPicIds);
-                    
+
                     // Ensure the IDs are stored as an indexed array
                     $taskGuestPicIds = array_values($taskGuestPicIds);
 
-                Log::info('Filtered task guest PIC IDs', ['taskGuestPicIds' => $taskGuestPicIds]);
+                    Log::info('Filtered task guest PIC IDs', ['taskGuestPicIds' => $taskGuestPicIds]);
 
-                    
+
                     $taskAttachmentPath = $attachmentPaths[$index] ?? null; // Assign attachment path based on index
 
                     $taskGuestPics = array_map(function ($guestPic) use ($guestIds) {
@@ -202,16 +203,19 @@ class NotulenController extends Controller
                     foreach ($task['task_pics'] as $taskPic) {
                         $pic = User::find($taskPic['id']);
                         if ($pic) {
-                                    // Create a notification for the PIC
-        Notification::create([
-            'user_id' => $pic->id,
-            'notification_topic' => 'New Task Assigned', // Use the correct column name
-            'notification_message' => 'You have been assigned to the task "' . $createdTask->task_name . '" in "' . $notulen->meeting_title . '" MoM.',
-            'read_status' => false,
-            'task_id' => $createdTask->id, // Assuming you have a task_id column in the notifications table
-            'notulen_id' => $notulen->id,
-        ]);
-                            Mail::to($pic->email)->send(new TaskNotification($notulen, $createdTask));
+                            // Create a notification for the PIC
+                            Notification::create([
+                                'user_id' => $pic->id,
+                                'notification_topic' => 'New Task Assigned', // Use the correct column name
+                                'notification_message' => 'You have been assigned to the task "' . $createdTask->task_name . '" in "' . $notulen->meeting_title . '" MoM.',
+                                'read_status' => false,
+                                'task_id' => $createdTask->id, // Assuming you have a task_id column in the notifications table
+                                'notulen_id' => $notulen->id,
+                            ]);
+                            $emailsToSend[] = [
+                                'recipient' => $pic->email,
+                                'mail_class' => new TaskNotification($notulen, $createdTask),
+                            ];
                         }
                     }
 
@@ -219,7 +223,10 @@ class NotulenController extends Controller
                     foreach ($taskGuestPics as $guestPicId) {
                         $guest = Guest::find($guestPicId);
                         if ($guest) {
-                            Mail::to($guest->email)->send(new TaskNotification($notulen, $createdTask));
+                            $emailsToSend[] = [
+                                'recipient' => $guest->email,
+                                'mail_class' => new TaskNotification($notulen, $createdTask),
+                            ];
                         }
                     }
                 }
@@ -241,15 +248,20 @@ class NotulenController extends Controller
                     'notulen_id' => $notulen->id,
                 ]);
 
-                Mail::to($participant->email)->send(new NotulenAdded($notulen));
-
-                
-                
+                $emailsToSend[] = [
+                    'recipient' => $participant->email,
+                    'mail_class' => new NotulenAdded($notulen),
+                ];
             }
         } catch (\Exception $e) {
             Log::error('Error creating notulen', ['exception' => $e->getMessage(), 'request_data' => $request->all()]);
             return redirect()->route('notulens.create')->with('error', 'Failed to create notulen.');
         }
+
+            // Send all the emails at the end
+    foreach ($emailsToSend as $email) {
+        Mail::to($email['recipient'])->send($email['mail_class']);
+    }
 
         return redirect()->route('notulens.index')->with('success', 'Notulen created successfully.');
     }
@@ -262,11 +274,11 @@ class NotulenController extends Controller
             return in_array($user->id, json_decode($task->task_pic, true));
         });
 
-            // Fetch guest PICs for each task
-    foreach ($notulen->tasks as $task) {
-        $guestPicIds = json_decode($task->guest_pic, true);
-        $task->guestPicNames = Guest::whereIn('id', $guestPicIds)->pluck('name')->toArray();
-    }
+        // Fetch guest PICs for each task
+        foreach ($notulen->tasks as $task) {
+            $guestPicIds = json_decode($task->guest_pic, true);
+            $task->guestPicNames = Guest::whereIn('id', $guestPicIds)->pluck('name')->toArray();
+        }
 
         return view('notulens.show', compact('notulen', 'userTasks'));
     }
@@ -305,7 +317,7 @@ class NotulenController extends Controller
             $meeting_time .= ':00';
         }
 
-            // Log information for debugging
+        // Log information for debugging
         Log::info('Update method called for Notulen', [
             'id' => $id,
             'user_id' => Auth::id(),
@@ -384,11 +396,11 @@ class NotulenController extends Controller
             // Update guests
             if ($request->has('guests')) {
                 $guests = $validatedData['guests'];
-    
+
                 foreach ($guests as $guestData) {
                     // Check if a guest with the same email exists in the current notulen
                     $existingGuest = $notulen->guests()->where('email', $guestData['email'])->first();
-    
+
                     if (!$existingGuest) {
                         // Create a new guest if no existing guest found for this notulen
                         Guest::create([
@@ -427,45 +439,45 @@ class NotulenController extends Controller
 
                     $taskPics = [];
                     $guestPics = [];
-    
+
                     // Separate task_pic into taskPics and guestPics
-        // Separate task_pic into taskPics and guestPics
-        foreach ($task['task_pic'] as $picId) {
-            Log::info('Processing picId', ['picId' => $picId]);
+                    // Separate task_pic into taskPics and guestPics
+                    foreach ($task['task_pic'] as $picId) {
+                        Log::info('Processing picId', ['picId' => $picId]);
 
-            if (strpos($picId, 'g_') === 0) {
-                // This is a guest ID or email
-                $guestId = substr($picId, 2); // Remove the 'g_' prefix
+                        if (strpos($picId, 'g_') === 0) {
+                            // This is a guest ID or email
+                            $guestId = substr($picId, 2); // Remove the 'g_' prefix
 
-                if (is_numeric($guestId)) {
-                    // It's a numeric ID
-                    $guestPics[] = $guestId;
-                } else {
-                    // Handle email or invalid guestId
-                    Log::info('Guest ID is not numeric, checking current notulen', ['guestId' => $guestId]);
+                            if (is_numeric($guestId)) {
+                                // It's a numeric ID
+                                $guestPics[] = $guestId;
+                            } else {
+                                // Handle email or invalid guestId
+                                Log::info('Guest ID is not numeric, checking current notulen', ['guestId' => $guestId]);
 
-                    $guest = $notulen->guests()->where('email', $guestId)->first();
+                                $guest = $notulen->guests()->where('email', $guestId)->first();
 
-                    if ($guest) {
-                        // Replace email with guest's actual ID
-                        $guestPics[] = $guest->id;
-                        Log::info('Guest found and ID added', ['guestId' => $guestId, 'guestIdInDb' => $guest->id]);
-                    } else {
-                        // If no guest is found, log the case
-                        Log::warning('Guest with email not found in notulen', ['email' => $guestId]);
-                        $guestPics[] = $guestId; // Keep email if guest not found
+                                if ($guest) {
+                                    // Replace email with guest's actual ID
+                                    $guestPics[] = $guest->id;
+                                    Log::info('Guest found and ID added', ['guestId' => $guestId, 'guestIdInDb' => $guest->id]);
+                                } else {
+                                    // If no guest is found, log the case
+                                    Log::warning('Guest with email not found in notulen', ['email' => $guestId]);
+                                    $guestPics[] = $guestId; // Keep email if guest not found
+                                }
+                            }
+                        } else {
+                            // This is a user ID
+                            $taskPics[] = $picId;
+                        }
                     }
-                }
-            } else {
-                // This is a user ID
-                $taskPics[] = $picId;
-            }
-        }
 
-        // After the loop, ensure both taskPics and guestPics are converted to arrays
-        $task['task_pic'] = json_encode($taskPics);
-        $task['guest_pic'] = json_encode($guestPics);
-                    
+                    // After the loop, ensure both taskPics and guestPics are converted to arrays
+                    $task['task_pic'] = json_encode($taskPics);
+                    $task['guest_pic'] = json_encode($guestPics);
+
                     $attachmentPath = null;
 
                     // Find existing task by topic or create a new one
@@ -604,10 +616,10 @@ class NotulenController extends Controller
                     'user_name' => $log->user->name,
                 ];
             });
-    
+
         return response()->json(['logs' => $logs]);
     }
-    
+
 
 
 
@@ -621,11 +633,14 @@ class NotulenController extends Controller
         // Adjust according to how you manage participants
         $guests = $notulen->guests;
 
+        $notulenUrl = route('notulens.show', ['id' => $notulen->id]); // Adjust route name as needed
+
+
         foreach ($participants as $participant) {
-            Mail::to($participant->email)->send(new MoMDetailsMail($notulen));
+            Mail::to($participant->email)->send(new MoMDetailsMail($notulen, $notulenUrl));
         }
         foreach ($guests as $guest) {
-            Mail::to($guest->email)->send(new MoMDetailsMail($notulen));
+            Mail::to($guest->email)->send(new MoMDetailsMail($notulen, $notulenUrl));
         }
         // Update the status of the notulen to 'Distributed'
         $notulen->status = 'Distributed';
@@ -640,19 +655,21 @@ class NotulenController extends Controller
         $notulen->status = 'Inactive';
         $notulen->save();
 
+        $meetingDetailsUrl = route('notulens.show', ['id' => $notulen->id]);
+
         // Get participants)
         $participants = $notulen->participants;
 
         foreach ($participants as $participant) {
-                // Create a notification for the participant
-    Notification::create([
-        'user_id' => $participant->id,
-        'notification_topic' => 'MoM Inactivated', // Use the correct column name
-        'notification_message' => 'The MoM titled "' . $notulen->meeting_title . '" has been inactivated.',
-        'read_status' => false,
-        'notulen_id' => $notulen->id,
-    ]);
-            Mail::to($participant->email)->send(new MomInactivatedMail($notulen));
+            // Create a notification for the participant
+            Notification::create([
+                'user_id' => $participant->id,
+                'notification_topic' => 'MoM Inactivated', // Use the correct column name
+                'notification_message' => 'The MoM titled "' . $notulen->meeting_title . '" has been inactivated.',
+                'read_status' => false,
+                'notulen_id' => $notulen->id,
+            ]);
+            Mail::to($participant->email)->send(new MomInactivatedMail($notulen, $meetingDetailsUrl));
         }
 
         return redirect()->back()->with('success', 'MoM has been inactivated and participants have been notified.');
@@ -663,23 +680,23 @@ class NotulenController extends Controller
         $user = Auth::user();
         $now = Carbon::now();
         $oneDayAgo = $now->copy()->subDay();
-    
+
         // Get all notifications for the logged-in user
         $notifications = Notification::where('user_id', $user->id)
             ->get()
             ->map(function ($notification) use ($now, $oneDayAgo) {
                 // Determine if the notification should be highlighted
                 $isHighlighted = !$notification->read_status;
-    
+
                 // Convert read_time to Carbon instance, if it's not null
                 $readTime = $notification->read_time ? Carbon::parse($notification->read_time) : null;
-    
+
                 // Determine if the notification should be shown (if read, only show for one day)
                 $shouldShow = !$notification->read_status || ($readTime && $readTime->greaterThan($oneDayAgo));
 
                 $link = $notification->notulen_id ? route('notulens.show', $notification->notulen_id) : '#';
                 $isHighlighted = !$notification->read_status;
-    
+
                 return [
                     'id' => $notification->id,
                     'notification_topic' => $notification->notification_topic,
@@ -698,24 +715,24 @@ class NotulenController extends Controller
             })
             ->sortByDesc('created_at') // Sort notifications by created_at in descending order
             ->values(); // Re-index the array
-    
+
         // Count unread notifications
         $unreadCount = $notifications->where('isHighlighted', true)->count();
-    
+
         return response()->json([
             'notifications' => $notifications,
             'unreadCount' => $unreadCount,
         ]);
     }
 
-    
-    
-    
+
+
+
 
     public function markAllAsRead()
     {
         $user = Auth::user();
-    
+
         // Mark all unread notifications for the logged-in user as read
         Notification::where('user_id', $user->id)
             ->where('read_status', false)
@@ -723,8 +740,7 @@ class NotulenController extends Controller
                 'read_status' => true,
                 'read_time' => now(), // Set read_time
             ]);
-    
+
         return response()->json(['status' => 'success']);
     }
-
 }

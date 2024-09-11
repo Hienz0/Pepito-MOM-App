@@ -56,6 +56,16 @@
             margin: 0;
             /* Ensure no extra margin in the content */
         }
+
+        .notification-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center horizontally */
+    justify-content: center; /* Center vertically */
+    text-align: center; /* Align text to center */
+    width: 100%; /* Ensure the element takes the full width of its parent */
+    height: 100%; /* Make sure it takes full height to be centered properly */
+}
     </style>
 
 
@@ -258,35 +268,52 @@
                                 value="{{ old('meeting_title', $notulen->meeting_title) }}" required
                                 data-tooltip="Please enter the title of the meeting in this field. The title should be descriptive enough to clearly identify the purpose of the meeting. For example, you might enter something like 'Quarterly Sales Review' or 'Project Kickoff Meeting'. This field is required and must be filled out to proceed.">
                         </div>
-                        <div class="mb-4 relative has-tooltip" data-tooltip="Select one or more departments relevant to the meeting...">
-                            <label for="department" class="block text-gray-700 text-sm font-bold mb-2">Department</label>
+                        <div class="mb-4 relative has-tooltip"
+                            data-tooltip="Select one or more departments relevant to the meeting...">
+                            <label for="department"
+                                class="block text-sm font-medium text-gray-700 mt-4">Department</label>
                             <div class="relative w-full md:w-4/5 lg:w-4/5">
-                        
+
                                 <!-- Div that should be in front -->
-                                <div id="dropdown-toggle" class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline cursor-pointer flex justify-between items-center z-10 relative" onclick="toggleDropdown()">
+                                <div id="dropdown-toggle"
+                                    class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline cursor-pointer flex justify-between items-center z-10 relative"
+                                    onclick="toggleDropdown()">
                                     <span id="dropdown-label" class="truncate">
                                         @php
-                                            $selectedDepartments = json_decode(old('department', $notulen->department), true);
-                                            echo empty($selectedDepartments) ? 'Select Departments' : implode(', ', $selectedDepartments);
+                                            $selectedDepartments = json_decode(
+                                                old('department', $notulen->department),
+                                                true,
+                                            );
+                                            echo empty($selectedDepartments)
+                                                ? 'Select Departments'
+                                                : implode(', ', $selectedDepartments);
                                         @endphp
                                     </span>
-                                    <svg class="inline w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    <svg class="inline w-4 h-4 ml-2" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 9l-7 7-7-7"></path>
                                     </svg>
                                 </div>
-                        
+
                                 <!-- Input field that should be behind -->
-                                <input type="text" id="dummyInput" class="absolute inset-0 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline cursor-pointer z-0" required>
-                        
+                                <input type="text" id="dummyInput"
+                                    class="absolute inset-0 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline cursor-pointer z-0"
+                                    required>
+
                             </div>
-                        
-                            <div id="checkbox-dropdown" class="absolute hidden shadow bg-white border rounded mt-2 w-full md:w-4/5 lg:w-4/5 z-10">
+
+                            <div id="checkbox-dropdown"
+                                class="absolute hidden shadow bg-white border rounded mt-2 w-full md:w-4/5 lg:w-4/5 z-10">
                                 <div class="p-2">
                                     @php
                                         $departments = ['HR', 'IT', 'Finance', 'Marketing'];
-                                        $selectedDepartments = json_decode(old('department', $notulen->department), true);
+                                        $selectedDepartments = json_decode(
+                                            old('department', $notulen->department),
+                                            true,
+                                        );
                                     @endphp
-                        
+
                                     @foreach ($departments as $department)
                                         <div class="flex items-center mb-2">
                                             <input id="department_{{ strtolower($department) }}" name="department[]"
@@ -300,42 +327,43 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <script>
                             function toggleDropdown() {
                                 const dropdown = document.getElementById('checkbox-dropdown');
                                 dropdown.classList.toggle('hidden');
                             }
-                        
+
                             function updateLabel() {
                                 const checkboxes = document.querySelectorAll('input[name="department[]"]:checked');
                                 const label = document.getElementById('dropdown-label');
                                 const selected = Array.from(checkboxes).map(cb => cb.nextElementSibling.textContent).join(', ');
-                        
+
                                 label.textContent = selected.length > 0 ? selected : 'Select Departments';
-                        
+
                                 // Toggle required attribute on the dummy input based on checkbox selection
                                 const dummyInput = document.getElementById('dummyInput');
                                 if (checkboxes.length > 0) {
                                     dummyInput.required = false; // Remove required if one or more checkboxes are checked
                                 } else {
-                                    dummyInput.required = true;  // Add required if no checkboxes are checked
+                                    dummyInput.required = true; // Add required if no checkboxes are checked
                                 }
                             }
-                        
+
                             // Close the dropdown if the user clicks outside of it
                             document.addEventListener('click', function(event) {
                                 const dropdown = document.getElementById('checkbox-dropdown');
                                 const button = document.getElementById('dropdown-toggle');
-                        
+
                                 // Close the dropdown only if clicking outside both the button and the dropdown
                                 if (!button.contains(event.target) && !dropdown.contains(event.target)) {
+                                    updateLabel();
                                     dropdown.classList.add('hidden');
                                 }
                             });
                         </script>
-                        
-                        
+
+
 
                     </div>
 
@@ -472,7 +500,9 @@
                                         </td>
                                         <td class="border border-gray-300 p-2 text-center">
                                             <button type="button"
-                                                class="bg-gradient-to-r from-red-400 to-red-600 hover:from-red-500 hover:to-red-700 text-white text-sm font-medium py-1 px-3 rounded-md shadow-md hover:shadow-lg transition-all duration-200 ease-in-out remove-participant flex items-center justify-center space-x-1">
+                                                class="text-white text-sm font-medium py-1 px-3 rounded-md shadow-md transition-all duration-200 ease-in-out flex items-center justify-center space-x-1
+                                            @if (auth()->user()->id === $participant->id) bg-gray-400 cursor-not-allowed @else bg-gradient-to-r from-red-400 to-red-600 hover:from-red-500 hover:to-red-700 @endif"
+                                                @if (auth()->user()->id === $participant->id) disabled @endif>
                                                 <i class="zmdi zmdi-delete mr-1"></i>
                                                 Remove
                                             </button>
@@ -686,194 +716,199 @@
                         <div id="tasks-container">
                             <!-- Loop through each task only once -->
                             @foreach ($notulen->tasks as $taskIndex => $task)
-                            <div class="task-item mb-4 p-4 border shadow-lg rounded-md bg-gradient-to-r from-orange-200 to-orange-300">
-                                <div class="task-item mb-4 p-4 border border-gray-300 rounded-md shadow-sm bg-white">
-                                    <input type="hidden" name="tasks[{{ $taskIndex }}][task_id]"
-                                        value="{{ $task->id }}">
+                                <div
+                                    class="task-item mb-4 p-4 border shadow-lg rounded-md bg-gradient-to-r from-orange-200 to-orange-300">
+                                    <div class="mb-4 p-4 border border-gray-300 rounded-md shadow-sm bg-white">
+                                        <input type="hidden" name="tasks[{{ $taskIndex }}][task_id]"
+                                            value="{{ $task->id }}">
 
 
-                                    <!-- Task Topic and Due Date -->
-                                    <div class="flex items-center mb-4 space-x-4 bg-gradient-to-r from-green-400 to-green-600 p-4 rounded-md">
-                                        <input type="text" name="tasks[{{ $taskIndex }}][task_topic]"
-                                            value="{{ $task->task_topic }}"
-                                            class="has-tooltip shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                            placeholder="Task Topic"
-                                            required
-                                            data-tooltip="Enter the topic or title of the task. This should be a brief and descriptive label that summarizes the main objective or focus of the task. The topic helps identify and categorize the task for easier reference and management.">
-                                        <input type="date" name="tasks[{{ $taskIndex }}][task_due_date]"
-                                            value="{{ $task->task_due_date }}"
-                                            class="has-tooltip shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                            placeholder="Due Date"
-                                            required
-                                            data-tooltip="Select the due date for the task. This date should indicate when the task is expected to be completed. Make sure to choose a realistic deadline that allows sufficient time for task completion. The due date helps in tracking the progress and ensuring timely execution of tasks.">
-                                        <button type="button"
-                                            class="has-tooltip bg-gradient-to-r from-red-400 to-red-600 hover:from-red-500 hover:to-red-700 text-white text-sm font-medium py-1 px-3 rounded-md shadow-md hover:shadow-lg transition-all duration-200 ease-in-out remove-task flex items-center justify-center space-x-1"
-                                            data-tooltip="Click to remove this task from the list. This action will delete the task and it will no longer be visible in the task list. Be cautious as this action may be irreversible depending on the application's settings. Make sure you really want to remove this task before confirming the action.">
-                                            <i class="zmdi zmdi-delete mr-1"></i>
-                                            Remove
-                                        </button>
-                                    </div>
+                                        <!-- Task Topic and Due Date -->
+                                        <div
+                                            class="flex items-center mb-4 space-x-4 bg-gradient-to-r from-green-400 to-green-600 p-4 rounded-md">
+                                            <input type="text" name="tasks[{{ $taskIndex }}][task_topic]"
+                                                value="{{ $task->task_topic }}"
+                                                class="has-tooltip shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                                placeholder="Task Topic" required
+                                                data-tooltip="Enter the topic or title of the task. This should be a brief and descriptive label that summarizes the main objective or focus of the task. The topic helps identify and categorize the task for easier reference and management.">
+                                            <input type="date" name="tasks[{{ $taskIndex }}][task_due_date]"
+                                                value="{{ $task->task_due_date }}"
+                                                class="has-tooltip shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                                placeholder="Due Date" required
+                                                data-tooltip="Select the due date for the task. This date should indicate when the task is expected to be completed. Make sure to choose a realistic deadline that allows sufficient time for task completion. The due date helps in tracking the progress and ensuring timely execution of tasks.">
+                                            <button type="button"
+                                                class="has-tooltip bg-gradient-to-r from-red-400 to-red-600 hover:from-red-500 hover:to-red-700 text-white text-sm font-medium py-1 px-3 rounded-md shadow-md hover:shadow-lg transition-all duration-200 ease-in-out remove-task flex items-center justify-center space-x-1"
+                                                data-tooltip="Click to remove this task from the list. This action will delete the task and it will no longer be visible in the task list. Be cautious as this action may be irreversible depending on the application's settings. Make sure you really want to remove this task before confirming the action.">
+                                                <i class="zmdi zmdi-delete mr-1"></i>
+                                                Remove
+                                            </button>
+                                        </div>
 
 
-                                    <!-- Modal -->
-                                    <div id="picModal_{{ $taskIndex }}"
-                                        class="fixed z-10 inset-0 hidden overflow-y-auto">
-                                        <div class="flex items-center justify-center min-h-screen px-4">
-                                            <!-- Backdrop -->
-                                            <div
-                                                class="fixed inset-0 bg-black bg-opacity-30 transition-opacity duration-300 opacity-0">
-                                            </div>
-                                            <!-- Modal Content -->
-                                            <div
-                                                class="bg-white rounded-lg shadow-lg sm:max-w-md w-full transform transition-transform transition-opacity duration-300 ease-out scale-90 opacity-0">
-                                                <!-- Modal Header -->
+                                        <!-- Modal -->
+                                        <div id="picModal_{{ $taskIndex }}"
+                                            class="fixed z-10 inset-0 hidden overflow-y-auto">
+                                            <div class="flex items-center justify-center min-h-screen px-4">
+                                                <!-- Backdrop -->
                                                 <div
-                                                    class="bg-white border-b border-gray-200 px-4 py-2.5 rounded-t-lg">
-                                                    <h3 class="text-sm font-medium text-gray-700">Assign Person in
-                                                        Charge
-                                                        (PIC)</h3>
+                                                    class="fixed inset-0 bg-black bg-opacity-30 transition-opacity duration-300 opacity-0">
                                                 </div>
                                                 <!-- Modal Content -->
-                                                <div class="px-4 py-3 max-h-80 overflow-y-auto">
-                                                    <input type="text" id="picSearch_{{ $taskIndex }}"
-                                                        class="border border-gray-300 rounded w-full py-1.5 px-2 text-sm text-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                                                        placeholder="Search participants or guests">
-                                                    <div id="task_pic_container_{{ $taskIndex }}"
-                                                        class="mt-3 space-y-2">
-                                                        <!-- Loop through participants -->
-                                                        @foreach ($notulen->participants as $participant)
-                                                            <div class="participant-item flex justify-between items-center p-2 border-b border-gray-100"
-                                                                data-id="{{ $participant->id }}"
-                                                                data-name="{{ $participant->name }}">
-                                                                <span
-                                                                    class="text-sm text-gray-700">{{ $participant->name }}</span>
-                                                                <input type="checkbox"
-                                                                    name="tasks[{{ $taskIndex }}][task_pic][]"
-                                                                    value="{{ $participant->id }}"
-                                                                    {{ in_array($participant->id, json_decode($task->task_pic, true)) ? 'checked' : '' }}
-                                                                    class="h-4 w-4 text-blue-600 pic-checkbox">
-                                                            </div>
-                                                        @endforeach
-
-                                                        <!-- Loop through guest PICs, adding 'g_' prefix when rendering -->
-                                                        @foreach ($notulen->guests as $guest)
-                                                            <div class="guest-item flex justify-between items-center p-2 border-b border-gray-100"
-                                                                data-id="g_{{ $guest->id }}"
-                                                                data-name="{{ $guest->name }}">
-                                                                <span
-                                                                    class="text-sm text-gray-700">{{ $guest->name }}
-                                                                    (Guest)
-                                                                </span>
-                                                                <input type="checkbox"
-                                                                    name="tasks[{{ $taskIndex }}][task_pic][]"
-                                                                    value="g_{{ $guest->id }}"
-                                                                    {{ in_array($guest->id, json_decode($task->guest_pic, true)) ? 'checked' : '' }}
-                                                                    class="h-4 w-4 text-blue-600 guest-checkbox">
-                                                            </div>
-                                                        @endforeach
-                                                    </div>
-                                                </div>
-                                                <!-- Modal Footer -->
                                                 <div
-                                                    class="bg-gray-50 px-4 py-2.5 flex justify-end space-x-2 rounded-b-lg">
-                                                    <button type="button"
-                                                        class="bg-gradient-to-r from-blue-400 to-blue-600 text-white text-sm font-semibold py-1 px-3 rounded shadow-md hover:from-blue-500 hover:to-blue-700 transition"
-                                                        id="selectPICBtn_{{ $taskIndex }}">Save</button>
-                                                    <button type="button"
-                                                        class="bg-gradient-to-r from-red-400 to-red-600 text-white text-sm font-semibold py-1 px-3 rounded shadow-md hover:from-red-500 hover:to-red-700 transition hidden"
-                                                        id="closePicModalBtn_{{ $taskIndex }}">Cancel</button>
+                                                    class="bg-white rounded-lg shadow-lg sm:max-w-md w-full transform transition-transform transition-opacity duration-300 ease-out scale-90 opacity-0">
+                                                    <!-- Modal Header -->
+                                                    <div
+                                                        class="bg-white border-b border-gray-200 px-4 py-2.5 rounded-t-lg">
+                                                        <h3 class="text-sm font-medium text-gray-700">Assign Person in
+                                                            Charge
+                                                            (PIC)</h3>
+                                                    </div>
+                                                    <!-- Modal Content -->
+                                                    <div class="px-4 py-3 max-h-80 overflow-y-auto">
+                                                        <input type="text" id="picSearch_{{ $taskIndex }}"
+                                                            class="border border-gray-300 rounded w-full py-1.5 px-2 text-sm text-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                                            placeholder="Search participants or guests">
+                                                        <div id="task_pic_container_{{ $taskIndex }}"
+                                                            class="mt-3 space-y-2">
+                                                            <!-- Loop through participants -->
+                                                            @foreach ($notulen->participants as $participant)
+                                                                <div class="participant-item flex justify-between items-center p-2 border-b border-gray-100"
+                                                                    data-id="{{ $participant->id }}"
+                                                                    data-name="{{ $participant->name }}">
+                                                                    <span
+                                                                        class="text-sm text-gray-700">{{ $participant->name }}</span>
+                                                                    <input type="checkbox"
+                                                                        name="tasks[{{ $taskIndex }}][task_pic][]"
+                                                                        value="{{ $participant->id }}"
+                                                                        {{ in_array($participant->id, json_decode($task->task_pic, true)) ? 'checked' : '' }}
+                                                                        class="h-4 w-4 text-blue-600 pic-checkbox">
+                                                                </div>
+                                                            @endforeach
+
+                                                            <!-- Loop through guest PICs, adding 'g_' prefix when rendering -->
+                                                            @foreach ($notulen->guests as $guest)
+                                                                <div class="guest-item flex justify-between items-center p-2 border-b border-gray-100"
+                                                                    data-id="g_{{ $guest->id }}"
+                                                                    data-name="{{ $guest->name }}">
+                                                                    <span
+                                                                        class="text-sm text-gray-700">{{ $guest->name }}
+                                                                        (Guest)
+                                                                    </span>
+                                                                    <input type="checkbox"
+                                                                        name="tasks[{{ $taskIndex }}][task_pic][]"
+                                                                        value="g_{{ $guest->id }}"
+                                                                        {{ in_array($guest->id, json_decode($task->guest_pic, true)) ? 'checked' : '' }}
+                                                                        class="h-4 w-4 text-blue-600 guest-checkbox">
+                                                                </div>
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
+                                                    <!-- Modal Footer -->
+                                                    <div
+                                                        class="bg-gray-50 px-4 py-2.5 flex justify-end space-x-2 rounded-b-lg">
+                                                        <button type="button"
+                                                            class="bg-gradient-to-r from-blue-400 to-blue-600 text-white text-sm font-semibold py-1 px-3 rounded shadow-md hover:from-blue-500 hover:to-blue-700 transition"
+                                                            id="selectPICBtn_{{ $taskIndex }}">Save</button>
+                                                        <button type="button"
+                                                            class="bg-gradient-to-r from-red-400 to-red-600 text-white text-sm font-semibold py-1 px-3 rounded shadow-md hover:from-red-500 hover:to-red-700 transition hidden"
+                                                            id="closePicModalBtn_{{ $taskIndex }}">Cancel</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <!-- Button to open the modal -->
-                                    <button
-                                        class=" text-white px-4 py-2 rounded-md bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700"
-                                        id="openPicModalBtn_{{ $taskIndex }}"
-                                        data-task-index="{{ $taskIndex }}" type="button">
-                                        Assign Person in Charge (PIC)
-                                    </button>
+                                        <!-- Button to open the modal -->
+                                        <button
+                                            class=" text-white px-4 py-2 rounded-md bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700"
+                                            id="openPicModalBtn_{{ $taskIndex }}"
+                                            data-task-index="{{ $taskIndex }}" type="button">
+                                            Assign Person in Charge (PIC)
+                                        </button>
 
-                                    <!-- Display selected participants and guests -->
-                                    <div id="selectedPicContainer_{{ $taskIndex }}" class="mt-4">
-                                        <h3 class="text-sm font-medium text-gray-700">Selected Person in Charge (PIC):
-                                        </h3>
-                                        <ul id="selectedPicList_{{ $taskIndex }}" class="mt-2 space-y-1">
-                                            <!-- Selected participants and guests will be shown here -->
-                                        </ul>
-                                    </div>
+                                        <!-- Display selected participants and guests -->
+                                        <div id="selectedPicContainer_{{ $taskIndex }}"
+                                            class="my-4 py-2 border-l-4 border-green-500 bg-green-100 pl-4 rounded-sm">
+                                            <h3 class="text-sm font-medium text-gray-700">Selected Person in Charge
+                                                (PIC):
+                                            </h3>
+                                            <ul id="selectedPicList_{{ $taskIndex }}" class="mt-2 space-y-1">
+                                                <!-- Selected participants and guests will be shown here -->
+                                            </ul>
+                                        </div>
 
 
 
 
-                                    <!-- Completion Section -->
-                                    <div class="mb-4">
-                                        <label for="task_completion"
-                                            class="block text-sm font-medium text-gray-700 mb-1">Completion:</label>
-                                        <select name="tasks[{{ $taskIndex }}][task_completion]"
-                                            class="has-tooltip px-3 py-2 border border-gray-300 rounded-md shadow-sm w-full"
-                                            data-tooltip="Select the current completion percentage of the task from the dropdown. Choose the percentage that best represents the progress of the task, ranging from 0% (not started) to 100% (completed). This helps track the task's progress and ensures that all tasks are up-to-date with their respective completion status.">
-                                            <option value="0%" {{ $task->completion == '0%' ? 'selected' : '' }}>
-                                                0%
-                                            </option>
-                                            <option value="25%" {{ $task->completion == '25%' ? 'selected' : '' }}>
-                                                25%
-                                            </option>
-                                            <option value="50%" {{ $task->completion == '50%' ? 'selected' : '' }}>
-                                                50%
-                                            </option>
-                                            <option value="75%" {{ $task->completion == '75%' ? 'selected' : '' }}>
-                                                75%
-                                            </option>
-                                            <option value="100%"
-                                                {{ $task->completion == '100%' ? 'selected' : '' }}>
-                                                100%</option>
-                                        </select>
-                                    </div>
+                                        <!-- Completion Section -->
+                                        <div class="mb-4">
+                                            <label for="task_completion"
+                                                class="block text-sm font-medium text-gray-700 mb-1">Completion:</label>
+                                            <select name="tasks[{{ $taskIndex }}][task_completion]"
+                                                class="has-tooltip px-3 py-2 border border-gray-300 rounded-md shadow-sm w-full"
+                                                data-tooltip="Select the current completion percentage of the task from the dropdown. Choose the percentage that best represents the progress of the task, ranging from 0% (not started) to 100% (completed). This helps track the task's progress and ensures that all tasks are up-to-date with their respective completion status.">
+                                                <option value="0%"
+                                                    {{ $task->completion == '0%' ? 'selected' : '' }}>
+                                                    0%
+                                                </option>
+                                                <option value="25%"
+                                                    {{ $task->completion == '25%' ? 'selected' : '' }}>
+                                                    25%
+                                                </option>
+                                                <option value="50%"
+                                                    {{ $task->completion == '50%' ? 'selected' : '' }}>
+                                                    50%
+                                                </option>
+                                                <option value="75%"
+                                                    {{ $task->completion == '75%' ? 'selected' : '' }}>
+                                                    75%
+                                                </option>
+                                                <option value="100%"
+                                                    {{ $task->completion == '100%' ? 'selected' : '' }}>
+                                                    100%</option>
+                                            </select>
+                                        </div>
 
-                                    <!-- Description Section -->
-                                    <div class="mb-4">
-                                        <label for="task_description"
-                                            class="block text-sm font-medium text-gray-700 mb-1">Description:</label>
-                                        <textarea name="tasks[{{ $taskIndex }}][description]"
-                                            class="has-tooltip shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                            data-tooltip="Enter a detailed description of the task. This should include any relevant information or notes about the task that can help in understanding its requirements, objectives, and progress. The description provides context and clarity to ensure everyone involved in the task is aware of its specifics.">{{ $task->description }}</textarea>
-                                    </div>
+                                        <!-- Description Section -->
+                                        <div class="mb-4">
+                                            <label for="task_description"
+                                                class="block text-sm font-medium text-gray-700 mb-1">Description:</label>
+                                            <textarea name="tasks[{{ $taskIndex }}][description]"
+                                                class="has-tooltip shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                                data-tooltip="Enter a detailed description of the task. This should include any relevant information or notes about the task that can help in understanding its requirements, objectives, and progress. The description provides context and clarity to ensure everyone involved in the task is aware of its specifics.">{{ $task->description }}</textarea>
+                                        </div>
 
-                                    <!-- Attachments Section -->
-                                    <div class="has-tooltip mb-4"
-                                        data-tooltip="Use this section to manage file attachments related to the task. If there is an existing attachment, you can view it by clicking the 'View Current Attachment' link. If no attachment is present, it will display 'No attachment'. You can add or replace the attachment by selecting a file from your computer using the file input below. Ensure that the file you upload is relevant to the task and properly labeled.">
-                                        <label for="task_attachments"
-                                            class="block text-sm font-medium text-gray-700 mb-1">Attachments:</label>
-                                        @if ($task->attachment)
-                                            <!-- Check if there is an attachment -->
-                                            <div class="mb-2">
-                                                <a href="{{ asset('storage/' . $task->attachment) }}" target="_blank"
-                                                    class="text-green-700 hover:underline">
-                                                    View Current Attachment
-                                                </a>
-                                            </div>
-                                        @else
-                                            <div class="text-gray-500 mb-2">No attachment</div>
-                                        @endif
-                                        <input type="file" name="tasks[{{ $taskIndex }}][attachment]"
-                                            class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
-                                    </div>
-
-                                    <!-- Console log for debugging -->
-                                    <script>
-                                        document.addEventListener('DOMContentLoaded', function() {
+                                        <!-- Attachments Section -->
+                                        <div class="has-tooltip mb-4"
+                                            data-tooltip="Use this section to manage file attachments related to the task. If there is an existing attachment, you can view it by clicking the 'View Current Attachment' link. If no attachment is present, it will display 'No attachment'. You can add or replace the attachment by selecting a file from your computer using the file input below. Ensure that the file you upload is relevant to the task and properly labeled.">
+                                            <label for="task_attachments"
+                                                class="block text-sm font-medium text-gray-700 mb-1">Attachments:</label>
                                             @if ($task->attachment)
-                                                console.log('Task {{ $task->id }} has an attachment: {{ $task->attachment }}');
+                                                <!-- Check if there is an attachment -->
+                                                <div class="mb-2">
+                                                    <a href="{{ asset('storage/' . $task->attachment) }}"
+                                                        target="_blank" class="text-green-700 hover:underline">
+                                                        View Current Attachment
+                                                    </a>
+                                                </div>
                                             @else
-                                                console.log('Task {{ $task->id }} does not have an attachment.');
+                                                <div class="text-gray-500 mb-2">No attachment</div>
                                             @endif
-                                        });
-                                    </script>
-                                </div>
-                            </div>
+                                            <input type="file" name="tasks[{{ $taskIndex }}][attachment]"
+                                                class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
+                                        </div>
 
+                                        <!-- Console log for debugging -->
+                                        <script>
+                                            document.addEventListener('DOMContentLoaded', function() {
+                                                @if ($task->attachment)
+                                                    console.log('Task {{ $task->id }} has an attachment: {{ $task->attachment }}');
+                                                @else
+                                                    console.log('Task {{ $task->id }} does not have an attachment.');
+                                                @endif
+                                            });
+                                        </script>
+                                    </div>
+                                </div>
                             @endforeach
 
                         </div>
@@ -903,7 +938,13 @@
 
     </div>
 
+
     <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            @foreach ($notulen->tasks as $taskIndex => $task)
+                updatePICCheckboxes({{ $taskIndex }});
+            @endforeach
+        });
         document.addEventListener('DOMContentLoaded', function() {
             const notificationDropdown = document.getElementById('notificationDropdown');
 
@@ -918,7 +959,7 @@
                 if (
                     (event.deltaY < 0 && scrollTop === 0) || // Scrolling up at the top
                     (event.deltaY > 0 && scrollTop + offsetHeight >=
-                    scrollHeight) // Scrolling down at the bottom
+                        scrollHeight) // Scrolling down at the bottom
                 ) {
                     event.preventDefault();
                 }
@@ -995,7 +1036,6 @@
                         <i class="zmdi zmdi-delete mr-1"></i>
                         Remove
                     </button>
-
                     </td>
                 `;
                         container.appendChild(row);
@@ -1010,10 +1050,23 @@
                     }
                 }
 
-                // Update checkboxes in all task items
+                // Store guest checkbox states
+                const guestCheckboxStates = {};
+                document.querySelectorAll('.guest-checkbox').forEach(function(guestCheckbox) {
+                    guestCheckboxStates[guestCheckbox.value] = guestCheckbox.checked;
+                });
+
+                // Update checkboxes in all task items (only for participants)
                 Array.from(document.querySelectorAll('[id^="task_pic_container_"]')).forEach((container,
                     i) => {
-                    updatePICCheckboxes(i);
+                        updatePICCheckboxes(i);
+                    });
+
+                // Restore guest checkbox states
+                document.querySelectorAll('.guest-checkbox').forEach(function(guestCheckbox) {
+                    if (guestCheckboxStates.hasOwnProperty(guestCheckbox.value)) {
+                        guestCheckbox.checked = guestCheckboxStates[guestCheckbox.value];
+                    }
                 });
             });
         });
@@ -1021,7 +1074,9 @@
 
 
 
+
         // Remove Participant Manually
+        // Add event listener for manually removing participants
         document.addEventListener('click', function(event) {
             if (event.target.classList.contains('remove-participant')) {
                 const row = event.target.closest('tr');
@@ -1032,6 +1087,11 @@
 
                 // Remove the participant from the table
                 row.remove();
+
+                // Update checkboxes in all task items after manual removal
+                Array.from(document.querySelectorAll('[id^="task_pic_container_"]')).forEach((container, i) => {
+                    updatePICCheckboxes(i);
+                });
             }
         });
 
@@ -1058,17 +1118,18 @@
             const container = document.getElementById('tasks-container');
             const index = container.children.length; // Get the current number of task items
             const item = document.createElement('div');
-            item.classList.add('task-item', 'mb-4', 'p-4', 'border', 'shadow-lg', 'rounded-md', 'bg-gradient-to-r', 'from-orange-200', 'to-orange-300');
+            item.classList.add('task-item', 'mb-4', 'p-4', 'border', 'shadow-lg', 'rounded-md', 'bg-gradient-to-r',
+                'from-orange-200', 'to-orange-300');
             item.innerHTML = `
-            <div class="task-item mb-4 p-4 border border-gray-300 rounded-md shadow-sm bg-white">
+            <div class="mb-4 p-4 border border-gray-300 rounded-md shadow-sm bg-white">
                 
                                <div class="flex items-center mb-4 space-x-4 bg-gradient-to-r from-green-400 to-green-600 p-4 rounded-md">
                     <input type="text" name="tasks[${index}][task_topic]" 
                         class="border border-gray-300 rounded-md shadow-sm w-full mr-2 px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500" 
-                        placeholder="Task Topic">
+                        placeholder="Task Topic" required>
                     <input type="date" name="tasks[${index}][task_due_date]" 
                         class="border border-gray-300 rounded-md shadow-sm w-full mr-2 px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500" 
-                        placeholder="Due Date">
+                        placeholder="Due Date" required>
                     <input type="hidden" name="tasks[${index}][task_id]">
             <button type="button" 
                 class="remove-task bg-gradient-to-r from-red-400 to-red-600 hover:from-red-500 hover:to-red-700 text-white text-sm font-medium py-1 px-3 rounded-md shadow-md hover:shadow-lg transition-all duration-200 ease-in-out flex items-center justify-center space-x-1">
@@ -1293,8 +1354,70 @@
         // Function to update PIC options for a specific task index in the modal
         function updatePICCheckboxes(index) {
             const container = document.getElementById(`task_pic_container_${index}`);
+            const selectedPicList = document.getElementById(`selectedPicList_${index}`);
             const participants = Array.from(document.querySelectorAll('input[name="participants[]"]'));
             const guests = Array.from(document.querySelectorAll('input[name^="guests["]'));
+            // const guestData = @json($notulen->guests);
+            // Fetch task data from Blade
+            const taskData = @json($notulen->tasks);
+
+            // Ensure the index is within bounds
+            if (index < 0 || index >= taskData.length) {
+                console.warn(`Index ${index} is out of bounds.`);
+                return;
+            }
+
+            // Find the specific task data based on index position
+            const currentTask = taskData[index];
+
+            if (!currentTask) {
+                console.warn(`Task with index ${index} not found.`);
+                return;
+            }
+
+
+            console.log('current task: ', currentTask);
+
+            const guestPics = JSON.parse(currentTask.guest_pic || '[]');
+
+            // Fetch guest data from Blade
+            const guestData = @json($notulen->guests);
+            const guestsData = guestData.map(guest => ({
+                id: guest.id.toString(),
+                name: guest.name,
+                email: guest.email
+            }));
+
+            console.log('guest data', guestsData);
+            console.log('guest pics', guestPics);
+
+
+            // Find the specific task data for the given notulen ID and index
+            // const currentTask = guestData.find(task => task.notulen_id === notulenId && task.index === index);
+            // const currentTaskGuests = currentTask ? currentTask.guests : [];
+            // const guestsData = guestData.map(guest => ({
+            //     id: guest.id,
+            //     name: guest.name,
+            //     email: guest.email
+            // }));
+            // const guestsData = guestData.map(guest => ({
+            //     id: guest.id.toString(), // Convert guest.id to string
+            //     name: guest.name,
+            //     email: guest.email
+            // }));
+
+
+            console.log('test guest:', guestsData);
+
+            // Extract guest emails based on guest_pic
+            const guestEmails = guestPics.map(guestId => {
+                const guest = guestsData.find(g => g.id === guestId.toString());
+                return guest ? guest.email : null;
+            }).filter(email => email !== null);
+
+            console.log('Guest Emails:', guestEmails);
+
+
 
             // Convert guests to an array of objects and ensure uniqueness based on email
             const guestArray = guests.map(guest => {
@@ -1313,6 +1436,23 @@
                 .filter(checkbox => checkbox.checked)
                 .map(checkbox => checkbox.value);
 
+            console.log('Checked Participants:', checkedParticipants);
+
+            // Filter checked participants that have 'g_' prefix
+            const guestCheckedParticipants = checkedParticipants
+                .filter(participant => participant.startsWith('g_'))
+                .map(participant => participant.replace('g_', '').toString());
+
+            // Log the guest IDs
+            console.log('Guest Checked Participants (IDs without g_):', guestCheckedParticipants);
+
+
+            // Compare with guestData and store the matching guests
+            const matchingGuests = guestsData.filter(guest =>
+                guestCheckedParticipants.includes(guest.id)
+            );
+
+            console.log('Matching Guests:', matchingGuests);
             container.innerHTML = ''; // Clear existing checkboxes
 
             // Loop through participants and create checkboxes in the modal structure
@@ -1321,6 +1461,11 @@
                 const participantName = participant.closest('tr').querySelector('td:nth-child(2) input').value;
 
                 const isChecked = checkedParticipants.includes(participantId);
+
+                // Log participant details
+                console.log('Participant ID:', participantId);
+                console.log('Participant Name:', participantName);
+                console.log('Is Checked:', isChecked);
 
                 // Create participant container following modal structure
                 const checkboxContainer = document.createElement('div');
@@ -1332,17 +1477,33 @@
                 checkboxContainer.innerHTML = `
             <span class="text-sm text-gray-700">${participantName}</span>
             <input type="checkbox" name="tasks[${index}][task_pic][]" value="${participantId}" ${isChecked ? 'checked' : ''} class="h-4 w-4 text-blue-600 pic-checkbox">
-        `;
+             `;
 
                 container.appendChild(checkboxContainer);
+
+                // Add to the selected PIC list if checked
+                if (isChecked) {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = participantName;
+                    selectedPicList.appendChild(listItem);
+                }
             });
 
             // Loop through unique guests and create checkboxes in the modal structure
             uniqueGuests.forEach(guest => {
                 // Prefix the guest ID with 'g_'
-                const guestId = `g_${guest.id}`;
+                // Add 'g_' to guest.id
+                const guestId = 'g_' + guest.id;
+                const isChecked = guestEmails.some(email => email === guestId.replace('g_', ''));
+
                 const guestName = guest.name;
-                const isChecked = checkedParticipants.includes(guestId);
+
+                // Log results for debugging
+                console.log('guestId:', guestId);
+                console.log('isChecked:', isChecked);
+
+
+
 
                 // Log the details of the guest being processed
                 console.log(`Processing guest:`, {
@@ -1364,7 +1525,15 @@
         `;
 
                 container.appendChild(checkboxContainer);
+
+                // Add to the selected PIC list if checked
+                if (isChecked) {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `${guestName} (Guest)`;
+                    selectedPicList.appendChild(listItem);
+                }
             });
+
         }
 
 
@@ -1434,36 +1603,64 @@
             const email = emailInput.value.trim();
 
             if (name === '' || email === '') {
-                alert('Please fill out both fields.');
-                return;
-            }
+        Swal.fire({
+            icon: 'warning',
+            title: 'Incomplete Information',
+            text: 'Please fill out both fields.'
+        });
+        return;
+    }
+
+    // Email validation regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Invalid Email',
+            text: 'Please enter a valid email address.'
+        });
+        return;
+    }
 
             const container = document.getElementById('guests-container');
             const guestIndex = container.querySelectorAll('tr').length;
+    // Log all existing email inputs within the container
+    const existingEmails = Array.from(container.querySelectorAll('input[type="email"]')).map(input => input.value);
+    console.log('Existing Emails:', existingEmails);
 
-            if (Array.from(container.querySelectorAll('input[name^="guests["][email]')).some(input => input
-                    .value === email)) {
-                alert('This guest is already added.');
-                return;
-            }
+    // Check if the new email already exists in the container
+    if (existingEmails.includes(email)) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Guest Already Added',
+            text: 'This guest is already added.'
+        });
+        return;
+    }
+
+
+            Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: 'Guest added successfully!'
+    });
 
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td class="border border-gray-300 p-2">
-                    <input type="text" name="guests[${guestIndex}][name]" value="${name}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Guest Name">
-                </td>
-                <td class="border border-gray-300 p-2">
-                    <input type="email" name="guests[${guestIndex}][email]" value="${email}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Guest Email">
-                </td>
-                <td class="border border-gray-300 p-2 text-center">
-                <button type="button" 
-                    class="bg-gradient-to-r from-red-400 to-red-600 hover:from-red-500 hover:to-red-700 text-white text-sm font-medium py-1 px-3 rounded-md shadow-md hover:shadow-lg transition-all duration-200 ease-in-out remove-guest flex items-center justify-center space-x-1">
-                    <i class="zmdi zmdi-delete mr-1"></i>
-                    Remove
-                </button>
-
-                </td>
-            `;
+        <td class="border border-gray-300 p-2">
+            <input type="text" name="guests[${guestIndex}][name]" value="${name}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Guest Name">
+        </td>
+        <td class="border border-gray-300 p-2">
+            <input type="email" name="guests[${guestIndex}][email]" value="${email}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Guest Email">
+        </td>
+        <td class="border border-gray-300 p-2 text-center">
+        <button type="button" 
+            class="bg-gradient-to-r from-red-400 to-red-600 hover:from-red-500 hover:to-red-700 text-white text-sm font-medium py-1 px-3 rounded-md shadow-md hover:shadow-lg transition-all duration-200 ease-in-out remove-guest flex items-center justify-center space-x-1">
+            <i class="zmdi zmdi-delete mr-1"></i>
+            Remove
+        </button>
+        </td>
+    `;
             container.appendChild(row);
 
             // Get the guest modal element
@@ -1479,17 +1676,30 @@
                 guestModal.classList.add('hidden');
             }, 300); // Duration should match the CSS transition duration
 
-
             nameInput.value = '';
             emailInput.value = '';
 
             toggleGuestsSection(); // Recheck after adding a guest
 
-            // Update checkboxes in all task items
+            // Store guest checkbox states before updating
+            const guestCheckboxStates = {};
+            document.querySelectorAll('.guest-checkbox').forEach(function(guestCheckbox) {
+                guestCheckboxStates[guestCheckbox.value] = guestCheckbox.checked;
+            });
+
+            // Update checkboxes in all task items (for participants)
             Array.from(document.querySelectorAll('[id^="task_pic_container_"]')).forEach((container, i) => {
                 updatePICCheckboxes(i);
             });
+
+            // Restore guest checkbox states after updating
+            document.querySelectorAll('.guest-checkbox').forEach(function(guestCheckbox) {
+                if (guestCheckboxStates.hasOwnProperty(guestCheckbox.value)) {
+                    guestCheckbox.checked = guestCheckboxStates[guestCheckbox.value];
+                }
+            });
         });
+
 
         // Remove Guest
         document.addEventListener('click', function(event) {
@@ -1497,12 +1707,20 @@
                 const row = event.target.closest('tr');
 
                 if (row) {
+                    const guestId = row.querySelector('input[name="guests[]"]')
+                        ?.value; // Assuming guests[] is the input name
                     row.remove();
+
+                    // Update checkboxes in all task items after guest removal
+                    Array.from(document.querySelectorAll('[id^="task_pic_container_"]')).forEach((container, i) => {
+                        updatePICCheckboxes(i);
+                    });
                 }
 
                 toggleGuestsSection(); // Recheck after removing a guest
             }
         });
+
 
 
 
@@ -1528,25 +1746,54 @@
             this.noValidate = true;
 
             let allTasksValid = true;
+            let firstInvalidTaskIndex = null;
 
-             // Loop through all task containers to check if PIC is selected
-    const taskContainers = document.querySelectorAll('[id^="tasks-container"] .task-item');
-    taskContainers.forEach((taskContainer, index) => {
-        const picCheckboxes = taskContainer.querySelectorAll('.pic-checkbox, .guest-checkbox');
-        const isPicSelected = Array.from(picCheckboxes).some(checkbox => checkbox.checked);
+            // Loop through all task containers to check if PIC is selected
+            const taskContainers = document.querySelectorAll('[id^="tasks-container"] .task-item');
+            taskContainers.forEach((taskContainer, index) => {
+                const picCheckboxes = taskContainer.querySelectorAll('.pic-checkbox, .guest-checkbox');
+                const isPicSelected = Array.from(picCheckboxes).some(checkbox => checkbox.checked);
 
-        if (!isPicSelected) {
-            allTasksValid = false;
-            Swal.fire({
-                title: 'Validation Error',
-                text: `Please select at least one Person in Charge (PIC) for task ${index + 1}.`,
-                icon: 'error',
-                confirmButtonColor: '#3085d6',
-                confirmButtonText: 'OK'
+                if (!isPicSelected && firstInvalidTaskIndex === null) {
+                    allTasksValid = false;
+                    firstInvalidTaskIndex = index; // Mark the first invalid task index
+                }
             });
-            return; // Exit the loop if a task has no PIC selected
-        }
-    });
+
+            if (!allTasksValid) {
+                Swal.fire({
+                    title: 'Validation Error',
+                    text: `Please select at least one Person in Charge (PIC) for task ${firstInvalidTaskIndex + 1}.`,
+                    icon: 'error',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    // Scroll to the first invalid task and disable further scrolling interference
+                    const invalidTaskContainer = taskContainers[firstInvalidTaskIndex];
+
+                    // Ensure smooth scrolling to the invalid task
+                    setTimeout(() => {
+                        invalidTaskContainer.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'center'
+                        });
+
+                        // Focus the invalid task after scrolling with preventScroll to avoid extra scrolling
+                        invalidTaskContainer.focus({
+                            preventScroll: true
+                        });
+
+                        // Click the "Assign PIC" button after scrolling
+                        const assignPicButton = invalidTaskContainer.querySelector(
+                            `#openPicModalBtn_${firstInvalidTaskIndex}`);
+                        if (assignPicButton) {
+                            assignPicButton.click(); // Trigger the click event to open the modal
+                        }
+
+                    }, 500); // Adjust delay as necessary for a smooth transition
+                });
+                return;
+            }
 
             if (this.checkValidity()) {
                 Swal.fire({
@@ -1583,13 +1830,16 @@
 
                         // Focus and trigger the validation message after scrolling
                         setTimeout(() => {
-                            firstInvalidField.focus();
+                            firstInvalidField.focus({
+                                preventScroll: true
+                            });
                             firstInvalidField.reportValidity(); // Show the validation message
                         }, 500); // Adjust delay as necessary
                     }
                 });
             }
         });
+
 
         document.addEventListener('DOMContentLoaded', () => {
             const tooltip = document.getElementById('tooltip');
@@ -1624,13 +1874,10 @@
                 const closeBtn = document.getElementById(`closePicModalBtn_${taskIndex}`);
                 const saveBtn = document.getElementById(`selectPICBtn_${taskIndex}`);
                 const searchInput = document.getElementById(`picSearch_${taskIndex}`);
-                const participantItems = modal.querySelectorAll('.participant-item');
-                const guestItems = modal.querySelectorAll('.guest-item');
                 const selectedPicList = document.getElementById(`selectedPicList_${taskIndex}`);
 
-                // Load selected participants and guests on page load
-                updateSelectedList(participantItems, guestItems, selectedPicList);
-
+                // Call updateSelectedList when the page loads to display already selected PICs
+                updateSelectedList();
                 // Open modal
                 openBtn.addEventListener('click', () => {
                     modal.classList.remove('hidden');
@@ -1650,7 +1897,7 @@
 
                 // Save selected participants and guests
                 saveBtn.addEventListener('click', () => {
-                    updateSelectedList(participantItems, guestItems, selectedPicList);
+                    updateSelectedList();
                     closePICModal(modal);
                 });
 
@@ -1659,12 +1906,14 @@
                     const filter = this.value.toLowerCase();
 
                     // Filter participant items
+                    const participantItems = modal.querySelectorAll('.participant-item');
                     participantItems.forEach(item => {
                         const name = item.dataset.name.toLowerCase();
                         item.style.display = name.includes(filter) ? 'flex' : 'none';
                     });
 
                     // Filter guest items
+                    const guestItems = modal.querySelectorAll('.guest-item');
                     guestItems.forEach(item => {
                         const name = item.dataset.name.toLowerCase();
                         item.style.display = name.includes(filter) ? 'flex' : 'none';
@@ -1672,8 +1921,12 @@
                 });
 
                 // Function to update the list of selected participants and guests
-                function updateSelectedList(participantItems, guestItems, selectedPicList) {
+                function updateSelectedList() {
                     selectedPicList.innerHTML = ''; // Clear the list
+
+                    // Dynamically select the participant and guest items to reflect any updates
+                    const participantItems = modal.querySelectorAll('.participant-item');
+                    const guestItems = modal.querySelectorAll('.guest-item');
 
                     // Collect selected participants
                     participantItems.forEach(item => {
@@ -1717,10 +1970,9 @@
                     return false;
                 }
 
-                // Function to close the modal
+                // Close modal helper function
                 function closePICModal(modal) {
                     modal.querySelector('.fixed.inset-0').classList.add('opacity-0');
-                    modal.querySelector('.transform').classList.remove('opacity-100', 'scale-100');
                     modal.querySelector('.transform').classList.add('opacity-0', 'scale-90');
                     setTimeout(() => {
                         modal.classList.add('hidden');
@@ -1851,11 +2103,11 @@
                             dotsContainer.innerHTML = `
                     ${dotsHtml}
                     ${notifications.length > maxDotsPerPage ? `
-                                <div class="flex justify-between mt-2 hidden">
-                                    <button id="prevPage" class="px-2 py-1 bg-gray-200 rounded ${page === 0 ? 'opacity-50 cursor-not-allowed' : ''}" ${page === 0 ? 'disabled' : ''}>Prev</button>
-                                    <button id="nextPage" class="px-2 py-1 bg-gray-200 rounded ${page === Math.ceil(notifications.length / maxDotsPerPage) - 1 ? 'opacity-50 cursor-not-allowed' : ''}" ${page === Math.ceil(notifications.length / maxDotsPerPage) - 1 ? 'disabled' : ''}>Next</button>
-                                </div>
-                            ` : ''}
+                                                        <div class="flex justify-between mt-2 hidden">
+                                                            <button id="prevPage" class="px-2 py-1 bg-gray-200 rounded ${page === 0 ? 'opacity-50 cursor-not-allowed' : ''}" ${page === 0 ? 'disabled' : ''}>Prev</button>
+                                                            <button id="nextPage" class="px-2 py-1 bg-gray-200 rounded ${page === Math.ceil(notifications.length / maxDotsPerPage) - 1 ? 'opacity-50 cursor-not-allowed' : ''}" ${page === Math.ceil(notifications.length / maxDotsPerPage) - 1 ? 'disabled' : ''}>Next</button>
+                                                        </div>
+                                                    ` : ''}
                 `;
                         };
 

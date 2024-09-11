@@ -51,6 +51,16 @@
             margin: 0;
             /* Ensure no extra margin in the content */
         }
+
+        .notification-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center horizontally */
+    justify-content: center; /* Center vertically */
+    text-align: center; /* Align text to center */
+    width: 100%; /* Ensure the element takes the full width of its parent */
+    height: 100%; /* Make sure it takes full height to be centered properly */
+}
     </style>
 </head>
 

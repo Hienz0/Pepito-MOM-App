@@ -28,22 +28,19 @@
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
 
     <style>
-        /* Add this to your styles.css */
+
+
         .notification-item {
-            transition: background-color 0.3s, color 0.3s;
-        }
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center horizontally */
+    justify-content: center; /* Center vertically */
+    text-align: center; /* Align text to center */
+    width: 100%; /* Ensure the element takes the full width of its parent */
+    height: 100%; /* Make sure it takes full height to be centered properly */
+}
 
-        .notification-item.unread {
-            background-color: #f0f4f8;
-            /* Light background for unread notifications */
-            border-left: 4px solid #4caf50;
-            /* Highlight unread notifications */
-        }
 
-        .notification-item.read {
-            background-color: #ffffff;
-            /* Default background for read notifications */
-        }
     </style>
 </head>
 
@@ -605,7 +602,7 @@
                                 ''; // Highlight unread notifications
 
                             return `
-                    <a href="${link}" class="notification-item block px-4 py-2 mb-2 ${highlightClass} hover:bg-gray-100 rounded-md transition duration-200 ease-in-out shadow-sm border-b border-gray-200">
+                    <a href="${link}" class="notification-item block mt-2 px-4 py-3 ${highlightClass} hover:bg-gray-100 rounded-md transition duration-200 ease-in-out shadow-sm border-b border-gray-200">
                         <div class="icon bg-blue-500 text-white rounded-full p-2 w-10 h-10 flex items-center justify-center mx-auto mb-2">
                             <i class="fas fa-bell"></i>
                         </div>
@@ -654,7 +651,7 @@
                         const updateCarousel = (index) => {
                             isScrolling = true; // Disable scrolling during transition
                             notificationsList.style.transform =
-                                `translateY(-${index * 160}px)`; // Adjusting for notification item height
+                                `translateY(-${index * 161}px)`; // Adjusting for notification item height
 
                             // Ensure the correct dot is highlighted
                             const dots = dotsContainer.querySelectorAll('.dot');

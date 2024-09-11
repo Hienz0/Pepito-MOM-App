@@ -12,15 +12,18 @@ class MoMDetailsMail extends Mailable
     use Queueable, SerializesModels;
 
     public $notulen;
+    public $notulenUrl; // Add property for the URL
 
     /**
      * Create a new message instance.
      *
      * @param $notulen
+     * @param $notulenUrl
      */
-    public function __construct($notulen)
+    public function __construct($notulen, $notulenUrl)
     {
         $this->notulen = $notulen;
+        $this->notulenUrl = $notulenUrl;
     }
 
     /**
@@ -38,6 +41,7 @@ class MoMDetailsMail extends Mailable
                     ])
                     ->with([
                         'notulen' => $this->notulen,
+                        'notulenUrl' => $this->notulenUrl, // Pass the URL to the view
                     ]);
     }
 }

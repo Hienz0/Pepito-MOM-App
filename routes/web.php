@@ -17,6 +17,19 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 
+use App\Mail\NotulenAdded;
+
+
+Route::get('/test-email/notulen/{id}', function ($id) {
+    $notulen = Notulen::findOrFail($id); // Fetch the Notulen by ID
+    
+    // Send the email
+    Mail::to('aldyanqseven2@gmail.com')->send(new NotulenAdded($notulen));
+
+    return 'Email sent successfully!';
+});
+
+
 
 Route::get('/inject-dummy-notulens', function () {
     $scripter = User::find(1); // Find the user with id 1
@@ -104,6 +117,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Inactivate a Mom
     Route::patch('/notulens/{id}/inactivate', [NotulenController::class, 'inactivate'])->name('notulens.inactivate');
+
 
 
 

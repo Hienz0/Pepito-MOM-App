@@ -12,7 +12,12 @@
         }
         p {
             line-height: 1.5;
+            text-align: justify;
         }
+        a {
+        color: #ffffff; /* Inherit the text color from the parent element */
+        text-decoration: none; /* Remove the underline */
+    }
     </style>
 </head>
 <body>

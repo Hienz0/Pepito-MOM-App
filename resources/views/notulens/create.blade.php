@@ -67,6 +67,16 @@
         #task_pic option:checked {
             display: block;
         }
+
+        .notification-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center horizontally */
+    justify-content: center; /* Center vertically */
+    text-align: center; /* Align text to center */
+    width: 100%; /* Ensure the element takes the full width of its parent */
+    height: 100%; /* Make sure it takes full height to be centered properly */
+}
     </style>
 </head>
 
@@ -253,7 +263,7 @@
                         <div class="w-full md:w-1/2 md:pr-2">
                             <div class="mb-4">
                                 <label for="meeting_title" class="block text-gray-700 text-sm font-bold mb-2">Meeting
-                                    Title</label>
+                                    Title <span class="text-red-500 text-l">*</span></label>
                                 <input type="text"
                                     class="has-tooltip shadow appearance-none border rounded w-full md:w-4/5 lg:w-4/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                     id="meeting_title" name="meeting_title" placeholder="Enter meeting title"
@@ -261,94 +271,106 @@
                                     data-tooltip="Enter a clear and descriptive title for the meeting. The title should provide a brief summary of the meeting's purpose or topic. For example, 'Project Kickoff Meeting' or 'Quarterly Financial Review.' This title will be used to identify and organize the meeting in records and communications, so make sure it is specific and relevant to the meeting content. Avoid vague titles and ensure that the title is easy to understand for all participants.">
                                 {{-- md:w-3/5 lg:w-3/5 --}}
                             </div>
-                            <div class="mb-4 relative has-tooltip" data-tooltip="Select one or more departments relevant to the meeting...">
-                                <label for="department" class="block text-gray-700 text-sm font-bold mb-2">Department</label>
+                            <div class="mb-4 relative has-tooltip"
+                                data-tooltip="Select one or more departments relevant to the meeting...">
+                                <label for="department"
+                                    class="block text-gray-700 text-sm font-bold mb-2">Department <span class="text-red-500 text-l">*</span></label>
                                 <div class="relative w-full md:w-4/5 lg:w-4/5">
 
                                     <!-- Div that should be in front -->
-                                    <div id="dropdown-toggle" class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline cursor-pointer flex justify-between items-center z-10 relative">
+                                    <div id="dropdown-toggle"
+                                        class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline cursor-pointer flex justify-between items-center z-10 relative">
                                         <span id="dropdown-label" class="truncate">Select Departments</span>
-                                        <svg class="inline w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                        <svg class="inline w-4 h-4 ml-2" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 9l-7 7-7-7"></path>
                                         </svg>
                                     </div>
-                                
+
                                     <!-- Input field that should be behind -->
-                                    <input type="text" id="dummyInput" class="absolute inset-0 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline cursor-pointer z-0" required>
+                                    <input type="text" id="dummyInput"
+                                        class="absolute inset-0 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline cursor-pointer z-0"
+                                        required>
                                 </div>
-                                
-                            
-                                <div id="checkbox-dropdown" class="absolute hidden shadow bg-white border rounded mt-2 w-full md:w-4/5 lg:w-4/5 z-10">
+
+
+                                <div id="checkbox-dropdown"
+                                    class="absolute hidden shadow bg-white border rounded mt-2 w-full md:w-4/5 lg:w-4/5 z-10">
                                     <div class="p-2">
                                         <div class="flex items-center mb-2">
-                                            <input id="department_hr" name="department[]" type="checkbox" value="HR" class="mr-2" onchange="updateLabel()">
+                                            <input id="department_hr" name="department[]" type="checkbox"
+                                                value="HR" class="mr-2" onchange="updateLabel()">
                                             <label for="department_hr" class="text-gray-700">HR</label>
                                         </div>
                                         <div class="flex items-center mb-2">
-                                            <input id="department_it" name="department[]" type="checkbox" value="IT" class="mr-2" onchange="updateLabel()">
+                                            <input id="department_it" name="department[]" type="checkbox"
+                                                value="IT" class="mr-2" onchange="updateLabel()">
                                             <label for="department_it" class="text-gray-700">IT</label>
                                         </div>
                                         <div class="flex items-center mb-2">
-                                            <input id="department_finance" name="department[]" type="checkbox" value="Finance" class="mr-2" onchange="updateLabel()">
+                                            <input id="department_finance" name="department[]" type="checkbox"
+                                                value="Finance" class="mr-2" onchange="updateLabel()">
                                             <label for="department_finance" class="text-gray-700">Finance</label>
                                         </div>
                                         <div class="flex items-center mb-2">
-                                            <input id="department_marketing" name="department[]" type="checkbox" value="Marketing" class="mr-2" onchange="updateLabel()">
+                                            <input id="department_marketing" name="department[]" type="checkbox"
+                                                value="Marketing" class="mr-2" onchange="updateLabel()">
                                             <label for="department_marketing" class="text-gray-700">Marketing</label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            
+
 
                             <script>
-                                            // Get the input element
-    const dummyInput = document.getElementById('dummyInput');
-    
-    // Prevent any interaction with the input
-    dummyInput.addEventListener('focus', (e) => e.preventDefault());
-    dummyInput.addEventListener('keydown', (e) => e.preventDefault());
-    dummyInput.addEventListener('input', (e) => e.preventDefault());
-    
-    // Toggle dropdown open/close
-    document.getElementById('dropdown-toggle').addEventListener('click', function() {
-        const dropdown = document.getElementById('checkbox-dropdown');
-        dropdown.classList.toggle('hidden');  // Toggle the hidden class
-    });
+                                // Get the input element
+                                const dummyInput = document.getElementById('dummyInput');
 
-    // Update label and manage the required attribute
-    function updateLabel() {
-        const checkboxes = document.querySelectorAll('input[name="department[]"]:checked');
-        const label = document.getElementById('dropdown-label');
-        const selected = Array.from(checkboxes).map(cb => cb.nextElementSibling.textContent).join(', ');
+                                // Prevent any interaction with the input
+                                dummyInput.addEventListener('focus', (e) => e.preventDefault());
+                                dummyInput.addEventListener('keydown', (e) => e.preventDefault());
+                                dummyInput.addEventListener('input', (e) => e.preventDefault());
 
-        label.textContent = selected.length > 0 ? selected : 'Select Departments';
+                                // Toggle dropdown open/close
+                                document.getElementById('dropdown-toggle').addEventListener('click', function() {
+                                    const dropdown = document.getElementById('checkbox-dropdown');
+                                    dropdown.classList.toggle('hidden'); // Toggle the hidden class
+                                });
 
-        // Toggle required attribute on the dummy input based on checkbox selection
-        const dummyInput = document.getElementById('dummyInput');
-        if (checkboxes.length > 0) {
-            dummyInput.required = false; // Remove required if one or more checkboxes are checked
-        } else {
-            dummyInput.required = true;  // Add required if no checkboxes are checked
-        }
-    }
+                                // Update label and manage the required attribute
+                                function updateLabel() {
+                                    const checkboxes = document.querySelectorAll('input[name="department[]"]:checked');
+                                    const label = document.getElementById('dropdown-label');
+                                    const selected = Array.from(checkboxes).map(cb => cb.nextElementSibling.textContent).join(', ');
 
-    // Close the dropdown if the user clicks outside of it
-    document.addEventListener('click', function(event) {
-        const dropdown = document.getElementById('checkbox-dropdown');
-        const button = document.getElementById('dropdown-toggle');
-        
-        // Close the dropdown only if clicking outside both the button and the dropdown
-        if (!button.contains(event.target) && !dropdown.contains(event.target)) {
-            dropdown.classList.add('hidden');
-        }
-    });
+                                    label.textContent = selected.length > 0 ? selected : 'Select Departments';
+
+                                    // Toggle required attribute on the dummy input based on checkbox selection
+                                    const dummyInput = document.getElementById('dummyInput');
+                                    if (checkboxes.length > 0) {
+                                        dummyInput.required = false; // Remove required if one or more checkboxes are checked
+                                    } else {
+                                        dummyInput.required = true; // Add required if no checkboxes are checked
+                                    }
+                                }
+
+                                // Close the dropdown if the user clicks outside of it
+                                document.addEventListener('click', function(event) {
+                                    const dropdown = document.getElementById('checkbox-dropdown');
+                                    const button = document.getElementById('dropdown-toggle');
+
+                                    // Close the dropdown only if clicking outside both the button and the dropdown
+                                    if (!button.contains(event.target) && !dropdown.contains(event.target)) {
+                                        dropdown.classList.add('hidden');
+                                    }
+                                });
                             </script>
 
 
                             <div class="mb-4">
                                 <label for="participants"
-                                    class="block text-gray-700 text-sm font-bold mb-2">Participants</label>
+                                    class="block text-gray-700 text-sm font-bold mb-2">Participants <span class="text-red-500 text-l">*</span></label>
                                 <button type="button"
                                     class="has-tooltip bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 text-white font-semibold py-2 px-4 rounded-md shadow-md hover:shadow-lg transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-green-300"
                                     id="openParticipantModalBtn"
@@ -369,7 +391,7 @@
                             <div class="flex mb-4 md:w-4/5 lg:w-4/5">
                                 <div class="w-1/2 pr-2">
                                     <label for="meeting_date"
-                                        class="block text-gray-700 text-sm font-bold mb-2">Date</label>
+                                        class="block text-gray-700 text-sm font-bold mb-2">Date <span class="text-red-500 text-l">*</span></label>
                                     <input type="date"
                                         class="has-tooltip shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                         id="meeting_date" name="meeting_date" required
@@ -377,7 +399,7 @@
                                 </div>
                                 <div class="w-1/2 pl-2">
                                     <label for="meeting_time"
-                                        class="block text-gray-700 text-sm font-bold mb-2">Time</label>
+                                        class="block text-gray-700 text-sm font-bold mb-2">Time <span class="text-red-500 text-l">*</span></label>
                                     <input type="time"
                                         class="has-tooltip shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                         id="meeting_time" name="meeting_time" required
@@ -387,7 +409,7 @@
                             <div class="mb-4 has-tooltip"
                                 data-tooltip="Choose the location where the meeting will take place from the dropdown list. This could be a physical location like a conference room or an online meeting link. If you’re selecting a physical location, ensure it is available and suitable for the meeting. If the meeting is online, make sure to include any necessary details or links in the meeting invite. The selected location will be visible to all participants, so please ensure it is accurate to avoid confusion and ensure a smooth meeting experience.">
                                 <label for="meeting_location"
-                                    class="block text-gray-700 text-sm font-bold mb-2">Location</label>
+                                    class="block text-gray-700 text-sm font-bold mb-2">Location <span class="text-red-500 text-l">*</span></label>
                                 <select name="meeting_location" id="meeting_location"
                                     class="shadow appearance-none border rounded w-full md:w-4/5 lg:w-4/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                     required>
@@ -401,7 +423,7 @@
                                 <label for="scripter"
                                     class="block text-gray-700 text-sm font-bold mb-2">Scripter</label>
                                 <input type="text"
-                                    class="has-tooltip shadow appearance-none border rounded w-full md:w-4/5 lg:w-4/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shad-outline"
+                                    class="has-tooltip shadow appearance-none border rounded w-full md:w-4/5 lg:w-4/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shad-outline bg-gray-200"
                                     id="scripter" name="scripter" value="{{ $scripter->name }}" readonly
                                     data-tooltip="This field shows the name of the person who created this Minutes of Meeting (MoM). Since you are the one creating this MoM, your name is displayed here automatically. This information helps identify who is responsible for recording and documenting the meeting details. If you need to update the scripter's information or if this is not correct, please check with your system administrator or the person managing the MoM process.">
                             </div>
@@ -460,24 +482,24 @@
 
 
                     <div class="mb-4">
-                        <label for="agenda" class="block text-gray-700 text-sm font-bold mb-2">Agenda</label>
+                        <label for="agenda" class="block text-gray-700 text-sm font-bold mb-2">Agenda <span class="text-red-500 text-l">*</span></label>
                         <textarea
                             class="has-tooltip shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             id="agenda" name="agenda" rows="3" placeholder="Enter agenda" required
                             data-tooltip="Enter the detailed agenda for the meeting in this field. The agenda should outline the key topics and activities planned for the meeting, helping to ensure that all participants are aware of what will be discussed. Use this space to provide a clear and organized list of points or topics that will be covered, along with any relevant details. A well-defined agenda helps in keeping the meeting focused and productive. Make sure to include all necessary items to be addressed during the meeting."></textarea>
                     </div>
                     <div class="mb-4">
-                        <label for="discussion" class="block text-gray-700 text-sm font-bold mb-2">Discussion</label>
+                        <label for="discussion" class="block text-gray-700 text-sm font-bold mb-2">Discussion <span class="text-red-500 text-l">*</span></label>
                         <textarea
                             class="has-tooltip shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             id="discussion" name="discussion" rows="3" placeholder="Enter discussion" required
                             data-tooltip="Use this field to document the key points and details of the discussions that took place during the meeting. Include summaries of conversations, decisions made, and any relevant comments from participants. This section helps in capturing the essence of the discussions for future reference and ensures that all significant points are recorded. A thorough and accurate description in this field will assist in understanding the outcomes and actions required from the meeting."></textarea>
                     </div>
                     <div class="mb-4">
-                        <label for="decisions" class="block text-gray-700 text-sm font-bold mb-2">Decisions</label>
+                        <label for="decisions" class="block text-gray-700 text-sm font-bold mb-2">Decisions (Optional)</label>
                         <textarea
                             class="has-tooltip shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="decisions" name="decisions" rows="3" placeholder="Enter decisions" required
+                            id="decisions" name="decisions" rows="3" placeholder="Enter decisions"
                             data-tooltip="Use this field to record all decisions made during the meeting. Clearly document each decision along with any relevant details, such as the responsible parties, deadlines, or any conditions attached to the decision. This section is crucial for tracking agreed-upon actions and ensuring that all participants are aware of the outcomes. Accurate recording of decisions helps in following up on action items and verifying that tasks are completed as planned."></textarea>
                     </div>
 
@@ -682,9 +704,10 @@
                                 data-id="{{ $user->id }}" data-name="{{ $user->name }}">
                                 <span class="text-sm text-gray-700">{{ $user->name }} (ID:
                                     {{ $user->id }})</span>
-                                    @if($user->id == auth()->user()->id)
+                                @if ($user->id == auth()->user()->id)
                                     <!-- Authenticated user's checkbox is checked and disabled -->
-                                    <input type="checkbox" class="participant-checkbox h-4 w-4 text-blue-600" checked disabled>
+                                    <input type="checkbox" class="participant-checkbox h-4 w-4 text-blue-600" checked
+                                        disabled>
                                 @else
                                     <input type="checkbox" class="participant-checkbox h-4 w-4 text-blue-600">
                                 @endif
@@ -795,28 +818,28 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const notificationDropdown = document.getElementById('notificationDropdown');
 
-document.addEventListener('DOMContentLoaded', function() {
-    const notificationDropdown = document.getElementById('notificationDropdown');
+            // Prevent page scroll when scrolling inside notification dropdown
+            notificationDropdown.addEventListener('wheel', function(event) {
+                // Get the scroll position of the notification dropdown
+                const scrollTop = notificationDropdown.scrollTop;
+                const scrollHeight = notificationDropdown.scrollHeight;
+                const offsetHeight = notificationDropdown.offsetHeight;
 
-    // Prevent page scroll when scrolling inside notification dropdown
-    notificationDropdown.addEventListener('wheel', function(event) {
-        // Get the scroll position of the notification dropdown
-        const scrollTop = notificationDropdown.scrollTop;
-        const scrollHeight = notificationDropdown.scrollHeight;
-        const offsetHeight = notificationDropdown.offsetHeight;
+                // Prevent page scroll if the dropdown is at its boundaries (top or bottom)
+                if (
+                    (event.deltaY < 0 && scrollTop === 0) || // Scrolling up at the top
+                    (event.deltaY > 0 && scrollTop + offsetHeight >=
+                    scrollHeight) // Scrolling down at the bottom
+                ) {
+                    event.preventDefault();
+                }
 
-        // Prevent page scroll if the dropdown is at its boundaries (top or bottom)
-        if (
-            (event.deltaY < 0 && scrollTop === 0) || // Scrolling up at the top
-            (event.deltaY > 0 && scrollTop + offsetHeight >= scrollHeight) // Scrolling down at the bottom
-        ) {
-            event.preventDefault();
-        }
-
-        event.stopPropagation(); // Stop the wheel event from propagating to the page
-    });
-});
+                event.stopPropagation(); // Stop the wheel event from propagating to the page
+            });
+        });
 
         document.addEventListener('DOMContentLoaded', (event) => {
             const openParticipantModalBtn = document.getElementById('openParticipantModalBtn');
@@ -927,6 +950,36 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('openPICModalBtn').addEventListener('click', function() {
                 updateTaskPicOptions(); // Update the task PIC options first
                 populatePicModal(); // Then populate the modal
+                const selectedParticipants = participantsList.querySelectorAll(
+                'tr'); // Check if any participants are added
+
+                if (selectedParticipants.length === 0) {
+                    Swal.fire({
+                        title: 'No Participants Selected',
+                        text: 'It seems that you haven\'t selected any participants yet. Please select participants first, because PIC can only be taken from the selected participants.',
+                        icon: 'warning',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Scroll to the "Select Participants" button
+                            const participantsSection = document.querySelector(
+                                '#openParticipantModalBtn');
+
+                            // Set a timeout to ensure the scroll happens after SweetAlert2 closes
+                            setTimeout(() => {
+                                participantsSection.scrollIntoView({
+                                    behavior: 'smooth',
+                                    block: 'center'
+                                });
+
+                                // Trigger the click event on the "Select Participants" button
+                                participantsSection.click(); // Open the participants modal
+                            }, 500); // Adjust delay as necessary for a smooth transition
+                        }
+                    });
+                    return; // Stop submission if no participants are selected
+                }
 
                 const picModal = document.getElementById('picModal');
                 picModal.classList.remove('hidden');
@@ -1231,21 +1284,21 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
 
-// Initialize participant item click functionality
-document.querySelectorAll('.participant-item').forEach(item => {
-    const checkbox = item.querySelector('.participant-checkbox');
+            // Initialize participant item click functionality
+            document.querySelectorAll('.participant-item').forEach(item => {
+                const checkbox = item.querySelector('.participant-checkbox');
 
-    // Check if the checkbox is disabled (for the authenticated user)
-    const isDisabled = checkbox.hasAttribute('disabled');
+                // Check if the checkbox is disabled (for the authenticated user)
+                const isDisabled = checkbox.hasAttribute('disabled');
 
-    // Add event listener to toggle the checkbox when the item is clicked
-    item.addEventListener('click', (e) => {
-        // Prevent the event from firing if the checkbox itself is clicked or if it is disabled
-        if (e.target !== checkbox && !isDisabled) {
-            checkbox.checked = !checkbox.checked;
-        }
-    });
-});
+                // Add event listener to toggle the checkbox when the item is clicked
+                item.addEventListener('click', (e) => {
+                    // Prevent the event from firing if the checkbox itself is clicked or if it is disabled
+                    if (e.target !== checkbox && !isDisabled) {
+                        checkbox.checked = !checkbox.checked;
+                    }
+                });
+            });
 
 
             function updateParticipantsInput() {
@@ -1359,31 +1412,31 @@ document.querySelectorAll('.participant-item').forEach(item => {
                 const taskAttachment = taskAttachmentInput.files[0]; // Get the file object
 
                 if (!taskTopic) {
-    Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Please fill in the task topic.',
-    });
-    return;
-}
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Please fill in the task topic.',
+                    });
+                    return;
+                }
 
-if (selectedPicOptions.length === 0) {
-    Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Please select at least one PIC option.',
-    });
-    return;
-}
+                if (selectedPicOptions.length === 0) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Please select at least one PIC option.',
+                    });
+                    return;
+                }
 
-if (!taskDueDate) {
-    Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Please select a due date.',
-    });
-    return;
-}
+                if (!taskDueDate) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Please select a due date.',
+                    });
+                    return;
+                }
 
 
                 const taskPics = selectedPicOptions.map(option => ({
@@ -1486,35 +1539,37 @@ if (!taskDueDate) {
                 // Temporarily prevent browser validation
                 notulenForm.noValidate = true;
 
-                    // Validate if participants are selected
-                        const selectedParticipants = participantsList.querySelectorAll('tr'); // Check if any participants are added
+                // Validate if participants are selected
+                const selectedParticipants = participantsList.querySelectorAll(
+                'tr'); // Check if any participants are added
 
-                        if (selectedParticipants.length === 0) {
-        Swal.fire({
-            title: 'No Participants Selected',
-            text: 'Please select at least one participant before submitting.',
-            icon: 'warning',
-            confirmButtonColor: '#3085d6',
-            confirmButtonText: 'OK'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Scroll to the "Select Participants" button
-                const participantsSection = document.querySelector('#openParticipantModalBtn');
-                
-                // Set a timeout to ensure the scroll happens after SweetAlert2 closes
-                setTimeout(() => {
-                    participantsSection.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'center'
+                if (selectedParticipants.length === 0) {
+                    Swal.fire({
+                        title: 'No Participants Selected',
+                        text: 'Please select at least one participant before submitting.',
+                        icon: 'warning',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Scroll to the "Select Participants" button
+                            const participantsSection = document.querySelector(
+                                '#openParticipantModalBtn');
+
+                            // Set a timeout to ensure the scroll happens after SweetAlert2 closes
+                            setTimeout(() => {
+                                participantsSection.scrollIntoView({
+                                    behavior: 'smooth',
+                                    block: 'center'
+                                });
+
+                                // Trigger the click event on the "Select Participants" button
+                                participantsSection.click(); // Open the participants modal
+                            }, 500); // Adjust delay as necessary for a smooth transition
+                        }
                     });
-                    
-                    // Trigger the click event on the "Select Participants" button
-                    participantsSection.click(); // Open the participants modal
-                }, 500); // Adjust delay as necessary for a smooth transition
-            }
-        });
-        return; // Stop submission if no participants are selected
-    }
+                    return; // Stop submission if no participants are selected
+                }
 
 
                 if (notulenForm.checkValidity()) {
@@ -1634,7 +1689,7 @@ if (!taskDueDate) {
         document.getElementById('userMenuButton').addEventListener('click', function(event) {
             var userDropdown = document.getElementById('userDropdown');
             var notificationDropdown = document.getElementById(
-            'notificationDropdown'); // Get the notification dropdown element
+                'notificationDropdown'); // Get the notification dropdown element
             userDropdown.classList.toggle('hidden');
             // Close notification dropdown if open
             if (!notificationDropdown.classList.contains('hidden')) {
@@ -1743,11 +1798,11 @@ if (!taskDueDate) {
                             dotsContainer.innerHTML = `
                     ${dotsHtml}
                     ${notifications.length > maxDotsPerPage ? `
-                                <div class="flex justify-between mt-2 hidden">
-                                    <button id="prevPage" class="px-2 py-1 bg-gray-200 rounded ${page === 0 ? 'opacity-50 cursor-not-allowed' : ''}" ${page === 0 ? 'disabled' : ''}>Prev</button>
-                                    <button id="nextPage" class="px-2 py-1 bg-gray-200 rounded ${page === Math.ceil(notifications.length / maxDotsPerPage) - 1 ? 'opacity-50 cursor-not-allowed' : ''}" ${page === Math.ceil(notifications.length / maxDotsPerPage) - 1 ? 'disabled' : ''}>Next</button>
-                                </div>
-                            ` : ''}
+                                    <div class="flex justify-between mt-2 hidden">
+                                        <button id="prevPage" class="px-2 py-1 bg-gray-200 rounded ${page === 0 ? 'opacity-50 cursor-not-allowed' : ''}" ${page === 0 ? 'disabled' : ''}>Prev</button>
+                                        <button id="nextPage" class="px-2 py-1 bg-gray-200 rounded ${page === Math.ceil(notifications.length / maxDotsPerPage) - 1 ? 'opacity-50 cursor-not-allowed' : ''}" ${page === Math.ceil(notifications.length / maxDotsPerPage) - 1 ? 'disabled' : ''}>Next</button>
+                                    </div>
+                                ` : ''}
                 `;
                         };
 
