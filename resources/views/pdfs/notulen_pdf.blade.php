@@ -289,7 +289,7 @@
         <p class="center">Thank you for your participation.</p>
                         <!-- Timestamp -->
                         <p class="timestamp">
-                            Minutes of Meeting submitted at: <br>
+                            Document Created at: <br>
                             {{ \Carbon\Carbon::parse($notulen->created_at)->format('F j, Y h:i A') }}
                         </p>
         

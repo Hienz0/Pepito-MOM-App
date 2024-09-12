@@ -73,7 +73,7 @@
                                 <!-- Notifications container -->
                                 <div id="carousel" class="flex-grow overflow-hidden max-h-[181px]">
                                     <div id="notificationsList"
-                                        class="pl-4 pr-1 py-3 transition-transform duration-300 ease-in-out">
+                                        class="pl-4 pr-1 pt-2.5 transition-transform duration-300 ease-in-out">
                                         <!-- Notifications will be dynamically inserted here -->
                                     </div>
                                 </div>
@@ -177,9 +177,11 @@
                             border-radius: 0.5rem;">
                         <tr>
                             <th class="p-4 border-b-2 border-gray-200">Meeting Title</th>
+                            <th class="p-4 border-b-2 border-gray-200">Department</th>
                             <th class="p-4 border-b-2 border-gray-200">Date</th>
                             <th class="p-4 border-b-2 border-gray-200">Time</th>
                             <th class="p-4 border-b-2 border-gray-200">Status</th>
+                            <th class="p-4 border-b-2 border-gray-200">Created At</th>
                             <th class="p-4 border-b-2 border-gray-200">Action</th>
                         </tr>
                     </thead>
@@ -188,9 +190,19 @@
                             <tr onclick="window.location='{{ route('notulens.show', $notulen->id) }}'"
                                 class="hover:bg-gray-100 cursor-pointer">
                                 <td class="p-4">{{ $notulen->meeting_title }}</td>
+                                <td class="p-4">
+                                    @if (is_array(json_decode($notulen->department)))
+                                    {{ implode(', ', json_decode($notulen->department)) }}
+                                @else
+                                    {{ $notulen->department }}
+                                @endif
+                                </td>
                                 <td class="p-4">{{ $notulen->meeting_date }}</td>
-                                <td class="p-4">{{ $notulen->meeting_time }}</td>
+                                <td class="p-4">{{ \Carbon\Carbon::parse($notulen->meeting_time)->format('H:i') }}</td>
+
                                 <td class="p-4">{{ $notulen->status }}</td>
+                                <td class="p-4">{{ $notulen->created_at->format('Y-m-d H:i') }}</td>
+
                                 <td class="p-4 flex space-x-2">
                                     <!-- View Icon -->
                                     <a href="{{ route('notulens.show', $notulen->id) }}"
@@ -602,8 +614,9 @@
                                 ''; // Highlight unread notifications
 
                             return `
-                    <a href="${link}" class="notification-item block mt-2 px-4 py-3 ${highlightClass} hover:bg-gray-100 rounded-md transition duration-200 ease-in-out shadow-sm border-b border-gray-200">
-                        <div class="icon bg-blue-500 text-white rounded-full p-2 w-10 h-10 flex items-center justify-center mx-auto mb-2">
+                                        <a href="${link}" class="notification-item block mt-2 px-4 py-3 ${highlightClass} hover:bg-gray-100 rounded-md transition duration-200 ease-in-out shadow-sm border-b border-gray-200" style="height: 141px;">
+
+                        <div class="icon bg-blue-500 text-white rounded-full p-2 w-10 h-10 flex items-center justify-center mx-auto mb-1">
                             <i class="fas fa-bell"></i>
                         </div>
                         <div class="content text-center">
@@ -651,7 +664,7 @@
                         const updateCarousel = (index) => {
                             isScrolling = true; // Disable scrolling during transition
                             notificationsList.style.transform =
-                                `translateY(-${index * 161}px)`; // Adjusting for notification item height
+                                `translateY(-${index * 165}px)`; // Adjusting for notification item height
 
                             // Ensure the correct dot is highlighted
                             const dots = dotsContainer.querySelectorAll('.dot');

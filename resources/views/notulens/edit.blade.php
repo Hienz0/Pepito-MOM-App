@@ -214,7 +214,8 @@
     <div id="tooltip"
         class="fixed top-4 right-4 mt-24 mr-4 bg-white shadow-md rounded-lg w-96 p-4 text-sm text-gray-700 hidden">
         <div id="tooltip-heading-container" class="tooltip-header">
-            <h1 id="tooltip-heading" class="text-2xl font-bold">Tooltip <i class="fas fa-info-circle"></i></h1>
+            <h1 id="tooltip-heading" class="text-2xl font-bold"><i class="fas fa-info-circle"></i></h1>
+            {{-- <h1 id="tooltip-heading" class="text-2xl font-bold">Tooltip <i class="fas fa-info-circle"></i></h1> --}}
         </div>
         <div id="tooltip-content-container" class="tooltip-content">
             <p></p>
@@ -399,14 +400,15 @@
                                 required>
                                 @php
                                     $locations = [
-                                        'Conference Room A',
-                                        'Conference Room B',
-                                        'Main Hall',
+                                        'Ruang Meeting Inisiatif',
+                                        'Ruang Meeting Marketing',
+                                        'Ruang Meeting MD',
+                                        'Ruang Meeting Objektif',
+                                        'Ruang Meeting Pelayanan',
+                                        'Ruang Meeting HRD',
+                                        'Ruang Meeting Tanggung Jawab',
                                         'Online',
                                         'Off-site',
-                                        'Location 1',
-                                        'Location 2',
-                                        'Location 3',
                                     ];
                                     $selectedLocation = old('meeting_location', $notulen->meeting_location);
                                 @endphp
@@ -2066,7 +2068,7 @@
                                 ''; // Highlight unread notifications
 
                             return `
-                    <a href="${link}" class="notification-item block mt-2 px-4 py-3 ${highlightClass} hover:bg-gray-100 rounded-md transition duration-200 ease-in-out shadow-sm border-b border-gray-200">
+                    <a href="${link}" class="notification-item block mt-2 px-4 py-3 ${highlightClass} hover:bg-gray-100 rounded-md transition duration-200 ease-in-out shadow-sm border-b border-gray-200" style="height: 141px;">
                         <div class="icon bg-blue-500 text-white rounded-full p-2 w-10 h-10 flex items-center justify-center mx-auto mb-2">
                             <i class="fas fa-bell"></i>
                         </div>

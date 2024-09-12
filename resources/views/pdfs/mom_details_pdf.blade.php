@@ -47,7 +47,7 @@
         h2 {
             color: #2d3e50;
             font-size: 24px;
-            margin-top: 30px;
+            margin-top: 20px;
             border-bottom: 2px solid #22c55e;
             padding-bottom: 8px;
         }
@@ -189,37 +189,10 @@
         <p><strong>Discussion:</strong> <br>{!! nl2br(e($notulen->discussion)) !!}</p>
         <p><strong style="margin-top: 20px;">Decisions:</strong> <br>{!! nl2br(e($notulen->decisions)) !!}</p>
 
-        @if ($notulen->participants && count($notulen->participants) > 0)
-        <div class="no-page-break">
-
-            <h2>Participants</h2>
-            <div class="">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Email</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($notulen->participants as $participant)
-                            <tr>
-                                <td>{{ $participant->name }}</td>
-                                <td>{{ $participant->email }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        @endif
-
-        @if ($notulen->guests && count($notulen->guests) > 0)
+        @if (($notulen->participants && count($notulen->participants) > 0) || ($notulen->guests && count($notulen->guests) > 0))
         {{-- <div class="no-page-break"> --}}
         <div class="">
-
-            <h2>Guests</h2>
+            <h2>Participants & Guests</h2>
             <div class="">
                 <table>
                     <thead>
@@ -229,18 +202,31 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($notulen->guests as $guest)
-                            <tr>
-                                <td>{{ $guest->name }}</td>
-                                <td>{{ $guest->email }}</td>
-                            </tr>
-                        @endforeach
+                        {{-- Participants --}}
+                        @if ($notulen->participants && count($notulen->participants) > 0)
+                            @foreach ($notulen->participants as $participant)
+                                <tr>
+                                    <td>{{ $participant->name }}</td>
+                                    <td>{{ $participant->email }}</td>
+                                </tr>
+                            @endforeach
+                        @endif
+        
+                        {{-- Guests --}}
+                        @if ($notulen->guests && count($notulen->guests) > 0)
+                            @foreach ($notulen->guests as $guest)
+                                <tr>
+                                    <td>{{ $guest->name }} (Guest)</td>
+                                    <td>{{ $guest->email }}</td>
+                                </tr>
+                            @endforeach
+                        @endif
                     </tbody>
                 </table>
             </div>
         </div>
-
         @endif
+        
 
         @if ($notulen->tasks && count($notulen->tasks) > 0)
             <h2>Tasks</h2>
@@ -303,7 +289,7 @@
         <p class="center">Thank you for your participation.</p>
                         <!-- Timestamp -->
                         <p class="timestamp">
-                            Minutes of Meeting submitted at: <br>
+                            Document Created at: <br>
                             {{ \Carbon\Carbon::parse($notulen->created_at)->format('F j, Y h:i A') }}
                         </p>
         

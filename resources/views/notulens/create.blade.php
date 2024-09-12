@@ -69,14 +69,19 @@
         }
 
         .notification-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Center horizontally */
-    justify-content: center; /* Center vertically */
-    text-align: center; /* Align text to center */
-    width: 100%; /* Ensure the element takes the full width of its parent */
-    height: 100%; /* Make sure it takes full height to be centered properly */
-}
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* Center horizontally */
+            justify-content: center;
+            /* Center vertically */
+            text-align: center;
+            /* Align text to center */
+            width: 100%;
+            /* Ensure the element takes the full width of its parent */
+            height: 100%;
+            /* Make sure it takes full height to be centered properly */
+        }
     </style>
 </head>
 
@@ -222,7 +227,8 @@
     <div id="tooltip"
         class="fixed top-4 right-4 mt-24 mr-4 bg-white shadow-md rounded-lg w-96 p-4 text-sm text-gray-700 hidden">
         <div id="tooltip-heading-container" class="tooltip-header">
-            <h1 id="tooltip-heading" class="text-2xl font-bold">Tooltip <i class="fas fa-info-circle"></i></h1>
+            <h1 id="tooltip-heading" class="text-2xl font-bold"><i class="fas fa-info-circle"></i></h1>
+            {{-- <h1 id="tooltip-heading" class="text-2xl font-bold">Tooltip <i class="fas fa-info-circle"></i></h1> --}}
         </div>
         <div id="tooltip-content-container" class="tooltip-content">
             <p></p>
@@ -273,8 +279,8 @@
                             </div>
                             <div class="mb-4 relative has-tooltip"
                                 data-tooltip="Select one or more departments relevant to the meeting...">
-                                <label for="department"
-                                    class="block text-gray-700 text-sm font-bold mb-2">Department <span class="text-red-500 text-l">*</span></label>
+                                <label for="department" class="block text-gray-700 text-sm font-bold mb-2">Department
+                                    <span class="text-red-500 text-l">*</span></label>
                                 <div class="relative w-full md:w-4/5 lg:w-4/5">
 
                                     <!-- Div that should be in front -->
@@ -370,7 +376,8 @@
 
                             <div class="mb-4">
                                 <label for="participants"
-                                    class="block text-gray-700 text-sm font-bold mb-2">Participants <span class="text-red-500 text-l">*</span></label>
+                                    class="block text-gray-700 text-sm font-bold mb-2">Participants <span
+                                        class="text-red-500 text-l">*</span></label>
                                 <button type="button"
                                     class="has-tooltip bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 text-white font-semibold py-2 px-4 rounded-md shadow-md hover:shadow-lg transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-green-300"
                                     id="openParticipantModalBtn"
@@ -390,16 +397,16 @@
                         <div class="w-full md:w-1/2 md:pl-2">
                             <div class="flex mb-4 md:w-4/5 lg:w-4/5">
                                 <div class="w-1/2 pr-2">
-                                    <label for="meeting_date"
-                                        class="block text-gray-700 text-sm font-bold mb-2">Date <span class="text-red-500 text-l">*</span></label>
+                                    <label for="meeting_date" class="block text-gray-700 text-sm font-bold mb-2">Date
+                                        <span class="text-red-500 text-l">*</span></label>
                                     <input type="date"
                                         class="has-tooltip shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                         id="meeting_date" name="meeting_date" required
                                         data-tooltip="Select the date for the meeting using the calendar picker. This date should reflect when the meeting will take place. Click on the calendar icon or the date field to choose the appropriate date. The date format should be YYYY-MM-DD. Make sure to select the correct date to ensure all participants have accurate scheduling information. If the date is incorrect, it might affect the meeting's organization and attendance.">
                                 </div>
                                 <div class="w-1/2 pl-2">
-                                    <label for="meeting_time"
-                                        class="block text-gray-700 text-sm font-bold mb-2">Time <span class="text-red-500 text-l">*</span></label>
+                                    <label for="meeting_time" class="block text-gray-700 text-sm font-bold mb-2">Time
+                                        <span class="text-red-500 text-l">*</span></label>
                                     <input type="time"
                                         class="has-tooltip shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                         id="meeting_time" name="meeting_time" required
@@ -409,14 +416,21 @@
                             <div class="mb-4 has-tooltip"
                                 data-tooltip="Choose the location where the meeting will take place from the dropdown list. This could be a physical location like a conference room or an online meeting link. If you’re selecting a physical location, ensure it is available and suitable for the meeting. If the meeting is online, make sure to include any necessary details or links in the meeting invite. The selected location will be visible to all participants, so please ensure it is accurate to avoid confusion and ensure a smooth meeting experience.">
                                 <label for="meeting_location"
-                                    class="block text-gray-700 text-sm font-bold mb-2">Location <span class="text-red-500 text-l">*</span></label>
+                                    class="block text-gray-700 text-sm font-bold mb-2">Location <span
+                                        class="text-red-500 text-l">*</span></label>
                                 <select name="meeting_location" id="meeting_location"
                                     class="shadow appearance-none border rounded w-full md:w-4/5 lg:w-4/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                     required>
                                     <option value="" disabled selected>Select Location</option>
-                                    <option value="Location 1">Location 1</option>
-                                    <option value="Location 2">Location 2</option>
-                                    <option value="Location 3">Location 3</option>
+                                    <option value="Ruang Meeting Inisiatif">Ruang Meeting Inisiatif</option>
+                                    <option value="Ruang Meeting Marketing">Ruang Meeting Marketing</option>
+                                    <option value="Ruang Meeting MD">Ruang Meeting MD</option>
+                                    <option value="Ruang Meeting Objektif">Ruang Meeting Objektif</option>
+                                    <option value="Ruang Meeting Pelayanan">Ruang Meeting Pelayanan</option>
+                                    <option value="Ruang Meeting HRD">Ruang Meeting HRD</option>
+                                    <option value="Ruang Meeting Tanggung Jawab">Ruang Meeting Tanggung Jawab</option>
+                                    <option value="Online">Online</option>
+                                    <option value="Off-site">Off-site</option>
                                 </select>
                             </div>
                             <div class="mb-4">
@@ -482,21 +496,24 @@
 
 
                     <div class="mb-4">
-                        <label for="agenda" class="block text-gray-700 text-sm font-bold mb-2">Agenda <span class="text-red-500 text-l">*</span></label>
+                        <label for="agenda" class="block text-gray-700 text-sm font-bold mb-2">Agenda <span
+                                class="text-red-500 text-l">*</span></label>
                         <textarea
                             class="has-tooltip shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             id="agenda" name="agenda" rows="3" placeholder="Enter agenda" required
                             data-tooltip="Enter the detailed agenda for the meeting in this field. The agenda should outline the key topics and activities planned for the meeting, helping to ensure that all participants are aware of what will be discussed. Use this space to provide a clear and organized list of points or topics that will be covered, along with any relevant details. A well-defined agenda helps in keeping the meeting focused and productive. Make sure to include all necessary items to be addressed during the meeting."></textarea>
                     </div>
                     <div class="mb-4">
-                        <label for="discussion" class="block text-gray-700 text-sm font-bold mb-2">Discussion <span class="text-red-500 text-l">*</span></label>
+                        <label for="discussion" class="block text-gray-700 text-sm font-bold mb-2">Discussion <span
+                                class="text-red-500 text-l">*</span></label>
                         <textarea
                             class="has-tooltip shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             id="discussion" name="discussion" rows="3" placeholder="Enter discussion" required
                             data-tooltip="Use this field to document the key points and details of the discussions that took place during the meeting. Include summaries of conversations, decisions made, and any relevant comments from participants. This section helps in capturing the essence of the discussions for future reference and ensures that all significant points are recorded. A thorough and accurate description in this field will assist in understanding the outcomes and actions required from the meeting."></textarea>
                     </div>
                     <div class="mb-4">
-                        <label for="decisions" class="block text-gray-700 text-sm font-bold mb-2">Decisions (Optional)</label>
+                        <label for="decisions" class="block text-gray-700 text-sm font-bold mb-2">Decisions
+                            (Optional)</label>
                         <textarea
                             class="has-tooltip shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             id="decisions" name="decisions" rows="3" placeholder="Enter decisions"
@@ -832,7 +849,7 @@
                 if (
                     (event.deltaY < 0 && scrollTop === 0) || // Scrolling up at the top
                     (event.deltaY > 0 && scrollTop + offsetHeight >=
-                    scrollHeight) // Scrolling down at the bottom
+                        scrollHeight) // Scrolling down at the bottom
                 ) {
                     event.preventDefault();
                 }
@@ -951,7 +968,7 @@
                 updateTaskPicOptions(); // Update the task PIC options first
                 populatePicModal(); // Then populate the modal
                 const selectedParticipants = participantsList.querySelectorAll(
-                'tr'); // Check if any participants are added
+                    'tr'); // Check if any participants are added
 
                 if (selectedParticipants.length === 0) {
                     Swal.fire({
@@ -1541,7 +1558,7 @@
 
                 // Validate if participants are selected
                 const selectedParticipants = participantsList.querySelectorAll(
-                'tr'); // Check if any participants are added
+                    'tr'); // Check if any participants are added
 
                 if (selectedParticipants.length === 0) {
                     Swal.fire({
@@ -1604,13 +1621,16 @@
                         confirmButtonText: 'Yes, add it!'
                     }).then((result) => {
                         if (result.isConfirmed) {
+                            document.getElementById('submitBtn').disabled = true;
+                            document.getElementById('submitBtn').innerText = 'Submitting...';
                             notulenForm.submit(); // Submit the form if confirmed
                             Swal.fire({
                                 title: 'Added!',
-                                text: 'Your notulen has been added.',
+                                text: 'Your notulen has been added. Please wait while we are submitting.',
                                 icon: 'success',
                                 showConfirmButton: false,
-                                timer: 1500
+                                allowOutsideClick: false, // Disable closing by clicking outside
+                                allowEscapeKey: false // Disable closing with "Esc" key
                             });
                         }
                     });
@@ -1761,7 +1781,8 @@
                                 ''; // Highlight unread notifications
 
                             return `
-                    <a href="${link}" class="notification-item block mt-2 px-4 py-3 ${highlightClass} hover:bg-gray-100 rounded-md transition duration-200 ease-in-out shadow-sm border-b border-gray-200">
+                                        <a href="${link}" class="notification-item block mt-2 px-4 py-3 ${highlightClass} hover:bg-gray-100 rounded-md transition duration-200 ease-in-out shadow-sm border-b border-gray-200" style="height: 141px;">
+
                         <div class="icon bg-blue-500 text-white rounded-full p-2 w-10 h-10 flex items-center justify-center mx-auto mb-2">
                             <i class="fas fa-bell"></i>
                         </div>
@@ -1798,11 +1819,11 @@
                             dotsContainer.innerHTML = `
                     ${dotsHtml}
                     ${notifications.length > maxDotsPerPage ? `
-                                    <div class="flex justify-between mt-2 hidden">
-                                        <button id="prevPage" class="px-2 py-1 bg-gray-200 rounded ${page === 0 ? 'opacity-50 cursor-not-allowed' : ''}" ${page === 0 ? 'disabled' : ''}>Prev</button>
-                                        <button id="nextPage" class="px-2 py-1 bg-gray-200 rounded ${page === Math.ceil(notifications.length / maxDotsPerPage) - 1 ? 'opacity-50 cursor-not-allowed' : ''}" ${page === Math.ceil(notifications.length / maxDotsPerPage) - 1 ? 'disabled' : ''}>Next</button>
-                                    </div>
-                                ` : ''}
+                                        <div class="flex justify-between mt-2 hidden">
+                                            <button id="prevPage" class="px-2 py-1 bg-gray-200 rounded ${page === 0 ? 'opacity-50 cursor-not-allowed' : ''}" ${page === 0 ? 'disabled' : ''}>Prev</button>
+                                            <button id="nextPage" class="px-2 py-1 bg-gray-200 rounded ${page === Math.ceil(notifications.length / maxDotsPerPage) - 1 ? 'opacity-50 cursor-not-allowed' : ''}" ${page === Math.ceil(notifications.length / maxDotsPerPage) - 1 ? 'disabled' : ''}>Next</button>
+                                        </div>
+                                    ` : ''}
                 `;
                         };
 
